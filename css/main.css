@@ -1,10 +1,10 @@
 :root {
-    --color-background: white;
+    --color-background: Prussian Blue;
     --color-on-background: black;
     --color-background-hover: #eee;
     --color-on-background-hover: black;
     --color-primary: #07374A;
-    --color-on-primary: Prussian Blue;
+    --color-on-primary: white;
     --color-error: #de0000;
     --color-on-error: white;
 }

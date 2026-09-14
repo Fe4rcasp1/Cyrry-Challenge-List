@@ -100,7 +100,7 @@ export default {
                     </template>
                     <h3>Submission Requirements</h3>
                     <p>
-                        Submit Veriications in the discord (link at top of website) and all completions using the google doc from the submit button.
+                        Submit Verifcations in the discord (link at top of website) and all completions using the google doc from the submit button.
                     </p>
                     <p>
                         Achieved the record on the level that is listed on the site - please check the level ID before you submit a record.

@@ -1,12 +1,10 @@
 {
-    "id": 111111114,
+    "id": 120254942,
     "name": "Cads Upward Flight",
-    "author": "cads",
-    "creators": [
-        "cads"
-    ],
-    "verifier": "",
-    "verification": "",
+    "author": "CyrryGD",
+    "creators": ["CyrryGD"],
+    "verifier": "CyrryGD",
+    "verification": "https://youtu.be/12rGYcW5Vzs?si=zvgWQ_ruzWCdQR9X",
     "percentToQualify": "100",
     "enjoyment": "N/A",
     "records": []

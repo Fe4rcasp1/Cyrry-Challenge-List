@@ -2,11 +2,9 @@
     "id": 147015894,
     "name": "Blackout",
     "author": "NxXD",
-    "creators": [
-        "NxXD"
-    ],
-    "verifier": "",
-    "verification": "",
+    "creators": ["NxXD"],
+    "verifier": "NxXD",
+    "verification": "https://youtu.be/3OwzPITN9iA?si=mK07wT5H15VVZ5Vz",
     "percentToQualify": "100",
     "enjoyment": "N/A",
     "records": []

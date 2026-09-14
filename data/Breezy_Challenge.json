@@ -2,11 +2,9 @@
     "id": 124292041,
     "name": "Breezy Challenge",
     "author": "Leagal",
-    "creators": [
-        "Leagal"
-    ],
-    "verifier": "",
-    "verification": "",
+    "creators": ["Leagal"],
+    "verifier": "Leagal",
+    "verification": "https://youtu.be/XXtkbvJpcRA?si=BEjyxBQdd93-TScj",
     "percentToQualify": "100",
     "enjoyment": "N/A",
     "records": []

@@ -23,16 +23,21 @@ export default {
         <main v-else class="page-list">
             <div class="list-container">
                 <table class="list" v-if="list">
+                    <tr class="section-header">
+                        <td colspan="2" class="type-label-lg">Main List</td>
+                    </tr>
                     <tr v-for="([level, err], i) in list">
                         <td class="rank">
-                             <p v-if="i + 1 <= 100" class="type-label-lg">#{{ i + 1 }}</p>
-                            <p v-else class="type-label-lg">Extended</p>
+                            <p class="type-label-lg">#{{ i + 1 }}</p>
                         </td>
                         <td class="level" :class="{ 'active': selected == i, 'error': !level }">
                             <button @click="selected = i">
                                 <span class="type-label-lg">{{ level?.name || \`Error (\${err}.json)\` }}</span>
                             </button>
                         </td>
+                        <tr v-if="(i + 1) % 100 === 0 && (i + 1) < list.length" class="section-header">
+                            <td colspan="2" class="type-label-lg">Extended</td>
+                        </tr>
                     </tr>
                 </table>
             </div>

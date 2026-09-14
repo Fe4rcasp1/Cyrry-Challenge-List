@@ -9,7 +9,7 @@ export const store = Vue.reactive({
 });
 
 const app = Vue.createApp({
-    data: () => ({ store }),
+    data: () => ({ store, listPanelOpen: false }),
 });
 const router = VueRouter.createRouter({
     history: VueRouter.createWebHashHistory(),

@@ -15,6 +15,12 @@ const roleIconMap = {
 };
 
 export default {
+    props: {
+        dataDir: {
+            type: String,
+            default: '/data',
+        },
+    },
     components: { Spinner, LevelAuthors },
     template: `
         <main v-if="loading">
@@ -154,8 +160,8 @@ export default {
     },
     async mounted() {
         // Hide loading spinner
-        this.list = await fetchList();
-        this.editors = await fetchEditors();
+        this.list = await fetchList(this.dataDir);
+        this.editors = await fetchEditors(this.dataDir);
 
         // Error handling
         if (!this.list) {

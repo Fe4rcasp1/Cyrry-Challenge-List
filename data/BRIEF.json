@@ -2,11 +2,9 @@
     "id": 145299658,
     "name": "BRIEF",
     "author": "monolyth1",
-    "creators": [
-        "monolyth1"
-    ],
-    "verifier": "",
-    "verification": "",
+    "creators": ["monolyth1"],
+    "verifier": "monolyth1",
+    "verification": "https://youtu.be/pSPEnfk-zkU",
     "percentToQualify": "100",
     "enjoyment": "N/A",
     "records": []

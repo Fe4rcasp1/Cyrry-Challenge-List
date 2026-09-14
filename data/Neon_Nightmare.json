@@ -1,19 +1,14 @@
 {
-    "id": 146000001,
+    "id": 127284598,
     "name": "Neon Nightmare",
-    "author": "neon",
+    "author": "MrKingFloppa",
     "creators": [
-        "neon"
+        "MrKingFloppa",
+        "NxXD"
     ],
-    "verifier": "neon",
-    "verification": "https://youtu.be/example",
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "neon",
-            "percent": "100",
-            "link": "https://youtu.be/example"
-        }
-    ]
+    "records": []
 }

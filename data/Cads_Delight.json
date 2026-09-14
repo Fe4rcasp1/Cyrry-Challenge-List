@@ -1,11 +1,9 @@
 {
-    "id": 111111111,
+    "id": 107838065,
     "name": "Cads Delight",
-    "author": "cads",
-    "creators": [
-        "cads"
-    ],
-    "verifier": "",
+    "author": "CyrryGD",
+    "creators": ["CyrryGD"],
+    "verifier": "CyrryGD",
     "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",

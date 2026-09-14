@@ -1,11 +1,11 @@
 {
-    "id": 131000001,
+    "id": 136127856,
     "name": "La La La",
     "author": "lalala",
     "creators": [
-        "lalala"
+        "CyrryGD","NothereGD"
     ],
-    "verifier": "",
+    "verifier": "CyrryGD",
     "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",

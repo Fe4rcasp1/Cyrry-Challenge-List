@@ -57,8 +57,8 @@ export default {
                     </ul>
                     <h2>Records</h2>
                     <p v-if="selected + 1 <= 75"><strong>{{ level.percentToQualify }}%</strong> or better to qualify</p>
-                    <p v-else-if="selected +1 <= 100"><strong>100%</strong> or better to qualify</p>
-                    <p v-else>This level does not accept new records.</p>
+                    <p v-else-if="selected + 1 <= 100"><strong>100%</strong> or better to qualify</p>
+                    <p v-else><strong>100%</strong> or better to qualify</p>
                     <table class="records">
                         <tr v-for="record in level.records" class="record">
                             <td class="percent">
@@ -109,7 +109,7 @@ export default {
                         Verifications And Completions Must Have Clicks, Cheat Indicator, And Show The End Screen (Except Limitations Like Mobile, Mic Not Working, Or Not Having Mods.
                     </p>
                     <p>
-                        The recording must have a previous attempt and entire death animation shown before the completion, unless the completion is on the first attempt. Everyplay records are exempt from this.
+                        The recording must have a previous attempt and entire death animation shown before the completion, unless the completion is on the first attempt. Everyplay records are exe[...]
                     </p>
                     <p>
                         The recording must also show the player hit the endwall, or the completion will be invalidated.
@@ -121,7 +121,7 @@ export default {
                         Levels Can Be Beaten/Verified With 100% Noclip Accuracy If Enough Proof That It Was Legit.
                     </p>
                     <p>
-                        This Is More A Statement Than A Rule But Everyones Username On The List Will Be Based Off Of Their In-Game Username So Private Dm CyrryGD Your In-Game Username If You See This (only if your in-game name is different from your discord name).
+                        This Is More A Statement Than A Rule But Everyones Username On The List Will Be Based Off Of Their In-Game Username So Private Dm CyrryGD Your In-Game Username If You See [...]
                     </p>
                 </div>
             </div>

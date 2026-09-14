@@ -1,12 +1,13 @@
 {
-    "id": 128099038,
+    "id": 189000001,
     "name": "Vehicle Challenge 3",
-    "author": "p3rke79",
-    "creators": ["p3rke79"],
-    "verifier": "CyrryGD",
-    "verification": "https://youtu.be/-Q1aosbZbVc?si=Y1wM3bkbGF5lcGfk",
-    "percentToQualify": 100,
+    "author": "vehicle",
+    "creators": [
+        "vehicle"
+    ],
+    "verifier": "",
+    "verification": "",
+    "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
+    "records": []
 }

@@ -1,12 +1,13 @@
 {
-    "id": 98027564,
+    "id": 174000001,
     "name": "Swing Challenge",
-    "author": "CyrryGD",
-    "creators": ["CyrryGD"],
-    "verifier": "CyrryGD",
-    "verification": "https://youtu.be/12rGYcW5Vzs?si=zvgWQ_ruzWCdQR9X",
+    "author": "swing",
+    "creators": [
+        "swing"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
+    "records": []
 }

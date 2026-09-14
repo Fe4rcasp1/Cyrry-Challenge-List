@@ -1,12 +1,13 @@
 {
-    "id": 112730834,
+    "id": 176000001,
     "name": "Testing Stuff",
-    "author": "monolyth1",
-    "creators": ["monolyth1"],
-    "verifier": "N/A",
-    "verification": "N/A",
+    "author": "test",
+    "creators": [
+        "test"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
-  }
+    "records": []
+}

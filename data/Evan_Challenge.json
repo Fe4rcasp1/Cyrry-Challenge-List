@@ -1,12 +1,13 @@
 {
-    "id": 128505132,
-    "name": "Evan challenge",
-    "author": "Leagal",
-    "creators": ["Leagal"],
-    "verifier": "Leagal",
-    "verification": "https://youtu.be/_XTShmxKWPw?si=5XBlm7uD_htARKmW",
+    "id": 116666666,
+    "name": "Evan Challenge",
+    "author": "evan",
+    "creators": [
+        "evan"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
-} 
+    "records": []
+}

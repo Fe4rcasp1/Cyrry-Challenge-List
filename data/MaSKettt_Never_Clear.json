@@ -1,12 +1,13 @@
 {
-    "id": 140311860,
+    "id": 138000001,
     "name": "MaSKettt Never Clear",
-    "author": "CyrryGD",
-    "creators": ["CyrryGD"],
-    "verifier": "CyrryGD",
-    "verification": "https://youtu.be/3lc9Mxbo2rs?si=c9SegyMeUnhm1pDO",
-    "percentToQualify": 100,
+    "author": "maskettt",
+    "creators": [
+        "maskettt"
+    ],
+    "verifier": "",
+    "verification": "",
+    "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
+    "records": []
 }

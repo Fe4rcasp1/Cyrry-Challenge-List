@@ -1,12 +1,13 @@
 {
-    "id": 136064033,
+    "id": 114444444,
     "name": "Dystopian Dual",
-    "author": "astroraiden",
-    "creators": ["astroraiden"],
-    "verifier": "astroraiden",
-    "verification": "YTLink",
+    "author": "dystopian",
+    "creators": [
+        "dystopian"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
+    "records": []
 }

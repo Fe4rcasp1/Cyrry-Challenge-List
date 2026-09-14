@@ -1,12 +1,13 @@
- {
-    "id": 108454855,
+{
+    "id": 142000001,
     "name": "Microwaved Nuggets",
-    "author": "skeetles",
-    "creators": ["skeetles"],
-    "verifier": "N/A",
-    "verification": "N/A",
+    "author": "microwaved",
+    "creators": [
+        "microwaved"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
-  }
+    "records": []
+}

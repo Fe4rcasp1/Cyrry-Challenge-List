@@ -1,18 +1,19 @@
 {
-    "id": 142042001,
-    "name": "Silent tumor",
-    "author": "53eighfulkaihf",
-    "creators": ["53eighfulkaihf"],
-    "verifier": "53eighfulkaihf",
-    "verification": "https://www.youtube.com/watch?v=cuXPbbbSkx0",
+    "id": 165000001,
+    "name": "Silent Tumor",
+    "author": "silent",
+    "creators": [
+        "silent"
+    ],
+    "verifier": "silent",
+    "verification": "https://youtu.be/example",
     "percentToQualify": "100",
-    "enjoyment": "8/10",
+    "enjoyment": "N/A",
     "records": [
         {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/q4D90A1Xr_M?si=BHAyqxxeoJuqjHZt",
-            "percent": 100,
-            "hz": 240
+            "user": "silent",
+            "percent": "100",
+            "link": "https://youtu.be/example"
         }
     ]
 }

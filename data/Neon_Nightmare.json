@@ -1,24 +1,19 @@
 {
-    "id": 127284598,
+    "id": 146000001,
     "name": "Neon Nightmare",
-    "author": "MrKingFloppa",
-    "creators": ["MrKingFloppa","NxXD"],
-    "verifier": "MrKingFloppa",
-    "verification": "https://youtu.be/SiPAEakqITE?si=tAx8Cyp9L3erbsFe",
+    "author": "neon",
+    "creators": [
+        "neon"
+    ],
+    "verifier": "neon",
+    "verification": "https://youtu.be/example",
     "percentToQualify": "100",
-    "enjoyment": "0/10",
+    "enjoyment": "N/A",
     "records": [
         {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/n3pVDUwcxU4?si=Gd6bBj0G72_dOSFs",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Fe4rcasp",
-            "link": "https://youtu.be/bbwrcMJlTPA?si=XbiuQH2fF8UjyTm3",
-            "percent": 100,
-            "hz": 240
+            "user": "neon",
+            "percent": "100",
+            "link": "https://youtu.be/example"
         }
     ]
 }

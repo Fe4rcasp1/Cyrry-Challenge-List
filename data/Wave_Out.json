@@ -1,12 +1,13 @@
 {
-    "id": 125037054,
+    "id": 193000001,
     "name": "Wave Out",
-    "author": "ZinkZys",
-    "creators": ["ZinkZys"],
-    "verifier": "ZinkZys",
-    "verification": "https://youtu.be/ZmZXkmJy1Sc?si=g4eIhQ5soYZGo0IX",
+    "author": "wave",
+    "creators": [
+        "wave"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
+    "records": []
 }

@@ -1,12 +1,13 @@
 {
-    "id": 127999004,
+    "id": 137000001,
     "name": "Luno Challenge IV",
-    "author": "Leagal",
-    "creators": ["Leagal"],
-    "verifier": "Leagal",
-    "verification": "YTLink",
+    "author": "luno",
+    "creators": [
+        "luno"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
+    "records": []
 }

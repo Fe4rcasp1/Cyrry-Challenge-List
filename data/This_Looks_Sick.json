@@ -1,12 +1,13 @@
 {
-    "id": 81357304,
+    "id": 181000001,
     "name": "This Looks Sick",
-    "author": "NotHereGD",
-    "creators": ["NotHereGD"],
-    "verifier": "NotHereGD",
-    "verification": "YTLink",
+    "author": "sick",
+    "creators": [
+        "sick"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
+    "records": []
 }

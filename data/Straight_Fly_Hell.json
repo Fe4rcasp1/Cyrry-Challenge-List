@@ -1,12 +1,13 @@
 {
-    "id": 128097112,
+    "id": 173000001,
     "name": "Straight Fly Hell",
-    "author": "CyrryGD",
-    "creators": ["CyrryGD"],
-    "verifier": "CyrryGD",
-    "verification": "https://youtu.be/12rGYcW5Vzs?si=zvgWQ_ruzWCdQR9X",
+    "author": "straight",
+    "creators": [
+        "straight"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
+    "records": []
 }

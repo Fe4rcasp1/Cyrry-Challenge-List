@@ -1,12 +1,13 @@
 {
-    "id": 140548079,
-    "name": "cuc challenge",
-    "author": "jamxz11",
-    "creators": ["jamxz11"],
-    "verifier": "CyrryGD",
-    "verification": "https://youtu.be/TosFpgFK8XI?si=f3nIAUSwOezRLg0j",
+    "id": 128000000,
+    "name": "Cuc Challenge",
+    "author": "CucGD",
+    "creators": [
+        "CucGD"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
+    "records": []
 }

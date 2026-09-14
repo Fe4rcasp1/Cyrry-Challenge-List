@@ -1,12 +1,13 @@
 {
-    "id": 146230359,
+    "id": 129000000,
     "name": "Cyrry Circles",
-    "author": "astroraiden",
-    "creators": ["astroraiden"],
-    "verifier": "CyrryGD",
-    "verification": "https://www.youtube.com/watch?v=3vvCJASSxUo",
+    "author": "CyrryGD",
+    "creators": [
+        "CyrryGD"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
+    "records": []
 }

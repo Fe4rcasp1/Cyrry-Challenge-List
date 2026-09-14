@@ -1,12 +1,13 @@
 {
-    "id": 137812961,
+    "id": 155000001,
     "name": "Rainbow Balls",
-    "author": "jamxz11",
-    "creators": ["jamxz11","skeetles"],
-    "verifier": "jamxz11",
-    "verification": "YTLink",
+    "author": "rainbow",
+    "creators": [
+        "rainbow"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
+    "records": []
 }

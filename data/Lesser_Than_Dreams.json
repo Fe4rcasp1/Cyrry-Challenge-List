@@ -1,12 +1,13 @@
 {
-    "id": 126002091,
+    "id": 133000001,
     "name": "Lesser Than Dreams",
-    "author": "CyrryGD",
-    "creators": ["CyrryGD"],
-    "verifier": "CyrryGD",
-    "verification": "https://youtu.be/12rGYcW5Vzs?si=zvgWQ_ruzWCdQR9X",
+    "author": "lesser",
+    "creators": [
+        "lesser"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
+    "records": []
 }

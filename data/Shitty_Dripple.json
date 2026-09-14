@@ -1,12 +1,13 @@
 {
-    "id": 142667651,
+    "id": 164000001,
     "name": "Shitty Dripple",
-    "author": "CyrryGD",
-    "creators": ["CyrryGD"],
-    "verifier": "CyrryGD",
-    "verification": "https://youtu.be/JIUOeHk7kOY?si=gHW-Ttidd6AD94TD",
+    "author": "shitty",
+    "creators": [
+        "shitty"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
+    "records": []
 }

@@ -1,12 +1,13 @@
 {
-    "id": 127966640,
+    "id": 152000001,
     "name": "Polytoast Challenge",
-    "author": "Leagal",
-    "creators": ["Leagal"],
-    "verifier": "Leagal",
-    "verification": "https://youtu.be/5JElSBoR31M?si=_pWHAGjky-lpL5cC",
+    "author": "polytoast",
+    "creators": [
+        "polytoast"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
+    "records": []
 }

@@ -1,12 +1,13 @@
 {
-    "id": 147660849,
+    "id": 182000001,
     "name": "Times Ticking",
-    "author": "Void852",
-    "creators": ["Void852"],
-    "verifier": "Void852",
-    "verification": "https://youtu.be/0YboXi82ZBg?si=zTnJOtge_x3bxRrG",
+    "author": "time",
+    "creators": [
+        "time"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
+    "records": []
 }

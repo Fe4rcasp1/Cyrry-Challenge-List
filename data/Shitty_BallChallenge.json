@@ -1,12 +1,13 @@
 {
-    "id": 147458696,
+    "id": 163000001,
     "name": "Shitty BallChallenge",
-    "author": "CyrryGD",
-    "creators": ["CyrryGD"],
-    "verifier": "CyrryGD",
-    "verification": "https://youtu.be/_y5gsAS9oaA?si=sCLySCF-bHuCPnah",
+    "author": "shitty",
+    "creators": [
+        "shitty"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
+    "records": []
 }

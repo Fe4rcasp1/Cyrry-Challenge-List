@@ -1,12 +1,13 @@
 {
-    "id": 127645189,
+    "id": 136000001,
     "name": "Luno Challenge III",
-    "author": "Leagal",
-    "creators": ["Leagal"],
-    "verifier": "Leagal",
-    "verification": "https://youtu.be/jLjy7CW_xVk?si=_vVis5ZrerrC5fF_",
+    "author": "luno",
+    "creators": [
+        "luno"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
+    "records": []
 }

@@ -1,12 +1,13 @@
 {
-    "id": 145935306,
+    "id": 154000001,
     "name": "Psy Circles",
-    "author": "OtherWorldDrago",
-    "creators": ["OtherWorldDrago"],
-    "verifier": "OtherWorldDrago",
-    "verification": "YTLink",
+    "author": "psy",
+    "creators": [
+        "psy"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
+    "records": []
 }

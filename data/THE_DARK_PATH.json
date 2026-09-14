@@ -1,12 +1,13 @@
 {
-    "id": 137065746,
+    "id": 175000001,
     "name": "THE DARK PATH",
-    "author": "OtherWorldDrago",
-    "creators": ["OtherWorldDrago"],
-    "verifier": "CyrryGD",
-    "verification": "https://youtu.be/JvRO1bFsxlk?si=fHi5BPhcWuGY0kBe",
+    "author": "dark",
+    "creators": [
+        "dark"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
+    "records": []
 }

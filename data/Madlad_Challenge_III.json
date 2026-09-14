@@ -1,12 +1,13 @@
 {
-    "id": 145888591,
+    "id": 139000001,
     "name": "Madlad Challenge III",
-    "author": "Jayayah",
-    "creators": ["Jayayah"],
-    "verifier": "Jayayah",
-    "verification": "https://youtu.be/ieChZAUx2Qc?si=giMaiptXTb1NDWD8",
+    "author": "madlad",
+    "creators": [
+        "madlad"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
+    "records": []
 }

@@ -1,12 +1,13 @@
 {
-    "id": 129547550,
+    "id": 143000001,
     "name": "Monree Neever Cleear",
-    "author": "Leagal",
-    "creators": ["Leagal"],
-    "verifier": "Leagal",
-    "verification": "https://youtu.be/_XTShmxKWPw?si=iOWwIHs-yhU3rzqK",
+    "author": "monree",
+    "creators": [
+        "monree"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
+    "records": []
 }

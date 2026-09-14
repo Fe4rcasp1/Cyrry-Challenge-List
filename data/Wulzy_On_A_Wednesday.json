@@ -1,12 +1,13 @@
- {
-    "id": 112550369,
+{
+    "id": 198000001,
     "name": "Wulzy On A Wednesday",
-    "author": "monolyth1",
-    "creators": ["monolyth1"],
-    "verifier": "N/A",
-    "verification": "N/A",
+    "author": "wulzy",
+    "creators": [
+        "wulzy"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
-  }
+    "records": []
+}

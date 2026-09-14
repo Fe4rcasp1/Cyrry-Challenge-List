@@ -1,12 +1,13 @@
 {
-    "id": 141748713,
+    "id": 127000001,
     "name": "Hostile Corridor",
-    "author": "p3rke79",
-    "creators": ["p3rke79"],
-    "verifier": "p3rke79",
-    "verification": "https://youtu.be/xPBF-ECeLRk?si=apcCvM8TWG7TEQxM",
+    "author": "hostile",
+    "creators": [
+        "hostile"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
+    "records": []
 }

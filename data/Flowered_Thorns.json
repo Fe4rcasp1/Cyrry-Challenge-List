@@ -1,12 +1,13 @@
 {
-    "id": 129976893,
-    "name": "flowered thorns",
-    "author": "Leagal",
-    "creators": ["Leagal"],
-    "verifier": "Leagal",
-    "verification": "https://youtu.be/_XTShmxKWPw?si=0DAMiarwAveMujCN",
+    "id": 122000001,
+    "name": "Flowered Thorns",
+    "author": "flowermaster",
+    "creators": [
+        "flowermaster"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
+    "records": []
 }

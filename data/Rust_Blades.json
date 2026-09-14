@@ -1,18 +1,19 @@
 {
-    "id": 141919563,
-    "name": "rust blades",
-    "author": "53eighfulkaihf",
-    "creators": ["53eighfulkaihf"],
-    "verifier": "53eighfulkaihf",
-    "verification": "https://www.youtube.com/watch?v=W1nhLx881uU",
+    "id": 160000001,
+    "name": "Rust Blades",
+    "author": "rust",
+    "creators": [
+        "rust"
+    ],
+    "verifier": "rust",
+    "verification": "https://youtu.be/example",
     "percentToQualify": "100",
     "enjoyment": "N/A",
     "records": [
-         {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/hwyE3DY9Vfg?si=hfDbqYcQeyyP9Ptu",
-            "percent": 100,
-            "hz": 240
+        {
+            "user": "rust",
+            "percent": "100",
+            "link": "https://youtu.be/example"
         }
     ]
 }

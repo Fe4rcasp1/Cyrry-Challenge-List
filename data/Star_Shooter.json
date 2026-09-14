@@ -1,12 +1,13 @@
 {
-    "id": 131033888,
+    "id": 171000001,
     "name": "Star Shooter",
-    "author": "ZinkZys",
-    "creators": ["ZinkZys"],
-    "verifier": "Loopelino",
-    "verification": "https://youtu.be/bi5_Ghh18tE",
+    "author": "star",
+    "creators": [
+        "star"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
+    "records": []
 }

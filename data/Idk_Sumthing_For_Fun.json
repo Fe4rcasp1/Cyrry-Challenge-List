@@ -1,12 +1,13 @@
 {
-    "id": 130846878,
+    "id": 129000005,
     "name": "Idk Sumthing For Fun",
-    "author": "ZinkZys",
-    "creators": ["ZinkZys"],
-    "verifier": "CyrryGD",
-    "verification": "https://youtu.be/X8ouaccXKsQ?si=L-gEUTmKeozUI6UW",
+    "author": "idk",
+    "creators": [
+        "idk"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
+    "records": []
 }

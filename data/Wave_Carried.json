@@ -1,12 +1,13 @@
 {
-    "id": 132412135,
+    "id": 191000001,
     "name": "Wave Carried",
-    "author": "p3rke79",
-    "creators": ["p3rke79"],
-    "verifier": "katanata",
-    "verification": "YTLink",
+    "author": "wave",
+    "creators": [
+        "wave"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
-} 
+    "records": []
+}

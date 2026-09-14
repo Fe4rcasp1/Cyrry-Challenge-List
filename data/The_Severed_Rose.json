@@ -1,12 +1,13 @@
 {
-    "id": 139627738,
+    "id": 179000001,
     "name": "The Severed Rose",
-    "author": "OtherWorldDrago",
-    "creators": ["OtherWorldDrago"],
-    "verifier": "CyrryGD",
-    "verification": "YTLink",
+    "author": "rose",
+    "creators": [
+        "rose"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
+    "records": []
 }

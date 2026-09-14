@@ -1,12 +1,13 @@
 {
-    "id": 127552574,
+    "id": 183000001,
     "name": "To The Other Side",
-    "author": "jamxz11",
-    "creators": ["jamxz11"],
-    "verifier": "Geomaster846",
-    "verification": "YTLink",
+    "author": "other",
+    "creators": [
+        "other"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
+    "records": []
 }

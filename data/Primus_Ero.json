@@ -1,12 +1,13 @@
 {
-    "id": 128496333,
-    "name": "primus ero",
-    "author": "soopidk",
-    "creators": ["soopidk"],
-    "verifier": "soopidk",
-    "verification": "https://youtu.be/AEZvVtheZxI?si=PapyGcIwLYzRmHul",
+    "id": 153000001,
+    "name": "Primus Ero",
+    "author": "primus",
+    "creators": [
+        "primus"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
+    "records": []
 }

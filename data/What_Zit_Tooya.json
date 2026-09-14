@@ -1,12 +1,13 @@
 {
-    "id": 147660304,
+    "id": 196000001,
     "name": "What Zit Tooya",
-    "author": "ufb32",
-    "creators": ["ufb32"],
-    "verifier": "ufb32",
-    "verification": "YTLink",
+    "author": "zit",
+    "creators": [
+        "zit"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
+    "records": []
 }

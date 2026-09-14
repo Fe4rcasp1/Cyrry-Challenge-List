@@ -1,12 +1,13 @@
 {
-    "id": 136706449,
+    "id": 117777777,
     "name": "Exasperation challen",
-    "author": "ZinkZys",
-    "creators": ["ZinkZys"],
-    "verifier": "ZinkZys",
-    "verification": "https://youtu.be/jZaXAL7EZGI?si=SSLcylNLDIM6zHt6",
+    "author": "exasperate",
+    "creators": [
+        "exasperate"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
+    "records": []
 }

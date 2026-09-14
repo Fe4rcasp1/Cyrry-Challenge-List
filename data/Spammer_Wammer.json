@@ -1,12 +1,13 @@
 {
-    "id": 143390610,
+    "id": 168000001,
     "name": "Spammer Wammer",
-    "author": "Geomaster846",
-    "creators": ["Geomaster846"],
-    "verifier": "Geomaster846",
-    "verification": "https://youtu.be/sHz7NUfHMOQ?si=ONwMx7xlrKsuW-UU",
+    "author": "spammer",
+    "creators": [
+        "spammer"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
-    "enjoyment": "1/10",
-    "records": [
-    ]
+    "enjoyment": "N/A",
+    "records": []
 }

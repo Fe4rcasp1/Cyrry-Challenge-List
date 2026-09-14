@@ -1,12 +1,13 @@
 {
-    "id": 124458640,
+    "id": 124000000,
     "name": "Cloud Challenged",
-    "author": "Leagal",
-    "creators": ["Leagal"],
-    "verifier": "Leagal",
-    "verification": "https://youtu.be/H2BCcd6mM7w?si=xqeXohb4SgYIW-YD",
+    "author": "CloudStorm",
+    "creators": [
+        "CloudStorm"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
+    "records": []
 }

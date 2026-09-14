@@ -1,12 +1,13 @@
 {
-    "id": 137501574,
+    "id": 123456789,
     "name": "Ball Challenge",
-    "author": "Jayayah",
-    "creators": ["Jayayah"],
-    "verifier": "Jayayah",
-    "verification": "https://youtu.be/9Wtxwe1Ex1g?si=40QAqblPhme0E-Q6",
+    "author": "Kris",
+    "creators": [
+        "Kris"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
-} 
+    "records": []
+}

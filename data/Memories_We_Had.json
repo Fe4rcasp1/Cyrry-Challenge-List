@@ -1,12 +1,13 @@
 {
-    "id": 129908891,
+    "id": 140000001,
     "name": "Memories We Had",
-    "author": "ZinkZys",
-    "creators": ["ZinkZys"],
-    "verifier": "Gamerboy245190",
-    "verification": "YTLink",
+    "author": "memories",
+    "creators": [
+        "memories"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
+    "records": []
 }

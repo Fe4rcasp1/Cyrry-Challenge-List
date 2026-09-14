@@ -1,12 +1,13 @@
 {
-    "id": 137072046,
+    "id": 172000001,
     "name": "Stfu Fantasy",
-    "author": "Jamxz11",
-    "creators": ["Jamxz11"],
-    "verifier": "Jamxz11",
-    "verification": "https://youtu.be/SpPTuKnuiV0?si=JLIXmke7rprZ4y_J",
+    "author": "stfu",
+    "creators": [
+        "stfu"
+    ],
+    "verifier": "",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-    ]
+    "records": []
 }

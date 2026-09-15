@@ -1,11 +1,9 @@
 {
     "id": 114661408,
-    "name": "Mory",
+    "name": "mory",
     "author": "ZinkZys",
-    "creators": [
-        "ZinkZys"
-    ],
-    "verifier": "",
+    "creators": ["ZinkZys"],
+    "verifier": "ZinkZys",
     "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",

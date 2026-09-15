@@ -1,11 +1,9 @@
 {
     "id": 140443934,
-    "name": "Gubby",
+    "name": "gubby",
     "author": "Korbir",
-    "creators": [
-        "Korbir"
-    ],
-    "verifier": "",
+    "creators": ["Korbir"],
+    "verifier": "Korbir",
     "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",

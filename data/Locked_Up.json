@@ -1,11 +1,9 @@
 {
-    "id": 134000001,
+    "id": 105442269,
     "name": "Locked Up",
-    "author": "lockedgd",
-    "creators": [
-        "lockedgd"
-    ],
-    "verifier": "",
+    "author": "NotHereGD",
+    "creators": ["NotHereGD"],
+    "verifier": "NotHereGD",
     "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",

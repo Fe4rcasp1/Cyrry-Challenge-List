@@ -104,6 +104,17 @@ export default {
                         </ol>
                     </template>
                     <h3>Submission Requirements</h3>
+                     <p>
+                        ⭐ = recently added
+                        🏆 = creator contest winner
+                        ___________________________
+                        ---------------------------
+                        Grey = Star Rating
+                        Yellow = Feature Rating
+                        Orange = Epic Rating
+                        Pink = Legendary Rating
+                        Cyan = Mythic Rating
+                    </p>
                     <p>
                         Submit Verifcations in the discord (link at the top of the website) and submit completions using the "submit record" button also at the top of the website.
                     </p>

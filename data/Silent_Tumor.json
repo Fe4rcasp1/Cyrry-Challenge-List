@@ -9,11 +9,5 @@
     "verification": "https://youtu.be/example",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "silent",
-            "percent": "100",
-            "link": "https://youtu.be/example"
-        }
-    ]
-}
+    "records": []
+{

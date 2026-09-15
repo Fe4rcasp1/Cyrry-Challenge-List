@@ -1,17 +1,17 @@
 [
     {
         "role": "owner",
-        "name": "List Owner",
+        "name": "CyrryGD",
         "link": "https://www.youtube.com/@cyrry"
     },
     {
         "role": "admin",
-        "name": "List Co Owner",
+        "name": "Masketified",
         "link": "https://www.youtube.com/channel/UCq-cfZE3LG5TEUpUImByGpg"
     },
     {
         "role": "dev",
-        "name": "List Dev",
+        "name": "Fe4rcasp",
         "link": "https://www.youtube.com/@Fe4RCasp"
     }
 ]

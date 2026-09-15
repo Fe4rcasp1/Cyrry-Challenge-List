@@ -1,19 +1,11 @@
 {
-    "id": 126000000,
+    "id": 136265762,
     "name": "Cosmic Robot",
-    "author": "CosmicGD",
-    "creators": [
-        "CosmicGD"
-    ],
-    "verifier": "CyrryGD",
-    "verification": "https://youtu.be/zc7YH5AOdpw?si=LGFpCbagNt-mAZdS",
+    "author": "Masketified",
+    "creators": ["Masketified","zzzooogggllleee"],
+    "verifier": "Masketified",
+    "verification": "https://youtu.be/9ONxWU3WyRM?si=b0CjMwWu8tL9wiEY",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "someone",
-            "percent": "100",
-            "link": "https://youtu.be/example"
-        }
-    ]
-}
+    "records": []
+     }

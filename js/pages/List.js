@@ -112,6 +112,7 @@ export default {
                         🏆 = creator contest winner
                         ___________________________
                     </p>
+                    <p>
                         Grey = Star Rating
                     </p>    
                     <p>

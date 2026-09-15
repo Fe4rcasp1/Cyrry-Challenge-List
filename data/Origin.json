@@ -2,10 +2,8 @@
     "id": 143158290,
     "name": "Origin",
     "author": "astroraiden",
-    "creators": [
-        "astroraiden"
-    ],
-    "verifier": "",
+    "creators": ["astroraiden"],
+    "verifier": "astroraiden",
     "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",

@@ -1,11 +1,9 @@
 {
-    "id": 141000001,
-    "name": "MicroEKE Challenge",
-    "author": "microeke",
-    "creators": [
-        "microeke"
-    ],
-    "verifier": "",
+    "id": 132520783,
+    "name": "microEKE Challenge",
+    "author": "jamxz11",
+    "creators": ["jamxz11"],
+    "verifier": "jamxz11",
     "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",

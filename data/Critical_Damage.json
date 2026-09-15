@@ -1,12 +1,10 @@
 {
-    "id": 123000000,
+    "id": 109588987,
     "name": "Critical Damage",
-    "author": "damageGD",
-    "creators": [
-        "damageGD"
-    ],
-    "verifier": "",
-    "verification": "",
+    "author": "CyrryGD",
+    "creators": ["CyrryGD"],
+    "verifier": "CyrryGD",
+    "verification": "https://youtu.be/12rGYcW5Vzs?si=zvgWQ_ruzWCdQR9X",
     "percentToQualify": "100",
     "enjoyment": "N/A",
     "records": []

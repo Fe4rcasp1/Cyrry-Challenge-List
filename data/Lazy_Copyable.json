@@ -1,11 +1,9 @@
 {
-    "id": 132000001,
-    "name": "Lazy Copyable",
-    "author": "lazy",
-    "creators": [
-        "lazy"
-    ],
-    "verifier": "",
+    "id": 118281702,
+    "name": "lazy copyable",
+    "author": "ZinkZys",
+    "creators": ["ZinkZys"],
+    "verifier": "ZinkZys",
     "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",

@@ -1,12 +1,10 @@
 {
     "id": 136127856,
     "name": "La La La",
-    "author": "lalala",
-    "creators": [
-        "CyrryGD","NothereGD"
-    ],
+    "author": "CyrryGD",
+    "creators": ["CyrryGD","NothereGD"],
     "verifier": "CyrryGD",
-    "verification": "",
+    "verification": "https://youtu.be/12rGYcW5Vzs?si=zvgWQ_ruzWCdQR9X",
     "percentToQualify": "100",
     "enjoyment": "N/A",
     "records": []

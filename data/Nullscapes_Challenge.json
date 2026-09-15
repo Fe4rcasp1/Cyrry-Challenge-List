@@ -1,12 +1,10 @@
 {
     "id": 116046716,
-    "name": "Nullscapes Challenge",
+    "name": "nullscapes challenge",
     "author": "ZinkZys",
-    "creators": [
-        "ZinkZys"
-    ],
-    "verifier": "",
-    "verification": "",
+    "creators": ["ZinkZys"],
+    "verifier": "NotHereGD",
+    "verification": "https://youtu.be/N3Pn1zu9vAA?si=Kk_IijYuukOfEaLE",
     "percentToQualify": "100",
     "enjoyment": "N/A",
     "records": []

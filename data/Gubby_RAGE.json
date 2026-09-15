@@ -1,12 +1,10 @@
 {
-    "id": 126000001,
-    "name": "Gubby RAGE",
-    "author": "gubby",
-    "creators": [
-        "gubby"
-    ],
-    "verifier": "",
-    "verification": "",
+    "id": 141020584,
+    "name": "gubby RAGE",
+    "author": "Korbir",
+    "creators": ["Korbir"],
+    "verifier": "Korbir",
+    "verification": "https://youtu.be/On2pifbWaXA?si=EmeNYci42F26_yax",
     "percentToQualify": "100",
     "enjoyment": "N/A",
     "records": []

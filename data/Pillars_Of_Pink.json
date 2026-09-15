@@ -1,11 +1,9 @@
 {
-    "id": 151000001,
+    "id": 78109328,
     "name": "Pillars Of Pink",
-    "author": "pink",
-    "creators": [
-        "pink"
-    ],
-    "verifier": "",
+    "author": "chickadeeinc",
+    "creators": ["chickadeeinc"],
+    "verifier": "chickadeeinc",
     "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",

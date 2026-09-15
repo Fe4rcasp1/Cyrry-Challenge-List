@@ -1,12 +1,10 @@
 {
     "id": 137430074,
-    "name": "Noclipistic V2",
+    "name": "Noclipistic v2",
     "author": "Geomaster846",
-    "creators": [
-        "Geomaster846"
-    ],
-    "verifier": "",
-    "verification": "",
+    "creators": ["Geomaster846"],
+    "verifier": "Geomaster846",
+    "verification": "https://youtu.be/B5XSk18_oVE",
     "percentToQualify": "100",
     "enjoyment": "N/A",
     "records": []

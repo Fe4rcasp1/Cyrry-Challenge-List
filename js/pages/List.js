@@ -128,6 +128,7 @@ export default {
                         Cyan = Mythic Rating
                     </p>
                     <p>
+                        _______________________
                         Submission Requirements
                     </p> 
                     <p>

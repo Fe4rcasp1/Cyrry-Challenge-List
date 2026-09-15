@@ -1,11 +1,9 @@
 {
     "id": 140000001,
-    "name": "Memories We Had",
-    "author": "memories",
-    "creators": [
-        "memories"
-    ],
-    "verifier": "",
+    "name": "memories we had",
+    "author": "ZinkZys",
+    "creators": ["ZinkZys"],
+    "verifier": "Gamerboy245190",
     "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",

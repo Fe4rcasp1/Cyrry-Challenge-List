@@ -1,12 +1,10 @@
 {
-    "id": 157000001,
-    "name": "Robot Spam Lol",
-    "author": "robot",
-    "creators": [
-        "robot"
-    ],
-    "verifier": "",
-    "verification": "",
+    "id": 147832563,
+    "name": "robot spam lol",
+    "author": "monolyth1",
+    "creators": ["monolyth1"],
+    "verifier": "monolyth1",
+    "verification": "https://youtu.be/ZIfn4s0eCBk",
     "percentToQualify": "100",
     "enjoyment": "N/A",
     "records": []

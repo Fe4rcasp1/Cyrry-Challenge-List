@@ -1,11 +1,9 @@
 {
     "id": 120000000,
     "name": "Challenge",
-    "author": "gd_slop",
-    "creators": [
-        "gd_slop"
-    ],
-    "verifier": "",
+    "author": "skeetles",
+    "creators": ["skeetles"],
+    "verifier": "skeetles",
     "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",

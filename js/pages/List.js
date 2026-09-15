@@ -22,41 +22,41 @@ export default {
         </main>
         <main v-else class="page-list">
             <div class="list-container">
-               <table class="list" v-if="list">
-    <template v-for="([level, err], i) in list" :key="i">
-        <tr v-if="i === 0" class="section-header">
-            <td colspan="2" class="type-label-lg">
-                Main List
-            </td>
-        </tr>
+              <table class="list" v-if="list">
+                <template v-for="([level, err], i) in list" :key="i">
+                    <tr v-if="i === 0" class="section-header">
+                        <td colspan="2" class="type-label-lg">
+                            Main List
+                        </td>
+                    </tr>
 
-        <tr v-if="i === 100" class="section-header">
-            <td colspan="2" class="type-label-lg">
-                Extended List
-            </td>
-        </tr>
+                    <tr v-if="i === 100" class="section-header">
+                        <td colspan="2" class="type-label-lg">
+                            Extended List
+                        </td>
+                    </tr>
 
-        <tr>
-            <td class="rank">
-                <p class="type-label-lg">#{{ i + 1 }}</p>
-            </td>
+                    <tr>
+                        <td class="rank">
+                            <p class="type-label-lg">#{{ i + 1 }}</p>
+                        </td>
 
-            <td
-                class="level"
-                :class="{
-                    'active': selected == i,
-                    'error': !level
-                }"
-            >
-                <button @click="selected = i">
-                    <span class="type-label-lg">
-                        {{ level?.name || `Error (${err}.json)` }}
-                    </span>
-                </button>
-            </td>
-        </tr>
-    </template>
-</table>
+                        <td
+                            class="level"
+                            :class="{
+                                'active': selected == i,
+                                'error': !level
+                            }"
+                        >
+                            <button @click="selected = i">
+                                <span class="type-label-lg">
+                                    {{ level?.name || `Error (${err}.json)` }}
+                                </span>
+                            </button>
+                        </td>
+                    </tr>
+                    </template>
+                </table>
             </div>
             <div class="level-container">
                 <div class="level" v-if="level">

@@ -2,10 +2,8 @@
   "id": 121548889,
   "name": "HTT",
   "author": "chickadeeinc",
-  "creators": [
-    "chickadeeinc"
-  ],
-  "verifier": "N/A",
+  "creators": ["chickadeeinc"],
+  "verifier": "chickadeeinc",
   "verification": "N/A",
   "percentToQualify": "100",
   "enjoyment": "N/A",

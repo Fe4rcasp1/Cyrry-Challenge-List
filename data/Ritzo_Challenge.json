@@ -1,11 +1,9 @@
 {
-    "id": 156000001,
+    "id": 131039028,
     "name": "Ritzo Challenge",
-    "author": "ritzo",
-    "creators": [
-        "ritzo"
-    ],
-    "verifier": "",
+    "author": "ZinkZys",
+    "creators": ["ZinkZys"],
+    "verifier": "CyrryGD",
     "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",

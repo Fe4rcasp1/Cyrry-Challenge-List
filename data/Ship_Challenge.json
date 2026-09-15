@@ -1,11 +1,9 @@
 {
-    "id": 162000001,
-    "name": "Ship Challenge",
-    "author": "ship",
-    "creators": [
-        "ship"
-    ],
-    "verifier": "",
+    "id": 126481328,
+    "name": "ship challenge",
+    "author": "ZinkZys",
+    "creators": ["ZinkZys"],
+    "verifier": "ZinkZys",
     "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",

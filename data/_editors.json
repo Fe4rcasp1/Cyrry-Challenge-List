@@ -6,22 +6,12 @@
     },
     {
         "role": "admin",
-        "name": "List Admin",
-        "link": "https://www.youtube.com/@Fe4RCasp"
-    },
-    {
-        "role": "helper",
-        "name": "List Helper",
-        "link": "https://discord.gg/aZpSeAEnj3"
-    },
-    {
-        "role": "trial",
-        "name": "Trial List Helper",
-        "link": "https://discord.gg/aZpSeAEnj3"
+        "name": "List Co Owner",
+        "link": "https://www.youtube.com/channel/UCq-cfZE3LG5TEUpUImByGpg"
     },
     {
         "role": "dev",
-        "name": "List Coder",
-        "link": "https://discord.gg/aZpSeAEnj3"
+        "name": "List Dev",
+        "link": "https://www.youtube.com/@Fe4RCasp"
     }
 ]

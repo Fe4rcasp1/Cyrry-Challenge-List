@@ -1,19 +1,11 @@
 {
-    "id": 150000001,
+    "id": 126094554,
     "name": "Patch It",
-    "author": "patch",
-    "creators": [
-        "patch"
-    ],
-    "verifier": "patch",
-    "verification": "https://youtu.be/example",
+    "author": "CyrryGD",
+    "creators": ["CyrryGD"],
+    "verifier": "NotHereGD",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "patch",
-            "percent": "100",
-            "link": "https://youtu.be/example"
-        }
-    ]
-}
+    "records": []
+    {

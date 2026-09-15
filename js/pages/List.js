@@ -106,13 +106,24 @@ export default {
                     <h3>Submission Requirements</h3>
                      <p>
                         ⭐ = recently added
+                        ___________________________
+                    </p>    
+                    <p>
                         🏆 = creator contest winner
                         ___________________________
-                        ---------------------------
+                    </p>
                         Grey = Star Rating
+                    </p>    
+                    <p>
                         Yellow = Feature Rating
+                    </p> 
+                    <p>
                         Orange = Epic Rating
+                    </p>
+                    <p>
                         Pink = Legendary Rating
+                    </p>
+                    <p>
                         Cyan = Mythic Rating
                     </p>
                     <p>

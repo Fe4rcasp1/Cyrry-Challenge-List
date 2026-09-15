@@ -1,11 +1,9 @@
 {
-    "id": 161000001,
-    "name": "San Francisco",
-    "author": "sanfran",
-    "creators": [
-        "sanfran"
-    ],
-    "verifier": "",
+    "id": 127521419,
+    "name": "san francisco",
+    "author": "jamxz11",
+    "creators": ["jamxz11"],
+    "verifier": "jamxz11",
     "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",

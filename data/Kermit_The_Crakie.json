@@ -1,11 +1,9 @@
 {
     "id": 140237991,
-    "name": "Kermit The Crakie",
+    "name": "kermit the crakie",
     "author": "tzmbuzz1234",
-    "creators": [
-        "tzmbuzz1234"
-    ],
-    "verifier": "",
+    "creators": ["tzmbuzz1234"],
+    "verifier": "tzmbuzz1234",
     "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",

@@ -126,7 +126,7 @@ export default {
                         Levels Can Be Beaten/Verified With 100% Noclip Accuracy If Enough Proof That It Was Legit.
                     </p>
                     <p>
-                        This Is More A Statement Than A Rule But Everyones Username On The List Will Be Based Off Of Their In-Game Username So Private Dm CyrryGD Your In-Game Username If You See [...]
+                        This Is More A Statement Than A Rule But Everyones Username On The List Will Be Based Off Of Their In-Game Username.
                     </p>
                 </div>
             </div>

@@ -1,11 +1,9 @@
 {
-    "id": 114444444,
+    "id": 136064033,
     "name": "Dystopian Dual",
-    "author": "dystopian",
-    "creators": [
-        "dystopian"
-    ],
-    "verifier": "",
+    "author": "astroraiden",
+    "creators": ["astroraiden"],
+    "verifier": "astroraiden",
     "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",

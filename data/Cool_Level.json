@@ -1,11 +1,9 @@
 {
-    "id": 121111111,
+    "id": 99426426,
     "name": "Cool Level",
-    "author": "coolcat",
-    "creators": [
-        "coolcat"
-    ],
-    "verifier": "",
+    "author": "skeetles",
+    "creators": ["skeetles"],
+    "verifier": "skeetles",
     "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",

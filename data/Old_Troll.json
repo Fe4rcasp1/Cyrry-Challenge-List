@@ -1,12 +1,10 @@
 {
-    "id": 149000001,
-    "name": "Old Troll",
-    "author": "troll",
-    "creators": [
-        "troll"
-    ],
-    "verifier": "",
-    "verification": "",
+    "id": 146870372,
+    "name": "old troll",
+    "author": "p3rke79",
+    "creators": ["p3rke79"],
+    "verifier": "CyrryGD",
+    "verification": "https://youtu.be/PdBqKcZErVI?si=SeZUJZ5hC17d8jmI",
     "percentToQualify": "100",
     "enjoyment": "N/A",
     "records": []

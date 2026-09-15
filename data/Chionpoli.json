@@ -1,12 +1,9 @@
 {
     "id": 138431751,
-    "name": "Chionpoli",
+    "name": "chionpoli",
     "author": "chickadeeinc",
-    "creators": [
-        "chickadeeinc",
-        "Riptide0505"
-    ],
-    "verifier": "",
+    "creators": ["chickadeeinc","Riptide0505"],
+    "verifier": "chickadeeinc",
     "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",

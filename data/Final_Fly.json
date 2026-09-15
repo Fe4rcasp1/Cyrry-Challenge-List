@@ -2,10 +2,8 @@
     "id": 109404048,
     "name": "Final Fly",
     "author": "chickadeeinc",
-    "creators": [
-        "chickadeeinc"
-    ],
-    "verifier": "",
+    "creators": ["chickadeeinc"],
+    "verifier": "chickadeeinc",
     "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",

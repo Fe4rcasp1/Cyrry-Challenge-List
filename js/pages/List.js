@@ -105,19 +105,19 @@ export default {
                     </template>
                     <h3>Submission Requirements</h3>
                     <p>
-                        Submit Verifcations in the discord (link at top of website) and all completions using the google doc from the submit button.
+                        Submit Verifcations in the discord (link at the top of the website) and submit completions using the "submit record" button also at the top of the website.
                     </p>
                     <p>
-                        Achieved the record on the level that is listed on the site - please check the level ID before you submit a record.
+                        If you achieved a record on a level that is listed on the site - please check the level ID before you submit the record.
                     </p>
                     <p>
-                        Verifications And Completions Must Have Clicks, Cheat Indicator, And Show The End Screen (Except Limitations Like Mobile, Mic Not Working, Or Not Having Mods.
+                        Verifications And Completions Must Have Clicks, Cheat Indicator, And Show The End Screen (Except Limitations Like Mobile, Mic Not Working, Or Not Having Mods).
                     </p>
                     <p>
-                        The recording must have a previous attempt and entire death animation shown before the completion, unless the completion is on the first attempt. Everyplay records are exe[...]
+                        The recording must have a previous attempt and entire death animation shown before the completion, unless the completion is on the first attempt.
                     </p>
                     <p>
-                        The recording must also show the player hit the endwall, or the completion will be invalidated.
+                        The recording must also show the player hit the end wall, or the completion will be invalidated.
                     </p>
                     <p>
                         Do not use secret routes or bug routes.

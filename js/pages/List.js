@@ -128,11 +128,9 @@ export default {
                         Cyan = Mythic Rating
                     </p>
                     <p>
-                    p {
- margin-top: 30px;
-
                         <h4>Submission Requirements</h4>
-                          margin-bottom: 30px;
+                        p {
+  margin: 20px 0px;
 }
                     </p>
                     <p>

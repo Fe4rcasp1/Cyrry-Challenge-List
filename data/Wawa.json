@@ -1,11 +1,9 @@
 {
     "id": 116193666,
-    "name": "Wawa",
+    "name": "wawa",
     "author": "ZinkZys",
-    "creators": [
-        "ZinkZys"
-    ],
-    "verifier": "",
+    "creators": ["ZinkZys"],
+    "verifier": "ZinkZys",
     "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",

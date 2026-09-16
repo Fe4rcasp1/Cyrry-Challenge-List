@@ -1,11 +1,9 @@
 {
-    "id": 176000001,
-    "name": "Testing Stuff",
-    "author": "test",
-    "creators": [
-        "test"
-    ],
-    "verifier": "",
+    "id": 112730834,
+    "name": "testing stuff",
+    "author": "monolyth1",
+    "creators": ["monolyth1"],
+    "verifier": "monolyth1",
     "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",

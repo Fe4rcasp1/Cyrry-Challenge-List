@@ -1,7 +1,7 @@
 /**
  * Numbers of decimal digits to round to
  */
-const scale = 3;
+const scale = 2;
 
 /**
  * Scoring settings
@@ -39,7 +39,7 @@ export function score(rank, percent, minPercent) {
      *
      * The curve variable can be adjusted manually.
      */
-    let baseScore = maxPoints / Math.pow(rank, 1 / curve);
+    let baseScore = maxPoints / Math.pow(rank, 2 / curve);
 
     /*
      * Apply completion percentage.

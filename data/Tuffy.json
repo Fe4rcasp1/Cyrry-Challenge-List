@@ -1,11 +1,9 @@
 {
     "id": 137593307,
-    "name": "Tuffy",
+    "name": "tuffy",
     "author": "BoiledPepsi",
-    "creators": [
-        "BoiledPepsi"
-    ],
-    "verifier": "",
+    "creators": ["BoiledPepsi"],
+    "verifier": "BoiledPepsi",
     "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",

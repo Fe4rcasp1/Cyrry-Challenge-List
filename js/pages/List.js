@@ -103,7 +103,7 @@ export default {
                             </li>
                         </ol>
                     </template>
-                    <h4>Level Info | Ratings</h4>
+                    <h3>Level Info | Ratings</h3>
                      <p>
                         ⭐ = recently added
                         ___________________________

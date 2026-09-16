@@ -1,11 +1,9 @@
 {
     "id": 129607694,
-    "name": "Walter_White",
+    "name": "Walter White",
     "author": "skeetles",
-    "creators": [
-        "skeetles"
-    ],
-    "verifier": "",
+    "creators": ["skeetles"],
+    "verifier": "skeetles",
     "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",

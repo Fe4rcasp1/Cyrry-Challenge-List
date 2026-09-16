@@ -1,7 +1,7 @@
 /**
  * Numbers of decimal digits to round to
  */
-const scale = 3;
+const scale = 2;
 
 /**
  * Manual scoring curve.
@@ -15,8 +15,8 @@ const scale = 3;
  * To adjust the scoring system, edit the values below.
  */
 const scoreCurve = [
-    [1, 250],
-    [10, 170],
+    [1, 300],
+    [10, 180],
     [50, 85],
     [100, 40],
     [200, 6],

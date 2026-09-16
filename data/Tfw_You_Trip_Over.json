@@ -1,12 +1,10 @@
 {
     "id": 148095628,
-    "name": "Tfw You Trip Over",
+    "name": "tfw you trip over",
     "author": "Dextrh",
-    "creators": [
-        "Dextrh"
-    ],
-    "verifier": "",
-    "verification": "",
+    "creators": ["Dextrh"],
+    "verifier": "Dextrh",
+    "verification": "https://youtu.be/muKxSQ6UbCQ?si=uYhY89kiBhUcNRGh",
     "percentToQualify": "100",
     "enjoyment": "N/A",
     "records": []

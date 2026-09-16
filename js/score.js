@@ -1,29 +1,74 @@
 /**
  * Numbers of decimal digits to round to
  */
-const scale = 2;
+const scale = 3;
 
 /**
- * Scoring settings
+ * Manual scoring curve.
  *
- * maxPoints:
- *     Points awarded to rank #1 at 100%.
+ * Each entry is:
+ * [rank, points at 100%]
  *
- * curve:
- *     Controls how the points decrease by rank.
+ * The score between anchor points is calculated
+ * automatically using smooth interpolation.
  *
- *     1.0 = normal linear-style decrease
- *     0.5 = points decrease faster near the top
- *     2.0 = points decrease slower near the top,
- *           then faster toward the bottom
- *
- *     Increase curve to make the top ranks hold more points.
+ * To adjust the scoring system, edit the values below.
  */
-const maxPoints = 250;
-const curve = 2.0;
+const scoreCurve = [
+    [1, 250],
+    [10, 170],
+    [50, 85],
+    [100, 40],
+    [200, 6],
+];
 
 /**
- * Calculate the score awarded for a list level.
+ * Calculate the base points for a specific rank.
+ *
+ * This interpolates between the manually defined
+ * score-curve anchor points.
+ */
+function getBaseScore(rank) {
+    // Rank 1 and anything below it use the first value.
+    if (rank <= scoreCurve[0][0]) {
+        return scoreCurve[0][1];
+    }
+
+    // Find the two anchor points surrounding this rank.
+    for (let i = 0; i < scoreCurve.length - 1; i++) {
+        const [rank1, points1] = scoreCurve[i];
+        const [rank2, points2] = scoreCurve[i + 1];
+
+        if (rank <= rank2) {
+            const progress = (rank - rank1) / (rank2 - rank1);
+
+            return points1 + (points2 - points1) * progress;
+        }
+    }
+
+    /*
+     * For ranks after the final anchor, continue decreasing
+     * based on the slope between the final two anchor points.
+     */
+    const [lastRank, lastPoints] =
+        scoreCurve[scoreCurve.length - 1];
+
+    const [previousRank, previousPoints] =
+        scoreCurve[scoreCurve.length - 2];
+
+    const finalSlope =
+        (lastPoints - previousPoints) /
+        (lastRank - previousRank);
+
+    const points =
+        lastPoints + finalSlope * (rank - lastRank);
+
+    return Math.max(points, 0);
+}
+
+/**
+ * Calculate the score awarded when having a certain
+ * percentage on a list level.
  *
  * @param {Number} rank Position on the list
  * @param {Number} percent Percentage of completion
@@ -31,26 +76,20 @@ const curve = 2.0;
  * @returns {Number}
  */
 export function score(rank, percent, minPercent) {
-    /*
-     * Rank curve:
-     *
-     * rank 1 = maxPoints
-     * Higher ranks receive fewer points.
-     *
-     * The curve variable can be adjusted manually.
-     */
-    let baseScore = maxPoints / Math.pow(rank, 1 / curve);
+    const baseScore = getBaseScore(rank);
 
     /*
-     * Apply completion percentage.
+     * Apply the percentage-completion multiplier.
      */
     let score = baseScore *
-        ((percent - (minPercent - 1)) / (100 - (minPercent - 1)));
+        ((percent - (minPercent - 1)) /
+        (100 - (minPercent - 1)));
 
     score = Math.max(0, score);
 
     /*
      * Incomplete levels receive reduced points.
+     * 100% completion receives the full calculated score.
      */
     if (percent != 100) {
         return round(score - score / 3);
@@ -74,7 +113,9 @@ export function round(num) {
         }
 
         return +(
-            Math.round(+arr[0] + 'e' + sig + (+arr[1] + scale)) +
+            Math.round(
+                +arr[0] + 'e' + sig + (+arr[1] + scale)
+            ) +
             'e-' +
             scale
         );

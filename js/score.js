@@ -39,7 +39,7 @@ export function score(rank, percent, minPercent) {
      *
      * The curve variable can be adjusted manually.
      */
-    let baseScore = maxPoints / Math.pow(rank, 0.2 / curve);
+    let baseScore = maxPoints / Math.pow(rank, 1 / curve);
 
     /*
      * Apply completion percentage.

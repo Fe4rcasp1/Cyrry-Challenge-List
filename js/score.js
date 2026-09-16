@@ -20,7 +20,7 @@ const scale = 2;
  *     Increase curve to make the top ranks hold more points.
  */
 const maxPoints = 250;
-const curve = 3.0;
+const curve = 5.0;
 
 /**
  * Calculate the score awarded for a list level.
@@ -39,7 +39,7 @@ export function score(rank, percent, minPercent) {
      *
      * The curve variable can be adjusted manually.
      */
-    let baseScore = maxPoints / Math.pow(rank, 0.5 / curve);
+    let baseScore = maxPoints / Math.pow(rank, 0.2 / curve);
 
     /*
      * Apply completion percentage.

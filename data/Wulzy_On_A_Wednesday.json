@@ -1,11 +1,9 @@
 {
-    "id": 198000001,
-    "name": "Wulzy On A Wednesday",
-    "author": "wulzy",
-    "creators": [
-        "wulzy"
-    ],
-    "verifier": "",
+    "id": 112550369,
+    "name": "wulzy on a wednesday",
+    "author": "monolyth1",
+    "creators": ["monolyth1"],
+    "verifier": "monolyth1",
     "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",

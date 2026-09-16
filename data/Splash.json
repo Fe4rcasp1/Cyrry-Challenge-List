@@ -1,19 +1,11 @@
 {
-    "id": 169000001,
-    "name": "Splash",
-    "author": "splash",
-    "creators": [
-        "splash"
-    ],
-    "verifier": "splash",
-    "verification": "https://youtu.be/example",
+    "id": 125894021,
+    "name": "splash",
+    "author": "soopidk",
+    "creators": ["soopidk"],
+    "verifier": "soopidk",
+    "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "splash",
-            "percent": "100",
-            "link": "https://youtu.be/example"
-        }
-    ]
+    "records": []
 }

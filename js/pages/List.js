@@ -128,7 +128,10 @@ export default {
                         Cyan = Mythic Rating
                     </p>
                     <p>
-                        <h4>Submission Requirements</h4> 
+                    
+                        <h4>Submission Requirements</h4>
+                        
+                    </p>
                     <p>
                         Submit Verifcations in the discord (link at the top of the website) and submit completions using the "submit record" button or in the discord.
                     </p>

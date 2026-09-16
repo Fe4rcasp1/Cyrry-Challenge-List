@@ -20,7 +20,7 @@ const scale = 3;
  *     Increase curve to make the top ranks hold more points.
  */
 const maxPoints = 250;
-const curve = 4.0;
+const curve = 2.0;
 
 /**
  * Calculate the score awarded for a list level.

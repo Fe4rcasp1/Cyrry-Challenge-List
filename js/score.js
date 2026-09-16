@@ -11,8 +11,18 @@ const scale = 3;
  * @returns {Number}
  */
 export function score(rank, percent, minPercent) {
-    let score = (500 / Math.pow(rank, 0.56)) *
-        ((percent - (minPercent - 1)) / (100 - (minPercent - 1)));
+    const maxPoints = 500;
+const curveStrength = 0.65;
+
+let rankMultiplier = Math.pow(
+    (rank - 1) / Math.max(listLength - 1, 1),
+    curveStrength
+);
+
+let baseScore = maxPoints * (1 - rankMultiplier);
+
+let score = baseScore *
+    ((percent - (minPercent - 1)) / (100 - (minPercent - 1)));
 
     score = Math.max(0, score);
 

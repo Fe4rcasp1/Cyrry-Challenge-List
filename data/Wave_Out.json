@@ -1,11 +1,9 @@
 {
-    "id": 193000001,
+    "id": 125037054,
     "name": "Wave Out",
-    "author": "wave",
-    "creators": [
-        "wave"
-    ],
-    "verifier": "",
+    "author": "ZinkZys",
+    "creators": ["ZinkZys"],
+    "verifier": "ZinkZys",
     "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",

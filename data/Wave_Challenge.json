@@ -1,11 +1,9 @@
 {
-    "id": 192000001,
-    "name": "Wave Challenge",
-    "author": "wave",
-    "creators": [
-        "wave"
-    ],
-    "verifier": "",
+    "id": 97202054,
+    "name": "wave challenge",
+    "author": "CyrryGD",
+    "creators": ["CyrryGD"],
+    "verifier": "CyrryGD",
     "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",

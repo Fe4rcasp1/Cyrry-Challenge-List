@@ -11,7 +11,7 @@ const scale = 3;
  * @returns {Number}
  */
 export function score(rank, percent, minPercent) {
-    let score = (200 / Math.pow(rank, 0.4)) *
+    let score = (500 / Math.pow(rank, 2.5)) *
         ((percent - (minPercent - 1)) / (100 - (minPercent - 1)));
 
     score = Math.max(0, score);

@@ -103,7 +103,7 @@ export default {
                             </li>
                         </ol>
                     </template>
-                    <h3>Level Info | Ratings</h3>
+                    <h4>Level Info | Ratings</h4>
                      <p>
                         ⭐ = recently added
                         ___________________________
@@ -126,8 +126,10 @@ export default {
                     </p>
                     <p>
                         Cyan = Mythic Rating
+                    </p>
                     <p>
                         <h4>Submission Requirements</h4> 
+                    </p>
                     <p>
                         Submit Verifcations in the discord (link at the top of the website) and submit completions using the "submit record" button or in the discord.
                     </p>

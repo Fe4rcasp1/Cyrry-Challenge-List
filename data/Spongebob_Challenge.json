@@ -1,11 +1,9 @@
 {
-    "id": 170000001,
+    "id": 138149990,
     "name": "Spongebob Challenge",
-    "author": "spongegd",
-    "creators": [
-        "spongegd"
-    ],
-    "verifier": "",
+    "author": "BoiledPepsi",
+    "creators": ["BoiledPepsi"],
+    "verifier": "BoiledPepsi",
     "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",

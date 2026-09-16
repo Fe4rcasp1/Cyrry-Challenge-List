@@ -1,11 +1,9 @@
 {
     "id": 110199217,
-    "name": "Spooky Challenge",
+    "name": "spooky challenge",
     "author": "soopidk",
-    "creators": [
-        "soopidk"
-    ],
-    "verifier": "",
+    "creators": ["soopidk"],
+    "verifier": "soopidk",
     "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",

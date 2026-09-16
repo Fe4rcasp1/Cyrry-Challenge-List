@@ -1,12 +1,10 @@
 {
-    "id": 195000001,
+    "id": 119317000,
     "name": "What Is Wave",
-    "author": "whatwave",
-    "creators": [
-        "whatwave"
-    ],
-    "verifier": "",
-    "verification": "",
+    "author": "Fe4rCasp",
+    "creators": ["Fe4rCasp"],
+    "verifier": "CyrryGD",
+    "verification": "https://youtu.be/pl2sw278_QU?si=e5c1jgEjrKrSrUEx",
     "percentToQualify": "100",
     "enjoyment": "N/A",
     "records": []

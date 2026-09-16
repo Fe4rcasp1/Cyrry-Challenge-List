@@ -2,10 +2,8 @@
     "id": 125454500,
     "name": "Wave Fantasy",
     "author": "chickadeeinc",
-    "creators": [
-        "chickadeeinc"
-    ],
-    "verifier": "",
+    "creators": ["chickadeeinc"],
+    "verifier": "chickadeeinc",
     "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",

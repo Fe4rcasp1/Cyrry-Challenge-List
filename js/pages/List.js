@@ -132,7 +132,7 @@ export default {
                         _______________________
                     </p> 
                     <p>
-                        Submit Verifcations in the discord (link at the top of the website) and submit completions using the "submit record" button also at the top of the website.
+                        Submit Verifcations in the discord (link at the top of the website) and submit completions using the "submit record" button or in the discord.
                     </p>
                     <p>
                         If you achieved a record on a level that is listed on the site - please check the level ID before you submit the record.

@@ -1,11 +1,9 @@
 {
-    "id": 180000001,
-    "name": "Thing Pammy",
-    "author": "thing",
-    "creators": [
-        "thing"
-    ],
-    "verifier": "",
+    "id": 130792506,
+    "name": "thing pammy",
+    "author": "ZinkZys",
+    "creators": ["ZinkZys"],
+    "verifier": "ZinkZys",
     "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",

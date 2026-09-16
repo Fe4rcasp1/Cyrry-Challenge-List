@@ -129,7 +129,6 @@ export default {
                     </p>
                     <p>
                         <h3>Submission Requirements</h3>
-                        _______________________
                     </p> 
                     <p>
                         Submit Verifcations in the discord (link at the top of the website) and submit completions using the "submit record" button or in the discord.

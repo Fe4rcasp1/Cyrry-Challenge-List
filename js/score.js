@@ -19,7 +19,7 @@ const scale = 3;
  *
  *     Increase curve to make the top ranks hold more points.
  */
-const maxPoints = 500;
+const maxPoints = 250;
 const curve = 4.0;
 
 /**

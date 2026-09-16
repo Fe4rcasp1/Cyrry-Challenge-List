@@ -1,11 +1,9 @@
 {
     "id": 111404626,
-    "name": "Theory Of Poopoo",
+    "name": "theory of poopoo",
     "author": "BoiledPepsi",
-    "creators": [
-        "BoiledPepsi"
-    ],
-    "verifier": "",
+    "creators": ["BoiledPepsi"],
+    "verifier": "BoiledPepsi",
     "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",

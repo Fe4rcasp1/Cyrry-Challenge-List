@@ -2,10 +2,8 @@
     "id": 131206955,
     "name": "YouBot",
     "author": "jamxz11",
-    "creators": [
-        "jamxz11"
-    ],
-    "verifier": "",
+    "creators": ["jamxz11"],
+    "verifier": "jamxz11",
     "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",

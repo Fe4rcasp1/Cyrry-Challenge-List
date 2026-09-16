@@ -1,12 +1,10 @@
 {
-    "id": 166000001,
+    "id": 126242162,
     "name": "Skrubby Challenge",
-    "author": "skrubby",
-    "creators": [
-        "skrubby"
-    ],
-    "verifier": "",
-    "verification": "",
+    "author": "ZinkZys",
+    "creators": ["ZinkZys"],
+    "verifier": "Loopelino",
+    "verification": "https://youtu.be/BhAESBlnXFM",
     "percentToQualify": "100",
     "enjoyment": "N/A",
     "records": []

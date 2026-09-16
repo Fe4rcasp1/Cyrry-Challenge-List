@@ -1,12 +1,10 @@
 {
-    "id": 190000001,
+    "id": 138350322,
     "name": "Veyra Challenge II",
-    "author": "veyra",
-    "creators": [
-        "veyra"
-    ],
-    "verifier": "",
-    "verification": "",
+    "author": "Leagal",
+    "creators": ["Leagal"],
+    "verifier": "Leagal",
+    "verification": "https://youtu.be/_XTShmxKWPw?si=4uYL-emD2gvNK-Tj",
     "percentToQualify": "100",
     "enjoyment": "N/A",
     "records": []

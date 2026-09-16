@@ -1,11 +1,9 @@
 {
     "id": 179000001,
-    "name": "The Severed Rose",
-    "author": "rose",
-    "creators": [
-        "rose"
-    ],
-    "verifier": "",
+    "name": "the severed rose",
+    "author": "OtherWorldDrago",
+    "creators": ["OtherWorldDrago"],
+    "verifier": "CyrryGD",
     "verification": "",
     "percentToQualify": "100",
     "enjoyment": "N/A",

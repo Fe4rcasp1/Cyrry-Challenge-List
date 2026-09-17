@@ -137,7 +137,7 @@ export default {
                         ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
                     </p>
                     <p>
-                        Submit verifcations in the discord (link at the top of the website) and submit completions using the "submit record" button or in the discord.
+                        Submit levels/verifcations in the discord (link at the top of the website) and submit completions using the "submit record" button or in the discord.
                     </p>
                     <p>
                         If you achieved a record on a level that is listed on the site - please check the level ID before you submit the record.
@@ -171,6 +171,27 @@ export default {
                     </p>
                     <p>
                         Levels must have some effort put into them
+                    </p>
+                    <p>
+                        CPS limit is 15 (including impossible levels)
+                    </p>
+                    <p>
+                        Levels must be uploaded publicly and startposes must be disabled in the editor
+                    </p>
+                    <p>
+                        No crash triggers or random trigger abuse
+                    </p>
+                    <p>
+                        No rated levels or 2 player levels
+                    </p>
+                    <p>
+                        Do not just copy and paste other levels
+                    </p>
+                    <p>
+                        If your level is a collab between 2 or more people, please tell me so I can put everyones names under the level on the list
+                    </p>
+                    <p>
+                        If you have an unverified level, you can submit it to the impossible/unverified list in the discord
                     </p>
                 </div>
             </div>

@@ -128,37 +128,49 @@ export default {
                         Cyan = Mythic Rating
                     </p>
                     <p>
-                        ⠀⠀⠀⠀⠀⠀⠀
+                        ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
                     </p>
                     <p>
-                        <h4>Submission Requirements</h4>
+                        <h4>Record Submission Requirements</h4>
                     </p>
                     <p>
                         ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
                     </p>
                     <p>
-                        Submit Verifcations in the discord (link at the top of the website) and submit completions using the "submit record" button or in the discord.
+                        Submit verifcations in the discord (link at the top of the website) and submit completions using the "submit record" button or in the discord.
                     </p>
                     <p>
                         If you achieved a record on a level that is listed on the site - please check the level ID before you submit the record.
                     </p>
                     <p>
-                        Verifications And Completions Must Have Clicks, Cheat Indicator, And Show The End Screen (Except Limitations Like Mobile, Mic Not Working, Or Not Having Mods).
+                        Verifications and completions must have clicks, cheat indicator, and show the end screen (except some limitations like mobile, broken mic, or not having mods).
                     </p>
                     <p>
                         The recording must have a previous attempt and entire death animation shown before the completion, unless the completion is on the first attempt.
                     </p>
                     <p>
-                        The recording must also show the player hit the end wall, or the completion will be invalidated.
+                        The recording must also show the player hit the end wall, or the completion may not be accepted.
                     </p>
                     <p>
                         Do not use secret routes or bug routes.
                     </p>
                     <p>
-                        Levels Can Be Beaten/Verified With 100% Noclip Accuracy If Enough Proof That It Was Legit.
+                        Levels can be beaten/verified with 100% noclip accuracy if enough proof that it was legit.
                     </p>
                     <p>
-                        This Is More A Statement Than A Rule But Everyones Username On The List Will Be Based Off Of Their In-Game Username.
+                        This is more a statement than a rule but everyones username on the list will be based off of their in-game username.
+                    </p>
+                    <p>
+                        ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+                    </p>
+                    <p>
+                        <h4>Level Submission Requirements</h4>
+                    </p>
+                    <p>
+                        ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+                    </p>
+                    <p>
+                        Levels must have some effort put into them
                     </p>
                 </div>
             </div>

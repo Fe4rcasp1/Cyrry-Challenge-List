@@ -8,5 +8,11 @@
     "percentToQualify": "46",
     "enjoyment": "N/A",
     "records": [
+        {
+            "user": "CyrryGD",
+            "link": "https://youtu.be/VenSf_BS1j0?si=lq_FOETyh7yjwKBV",
+            "percent": 100,
+            "hz": 240
+        }
     ]
 }

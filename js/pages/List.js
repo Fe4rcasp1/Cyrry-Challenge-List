@@ -146,7 +146,7 @@ export default {
                         Verifications and completions must have clicks, cheat indicator, and show the end screen (except some limitations like mobile, broken mic, or not having mods).
                     </p>
                     <p>
-                        The recording must have a previous attempt and entire death animation shown before the completion, unless the completion is on the first attempt.
+                        The recording must show some of the previous attempt and entire death animation shown before the completion, unless the completion is on the first attempt.
                     </p>
                     <p>
                         The recording must also show the player hit the end wall, or the completion may not be accepted.

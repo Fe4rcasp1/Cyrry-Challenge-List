@@ -1,7 +1,7 @@
 /**
  * Numbers of decimal digits to round to
  */
-const scale = 2;
+const scale = 3;
 
 /**
  * Manual scoring curve.

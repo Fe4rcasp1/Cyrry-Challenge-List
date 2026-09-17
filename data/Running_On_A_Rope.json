@@ -7,5 +7,12 @@
     "verification": "https://youtu.be/taWI_3fvmyE?si=fVd-yQ5SQWCv3irH",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": []
+    "records": [
+        {
+            "user": "CyrryGD",
+            "link": "https://youtu.be/_y5gsAS9oaA?si=y6e0YFVOVLsJWFec",
+            "percent": 100,
+            "hz": 240
+        }
+    ]
 }

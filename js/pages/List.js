@@ -131,7 +131,7 @@ export default {
                         ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
                     </p>
                     <p>
-                        <h4>Record Submission Requirements</h4>
+                        <h3>Record Submission Requirements</h3>
                     </p>
                     <p>
                         ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -164,7 +164,7 @@ export default {
                         ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
                     </p>
                     <p>
-                        <h4>Level Submission Requirements</h4>
+                        <h3>Level Submission Requirements</h3>
                     </p>
                     <p>
                         ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀

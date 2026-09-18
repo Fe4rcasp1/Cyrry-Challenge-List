@@ -7,5 +7,12 @@
     "verification": "https://youtu.be/12rGYcW5Vzs?si=zvgWQ_ruzWCdQR9X",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": []
+    "records": [
+        {
+            "user": "Loopelino",
+            "link": "https://youtu.be/WxaDQmhlSZw",
+            "percent": 100,
+            "hz": 240
+        }
+    ]
 }

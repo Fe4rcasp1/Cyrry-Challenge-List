@@ -8,5 +8,23 @@
     "percentToQualify": "100",
     "enjoyment": "N/A",
     "records": [
+{
+            "user": "Loopelino",
+            "link": "https://youtu.be/hepi-Rn9_fk?si=f4-Y9jrrLwZDRidy",
+            "percent": 100,
+            "hz": 240
+        },
+        {
+            "user": "CyrryGD",
+            "link": "https://youtu.be/D8ce8GWItaE?si=IoSOn1cuR7lFplX8",
+            "percent": 100,
+            "hz": 240
+        },
+        {
+            "user": "Dextrh",
+            "link": "https://medal.tv/games/geometry-dash/clips/no62uiytjUT7XIQfG?invite=cr-MSx4ckcsMjAyMTYzNDkw",
+            "percent": 100,
+            "hz": 240
+        }
     ]
 }

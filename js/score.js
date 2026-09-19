@@ -15,12 +15,12 @@ const scale = 3;
  * To adjust the scoring system, edit the values below.
  */
 const scoreCurve = [
-    [1, 300],
-    [10, 180],
-    [50, 85],
-    [100, 40],
-    [150, 12],
-    [200, 2],
+    [1, 500],
+    [10, 380],
+    [50, 180],
+    [100, 80],
+    [150, 30],
+    [200, 4],
 ];
 
 /**

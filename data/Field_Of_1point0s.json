@@ -7,5 +7,12 @@
     "verification": "https://youtube.com/watch?v=Pl_c9yWluC8&is=CLMnipL2h8eNzWNr",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": []
+    "records": [
+        {
+            "user": "Fe4rCasp",
+            "link": "ytlink",
+            "percent": 100,
+            "hz": 240
+        }
+    ]
 }

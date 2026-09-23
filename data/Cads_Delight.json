@@ -9,6 +9,12 @@
     "enjoyment": "N/A",
     "records": [
         {
+            "user": "Daszo",
+            "link": "ytlink",
+            "percent": 100,
+            "hz": 240
+        },
+        {
             "user": "Fe4rCasp",
             "link": "ytlink",
             "percent": 100,

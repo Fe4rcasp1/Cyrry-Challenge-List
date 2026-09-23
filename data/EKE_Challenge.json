@@ -9,6 +9,12 @@
     "enjoyment": "N/A",
     "records": [
         {
+            "user": "Ilovebugs",
+            "link": "ytlink",
+            "percent": 100,
+            "hz": 240
+        },
+        {
             "user": "CyrryGD",
             "link": "https://youtu.be/HSMJrxeZS_o?si=ay2xN1NrWBs7o9Ac",
             "percent": 100,

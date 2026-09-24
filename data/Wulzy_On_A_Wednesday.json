@@ -9,14 +9,20 @@
     "enjoyment": "N/A",
     "records": [
         {
+            "user": "Fe4rCasp",
+            "link": "ytlink",
+            "percent": 100,
+            "hz": 240
+        },
+        {
             "user": "CyrryGD",
             "link": "https://youtu.be/y2JIFA8dvDU?si=EAC-N1Th8EHsJRgr",
             "percent": 100,
             "hz": 240
         },
         {
-            "user": "Fe4rCasp",
-            "link": "ytlink",
+            "user": "astroraiden",
+            "link": "https://medal.tv/games/geometry-dash/clips/nc5kdVyau-GiogI57?invite=cr-MSx0RUgsNDQ4OTM4Nzg5",
             "percent": 100,
             "hz": 240
         },

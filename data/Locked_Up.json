@@ -8,7 +8,13 @@
     "percentToQualify": "100",
     "enjoyment": "N/A",
     "records": [
-{
+        {
+            "user": "OtherWorldDrago",
+            "link": "https://medal.tv/games/geometry-dash/clips/mq8ReFAaD8emtm0ts?invite=cr-MSx6d2QsNTQ5OTcxMTgx&v=45",
+            "percent": 100,
+            "hz": 240
+        },
+        {
             "user": "CyrryGD",
             "link": "https://youtu.be/oRFGQ6-yCiw?si=bDjnrcFPsraKViZc",
             "percent": 100,

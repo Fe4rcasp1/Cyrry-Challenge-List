@@ -7,5 +7,12 @@
     "verification": "https://youtu.be/12rGYcW5Vzs?si=zvgWQ_ruzWCdQR9X",
     "percentToQualify": "100",
     "enjoyment": "N/A",
-    "records": []
+    "records": [
+        {
+            "user": "Maulr",
+            "link": "https://drive.google.com/file/d/18vjPgZlfD4gvJKji6iJAefn913pdI0tA/view?usp=sharing",
+            "percent": 100,
+            "hz": 240
+        }
+    ]
 }

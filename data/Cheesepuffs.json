@@ -8,5 +8,11 @@
     "percentToQualify": "100",
     "enjoyment": "N/A",
     "records": [
+        {
+            "user": "Maulr",
+            "link": "https://drive.google.com/file/d/1CX3LkL65iAnrgyEAmW91YpqTMENMcnOg/view?usp=sharing",
+            "percent": 100,
+            "hz": 240
+        }
     ]
 }

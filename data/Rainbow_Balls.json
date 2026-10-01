@@ -115,6 +115,12 @@
             "link": "ytlink",
             "percent": 100,
             "hz": 240
+        },
+        {
+            "user": "SnackFiend002",
+            "link": "ytlink",
+            "percent": 100,
+            "hz": 240
         }
     ]
 }

@@ -9,6 +9,12 @@
     "enjoyment": "N/A",
     "records": [
         {
+            "user": "skeetles",
+            "link": "ytlink",
+            "percent": 100,
+            "hz": 240
+        },
+        {
             "user": "CyrryGD",
             "link": "https://youtu.be/YFO15VAiOcg?si=nNjypQOwlcSLC2a3",
             "percent": 100,

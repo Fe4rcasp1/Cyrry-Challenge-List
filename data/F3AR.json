@@ -9,6 +9,12 @@
     "enjoyment": "N/A",
     "records": [
         {
+            "user": "skeetles",
+            "link": "ytlink",
+            "percent": 100,
+            "hz": 240
+        },   
+        {
             "user": "DLandCheems",
             "link": "https://medal.tv/games/geometry-dash/clips/lF9H4MNCkmZSlqc9Z?invite=cr-MSx0NGQsNDcwMzcwMjM5&v=28",
             "percent": 100,

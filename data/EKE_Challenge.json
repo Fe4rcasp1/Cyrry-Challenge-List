@@ -9,6 +9,12 @@
     "enjoyment": "N/A",
     "records": [
         {
+            "user": "skeetles",
+            "link": "ytlink",
+            "percent": 100,
+            "hz": 240
+        },
+        {
             "user": "Maulr",
             "link": "https://drive.google.com/file/d/1HLnVk08uIKGQup2VYO16g83aZdC4sagc/view?usp=sharing",
             "percent": 100,

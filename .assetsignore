@@ -1,0 +1,14 @@
+# Keep backend code, schema, Git metadata and deployment files out of public assets.
+worker.js
+schema.sql
+wrangler.toml
+wrangler.example.toml
+.assetsignore
+.git
+.git/**
+.github
+.github/**
+.gitignore
+README.md
+node_modules
+node_modules/**

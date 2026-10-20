@@ -8,13 +8,16 @@ const dir = '/data';
 
 export async function fetchList(listFile = '_list.json') {
     const listResult = await fetch(`${dir}/${listFile}`);
+    const type = listFile === '_platformer.json' ? 'platformer' : 'normal';
+    let overrides = {};
+    try { const res = await fetch('/api/levels/overrides?list=' + type, {cache:'no-store'}); if (res.ok) overrides = (await res.json()).levels || {}; } catch(e) { console.warn('Level overrides unavailable', e); }
     try {
         const list = await listResult.json();
         return await Promise.all(
             list.map(async (path, rank) => {
-                const levelResult = await fetch(`${dir}/${path}.json`);
+                const levelResult = overrides[path] ? null : await fetch(`${dir}/${path}.json`);
                 try {
-                    const level = await levelResult.json();
+                    const level = overrides[path] || await levelResult.json();
                     return [
                         {
                             ...level,

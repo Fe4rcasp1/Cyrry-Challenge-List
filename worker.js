@@ -94,6 +94,76 @@ async function handle(request, env) {
    const result = await env.DB.prepare("UPDATE claims SET status=?, reviewed_at=CURRENT_TIMESTAMP WHERE id=? AND status='pending'").bind(data.status,String(data.id || '')).run();
    return json({ updated: result.meta.changes });
  }
+
+ // All staff permissions are resolved from D1 on every request, never trusted from client state.
+ if (path.startsWith('/api/admin/')) {
+   const user = await currentUser(request, env.DB);
+   if (!user) return json({ error:'Log in to a staff account.' }, 401);
+   const roleRow = await env.DB.prepare('SELECT role FROM account_roles WHERE user_id=?').bind(user.id).first();
+   const role = roleRow?.role || '';
+   const canReview = ['owner','admin','moderator'].includes(role);
+   const canEdit = ['owner','admin','editor'].includes(role);
+   if (path === '/api/admin/me' && request.method === 'GET') return json({ role });
+   if (!role) return json({ error:'Staff access required.' }, 403);
+   if (path === '/api/admin/claims' && request.method === 'GET') {
+     if (!canReview) return json({error:'Not permitted.'},403);
+     const rows = await env.DB.prepare("SELECT claims.id,claims.leaderboard_username,claims.evidence,claims.created_at,users.username AS account_username,users.email FROM claims JOIN users ON users.id=claims.user_id WHERE claims.status='pending' ORDER BY claims.created_at ASC LIMIT 200").all();
+     return json({claims:rows.results});
+   }
+   if (path === '/api/admin/claims/review' && request.method === 'POST') {
+     if (!canReview) return json({error:'Not permitted.'},403);
+     const data = await body(request);
+     if (!['approved','rejected'].includes(data.status) || !/^[0-9a-f-]{36}$/i.test(String(data.id||''))) return json({error:'Invalid claim or status.'},400);
+     try {
+       const result = await env.DB.prepare("UPDATE claims SET status=?,reviewed_at=CURRENT_TIMESTAMP WHERE id=? AND status='pending'").bind(data.status,data.id).run();
+       if (!result.meta.changes) return json({error:'Claim not pending or not found.'},404);
+       await env.DB.prepare('INSERT INTO admin_audit(id,actor_id,action,target) VALUES(?,?,?,?)').bind(crypto.randomUUID(),user.id,'claim_'+data.status,data.id).run();
+       return json({ok:true});
+     } catch(e) { console.error(e); return json({error:'Could not review claim; it may already be owned.'},409); }
+   }
+   if (path === '/api/admin/users' && request.method === 'GET') {
+     if (role !== 'owner') return json({error:'Owner role required.'},403);
+     const rows=await env.DB.prepare('SELECT users.id,users.username,account_roles.role FROM users LEFT JOIN account_roles ON users.id=account_roles.user_id ORDER BY users.username LIMIT 500').all();
+     return json({users:rows.results});
+   }
+   if (path === '/api/admin/roles' && request.method === 'POST') {
+     if (role !== 'owner') return json({error:'Owner role required.'},403);
+     const data=await body(request), target=String(data.userId||''), next=String(data.role||'');
+     if (!['owner','admin','editor','moderator','member'].includes(next)) return json({error:'Invalid role.'},400);
+     const exists=await env.DB.prepare('SELECT id FROM users WHERE id=?').bind(target).first();
+     if (!exists) return json({error:'User not found.'},404);
+     if (target===user.id && next!=='owner') return json({error:'You cannot remove your own owner role.'},400);
+     if (next==='member') await env.DB.prepare('DELETE FROM account_roles WHERE user_id=?').bind(target).run();
+     else await env.DB.prepare('INSERT INTO account_roles(user_id,role) VALUES(?,?) ON CONFLICT(user_id) DO UPDATE SET role=excluded.role').bind(target,next).run();
+     await env.DB.prepare('INSERT INTO admin_audit(id,actor_id,action,target) VALUES(?,?,?,?)').bind(crypto.randomUUID(),user.id,'role_'+next,target).run();
+     return json({ok:true});
+   }
+   if (path === '/api/admin/levels' && request.method === 'POST') {
+     if (!canEdit) return json({error:'Level editing not permitted.'},403);
+     const data=await body(request), listType=String(data.listType||''), levelPath=String(data.path||'');
+     if (!['normal','platformer'].includes(listType) || !/^[A-Za-z0-9_-]{1,120}$/.test(levelPath)) return json({error:'Invalid list or level path.'},400);
+     const level=data.level;
+     if (!level || typeof level!=='object' || Array.isArray(level) || !Number.isSafeInteger(level.id) || typeof level.name!=='string' || !level.name.trim() || level.name.length>150 || typeof level.author!=='string' || !Array.isArray(level.creators) || !Array.isArray(level.records) || level.records.length>500 || typeof level.verifier!=='string' || !level.records.every(r=>r&&typeof r.user==='string'&&r.user.length<=64&&Number.isFinite(r.percent)&&r.percent>=0&&r.percent<=100)) return json({error:'Invalid level JSON structure.'},400);
+     const serialized=JSON.stringify(level);
+     if (serialized.length>120000) return json({error:'Level JSON too large.'},413);
+     // Prevent editors from creating arbitrary paths: require an existing GitHub-backed list entry.
+     const filename=listType==='normal'?'_list.json':'_platformer.json';
+     const listResponse=await env.ASSETS.fetch(new Request(new URL('/data/'+filename,request.url)));
+     if (!listResponse.ok || !(await listResponse.json()).includes(levelPath)) return json({error:'Level does not exist in this list.'},404);
+     await env.DB.prepare("INSERT INTO level_overrides(list_type,level_path,level_json,updated_by) VALUES(?,?,?,?) ON CONFLICT(list_type,level_path) DO UPDATE SET level_json=excluded.level_json,updated_by=excluded.updated_by,updated_at=CURRENT_TIMESTAMP").bind(listType,levelPath,serialized,user.id).run();
+     await env.DB.prepare('INSERT INTO admin_audit(id,actor_id,action,target) VALUES(?,?,?,?)').bind(crypto.randomUUID(),user.id,'level_edit',listType+':'+levelPath).run();
+     return json({ok:true});
+   }
+   return json({error:'Admin endpoint not found.'},404);
+ }
+ if (path === '/api/levels/overrides' && request.method === 'GET') {
+   const listType=url.searchParams.get('list');
+   if (!['normal','platformer'].includes(listType)) return json({error:'Invalid list.'},400);
+   const rows=await env.DB.prepare('SELECT level_path,level_json FROM level_overrides WHERE list_type=?').bind(listType).all();
+   const levels=Object.create(null);
+   for (const row of rows.results) { try { levels[row.level_path]=JSON.parse(row.level_json); } catch(e) { console.error('Invalid override',row.level_path,e); } }
+   return json({levels});
+ }
  return json({ error:'Not found' }, 404);
 }
 export default { async fetch(request, env) { try { return await handle(request,env); } catch(e) { console.error(e); return json({ error:'Service temporarily unavailable.' },500); } } };

@@ -39,46 +39,20 @@
         <header :class="{ dark: store.dark }">
             <div class="logo">
                 <h2>CCL</h2>
-                <p>v1.0.0</p>
+                <div class="header-quicklinks"><a href="https://discord.gg/aZpSeAEnj3" target="_blank" rel="noopener noreferrer">Join Discord</a><a href="https://docs.google.com/forms/d/e/1FAIpQLSdhvHGBEffSL9nQ2PNuAkxpns7zZ1DEufG813thxfbvvm2aJw/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer">Submit Record</a></div>
             </div>
             <nav class="nav">
-                <router-link class="nav__tab" to="/">
-                    <span class="type-label-lg">List</span>
-                </router-link>
-                <router-link class="nav__tab" to="/platformer">
-                    <span class="type-label-lg">Platformer List</span>
-                </router-link>
-                <router-link class="nav__tab" to="/leaderboard">
-                    <span class="type-label-lg">Leaderboard</span>
-                </router-link>
-                <router-link class="nav__tab" to="/hub"><span class="type-label-lg">CCL Hub</span></router-link>
-                <router-link class="nav__tab" to="/roulette">
-                    <span class="type-label-lg">Roulette</span>
-                </router-link>
-                <a class="nav__tab" href="https://cclimpossible.ccllcc.workers.dev/#/" target="_blank" rel="noopener noreferrer">
-                    <span class="type-label-lg">Impossible CCL ↗</span>
-                </a>
+                <router-link class="nav__tab" to="/"><span class="type-label-lg">List</span></router-link>
+                <router-link class="nav__tab" to="/platformer"><span class="type-label-lg">Platformer List</span></router-link>
+                <router-link class="nav__tab" to="/leaderboard"><span class="type-label-lg">Leaderboard</span></router-link>
+                <router-link class="nav__tab" to="/impossible"><span class="type-label-lg">Impossible List</span></router-link>
+                <router-link class="nav__tab" to="/impossible-platformer"><span class="type-label-lg">Platformer Impossible</span></router-link>
+                <router-link class="nav__tab" to="/roulette"><span class="type-label-lg">Roulette</span></router-link>
+                <router-link class="nav__tab nav__hub-link" to="/hub"><span class="type-label-lg">Hub</span></router-link>
                 <div class="nav__actions">
-                    <button
-                        class="nav__icon"
-                        @click.prevent="store.toggleDark()"
-                    >
-                        <img
-                            :src="store.dark ? '/assets/light.svg' : '/assets/dark.svg'"
-                            alt=""
-                        />
+                    <button class="nav__icon" @click.prevent="store.toggleDark()" aria-label="Toggle theme">
+                        <img :src="store.dark ? '/assets/light.svg' : '/assets/dark.svg'" alt="" />
                     </button>
-                    <!-- Replace the '#' with your discord server's invite-->
-                    <a class="nav__icon" href="https://discord.gg/aZpSeAEnj3">
-                        <img src="/assets/discord.svg" alt="Discord Logo" />
-                    </a>
-                    <!-- List record submission form, add a link to replace the '#' when putting a link to your list submission form-->
-                    <a
-                        class="nav__cta type-label-lg"
-                        href="https://docs.google.com/forms/d/e/1FAIpQLSdhvHGBEffSL9nQ2PNuAkxpns7zZ1DEufG813thxfbvvm2aJw/viewform?usp=publish-editor"
-                        target="_blank"
-                        >Submit Record</a
-                    >
                 </div>
             </nav>
         </header>

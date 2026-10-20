@@ -6,9 +6,10 @@ const bytesToHex = bytes => Array.from(bytes, x => x.toString(16).padStart(2, '0
 const hexToBytes = hex => Uint8Array.from(hex.match(/../g) || [], x => parseInt(x, 16));
 const sha256 = async value => bytesToHex(new Uint8Array(await crypto.subtle.digest('SHA-256', encoder.encode(value))));
 const random = (n = 32) => bytesToHex(crypto.getRandomValues(new Uint8Array(n)));
+// Workers currently caps WebCrypto PBKDF2 at 100,000 iterations; use a memory-hard KDF in a future auth upgrade.
 async function hashPassword(password, salt) {
  const key = await crypto.subtle.importKey('raw', encoder.encode(password), 'PBKDF2', false, ['deriveBits']);
- const hash = await crypto.subtle.deriveBits({ name: 'PBKDF2', salt: hexToBytes(salt), iterations: 310000, hash: 'SHA-256' }, key, 256);
+ const hash = await crypto.subtle.deriveBits({ name: 'PBKDF2', salt: hexToBytes(salt), iterations: 100000, hash: 'SHA-256' }, key, 256);
  return bytesToHex(new Uint8Array(hash));
 }
 function constantTime(a, b) { if (a.length !== b.length) return false; let diff = 0; for (let i=0;i<a.length;i++) diff |= a.charCodeAt(i)^b.charCodeAt(i); return diff===0; }

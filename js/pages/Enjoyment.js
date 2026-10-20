@@ -1,0 +1,6 @@
+export default {
+ data:()=>({levels:[],filter:'all',error:''}),
+ computed:{filtered(){return this.levels.filter(x=>this.filter==='all'||x.list_type===this.filter)}},
+ template:`<main class="ccl-hub"><section class="hub-head"><h1>Community Enjoyment Rankings</h1><p>Highest-rated levels based on approved player record submissions (0–10).</p></section><section class="hub-card"><label for="enjoyment-filter">List</label><select id="enjoyment-filter" v-model="filter" class="hub-search"><option value="all">All lists</option><option value="normal">Normal CCL</option><option value="platformer">Platformer CCL</option></select><p v-if="error" class="hub-auth-error">{{error}}</p><p v-if="!filtered.length">No approved enjoyment ratings yet.</p><div v-for="(level,i) in filtered" :key="level.list_type+level.level_path" class="hub-change"><strong>#{{i+1}} {{level.level_path.replaceAll('_',' ')}}</strong><span>{{level.list_type}} · ★ {{level.average}}/10 · {{level.ratings}} rating{{level.ratings===1?'':'s'}}</span></div></section></main>`,
+ async mounted(){try{const r=await fetch('/api/community/enjoyment',{cache:'no-store'});const d=await r.json();if(!r.ok)throw Error(d.error||'Could not load ratings');this.levels=d.levels||[]}catch(e){this.error=e.message}}
+};

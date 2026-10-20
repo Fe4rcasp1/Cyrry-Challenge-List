@@ -11,6 +11,7 @@ export default {
         leaderboard: [],
         pointsLeaderboard: [],
         creatorLeaderboard: [],
+        metric: "points", snapshotBusy:false, snapshotMessage:"",
         leaderboardType: "points",
         pointsErrors: [],
         creatorErrors: [],
@@ -29,6 +30,14 @@ export default {
                     <button type="button" :class="{ active: leaderboardType === 'points' }" @click="switchLeaderboard('points')">Points Leaderboard</button>
                     <button type="button" :class="{ active: leaderboardType === 'creators' }" @click="switchLeaderboard('creators')">Creator Points</button>
                 </div>
+                <div class="leaderboard-metrics" v-if="leaderboardType==='points'">
+                  <label>Rank by <select v-model="metric" @change="applyMetric">
+                    <option value="points">Total points</option><option value="completed">Completions</option>
+                    <option value="verified">Verifications</option><option value="progressed">Progress records</option>
+                    <option value="hardest">Hardest clear</option><option value="top10">Top 10 clears</option>
+                  </select></label>
+                  <button v-if="isStaff" :disabled="snapshotBusy" @click="saveSnapshot">Save ranking snapshot</button>
+                </div><p v-if="snapshotMessage" class="search-count">{{snapshotMessage}}</p>
                 <div class="error-container">
                     <p class="error" v-if="err.length > 0">
                         Leaderboard may be incorrect, as the following levels could not be loaded: {{ err.join(', ') }}
@@ -47,7 +56,7 @@ export default {
                                 <p class="type-label-lg">#{{ player.index + 1 }}</p>
                             </td>
                             <td class="total">
-                                <p class="type-label-lg">{{ leaderboardType === "creators" ? player.entry.total : localize(player.entry.total) }}</p>
+                                <p class="type-label-lg">{{ leaderboardType === "creators" || metric === "points" ? localize(player.entry.total) : metricValue(player.entry) }}</p>
                             </td>
                             <td class="user" :class="{ 'active': selected == player.index }">
                                 <button @click="selected = player.index">
@@ -122,6 +131,7 @@ export default {
         </main>
     `,
     computed: {
+        isStaff(){return ['owner','admin'].includes(this.$root.store?.role);},
         filteredPlayers() {
             const query = this.searchQuery.trim().toLocaleLowerCase();
             return this.leaderboard.map((entry, index) => ({ entry, index })).filter(({ entry }) => !query || entry.user.toLocaleLowerCase().includes(query));
@@ -145,11 +155,43 @@ export default {
     },
     methods: {
         localize,
+        metricValue(entry) {
+            const clears=[...entry.completed,...entry.verified];
+            if(this.metric==='completed')return entry.completed.length;
+            if(this.metric==='verified')return entry.verified.length;
+            if(this.metric==='progressed')return entry.progressed.length;
+            if(this.metric==='top10')return clears.filter(x=>x.rank<=10).length;
+            if(this.metric==='hardest')return clears.length?'#'+Math.min(...clears.map(x=>x.rank)):'—';
+            return entry.total;
+        },
+        applyMetric(){
+            const value=e=>{
+                if(this.metric==='completed')return e.completed.length;
+                if(this.metric==='verified')return e.verified.length;
+                if(this.metric==='progressed')return e.progressed.length;
+                const clears=[...e.completed,...e.verified];
+                if(this.metric==='top10')return clears.filter(x=>x.rank<=10).length;
+                if(this.metric==='hardest')return clears.length?-Math.min(...clears.map(x=>x.rank)):-Infinity;
+                return e.total;
+            };
+            this.leaderboard=[...this.pointsLeaderboard].sort((a,b)=>value(b)-value(a)||b.total-a.total||a.user.localeCompare(b.user));
+            this.selected=0;
+        },
+        async saveSnapshot(){
+            if(this.metric!=='points'){this.snapshotMessage='Switch to Total points first.';return;}
+            this.snapshotBusy=true;this.snapshotMessage='';
+            try{
+                const res=await fetch('/api/admin/rankings/snapshot',{method:'POST',credentials:'same-origin',headers:{'content-type':'application/json'},body:JSON.stringify({entries:this.pointsLeaderboard.slice(0,1000).map((p,i)=>({user:p.user,points:p.total,rank:i+1}))})});
+                const data=await res.json();if(!res.ok)throw new Error(data.error||'Snapshot failed');
+                this.snapshotMessage='Saved '+data.count+' rankings for today.';
+            }catch(e){this.snapshotMessage=e.message}finally{this.snapshotBusy=false;}
+        },
         ratingLabel(rating) { return rating.charAt(0).toUpperCase() + rating.slice(1); },
         switchLeaderboard(type) {
             if (this.leaderboardType === type) return;
             this.leaderboardType = type;
             this.leaderboard = type === "creators" ? this.creatorLeaderboard : this.pointsLeaderboard;
+            if(type==="points")this.applyMetric();
             this.err = type === "creators" ? this.creatorErrors : this.pointsErrors;
             this.selected = 0;
             this.searchQuery = "";

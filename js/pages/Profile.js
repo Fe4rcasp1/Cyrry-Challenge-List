@@ -33,6 +33,16 @@ export default {
             else if (this.rank !== null && this.rank <= 10) roles.push({label:'Top 10 Player', icon:'🏆', className:'profile-role-top10'});
             return roles;
         },
+        profileRoles() {
+            const roles = [];
+            if (this.staffRole) {
+                const label = this.staffRole.charAt(0).toUpperCase() + this.staffRole.slice(1);
+                roles.push({label, icon:'🛡️', className:'profile-role-staff profile-role-' + this.staffRole});
+            }
+            if (this.rank === 1) roles.push({label:'Top 1 Player', icon:'👑', className:'profile-role-first'});
+            else if (this.rank !== null && this.rank <= 10) roles.push({label:'Top 10 Player', icon:'🏆', className:'profile-role-top10'});
+            return roles;
+        },
         badges() {
             const c = this.player?.completed.length || 0, v = this.player?.verified.length || 0, p = this.player?.progressed.length || 0, made = this.creator?.created.length || 0;
             const mythic = this.creator?.created.some(x => x.rating === 'mythic') || false;
@@ -48,6 +58,10 @@ export default {
             this.rank = index >= 0 ? index + 1 : null;
             this.creator = creators.find(x => x.user.toLowerCase() === username) || null;
             if (!this.player && !this.creator) this.error = 'No public CCL player or creator records found for this username.';
+            try {
+                const roleResponse = await fetch('/api/profiles/roles?username=' + encodeURIComponent(this.displayName), {cache:'no-store'});
+                if (roleResponse.ok) this.staffRole = (await roleResponse.json()).role || null;
+            } catch (e) { console.warn('Unable to load staff role',e); }
             try {
                 const roleResponse = await fetch('/api/profiles/roles?username=' + encodeURIComponent(this.displayName), {cache:'no-store'});
                 if (roleResponse.ok) this.staffRole = (await roleResponse.json()).role || null;

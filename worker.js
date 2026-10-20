@@ -24,6 +24,19 @@ async function handle(request, env) {
  const url = new URL(request.url), path = url.pathname;
  if (!path.startsWith('/api/')) return env.ASSETS.fetch(request);
  if (!env.DB) return json({ error: 'Account database is not configured.' }, 503);
+ if (path === '/api/health' && request.method === 'GET') {
+   const tables = {};
+   for (const name of ['users','sessions','claims']) {
+     try {
+       const result = await env.DB.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name=?").bind(name).first();
+       tables[name] = Boolean(result);
+     } catch (e) {
+       console.error('D1 health check failed:', e);
+       return json({ ok:false, database:'query_failed', tables, hint:'Check Worker logs and D1 binding.' }, 503);
+     }
+   }
+   return json({ ok:Object.values(tables).every(Boolean), database:'connected', tables, hint:Object.values(tables).every(Boolean) ? undefined : 'Apply the full schema.sql to the remote D1 database.' }, Object.values(tables).every(Boolean) ? 200 : 503);
+ }
  if (request.method === 'POST' && request.headers.get('origin') && new URL(request.headers.get('origin')).origin !== url.origin) return json({ error: 'Invalid origin.' }, 403);
  if (request.method === 'POST' && !String(request.headers.get('content-type')).includes('application/json')) return json({ error: 'Expected JSON.' }, 415);
  if (path === '/api/auth/register' && request.method === 'POST') {
@@ -34,7 +47,7 @@ async function handle(request, env) {
    if (password.length < 12 || password.length > 256) return json({ error: 'Password must be 12–256 characters.' }, 400);
    const id = crypto.randomUUID(), salt = random(16), passwordHash = await hashPassword(password, salt);
    try { await env.DB.prepare('INSERT INTO users (id,username,email,password_hash,password_salt) VALUES (?,?,?,?,?)').bind(id,username,email,passwordHash,salt).run(); }
-   catch { return json({ error: 'That username or email is already registered.' }, 409); }
+   catch (e) { console.error('Registration insert:',e); if (String(e).includes('UNIQUE constraint failed')) return json({ error: 'That username or email is already registered.' }, 409); return json({ error: 'Account database error. Check the D1 schema and Worker logs.' }, 503); }
    const token = random(), expiry = Date.now() + 30*24*3600*1000;
    await env.DB.prepare('INSERT INTO sessions (token_hash,user_id,expires_at) VALUES (?,?,?)').bind(await sha256(token),id,expiry).run();
    return json({ user: { id, username, email } }, 201, { 'set-cookie': cookie(token, 30*24*3600) });

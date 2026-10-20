@@ -477,3 +477,10 @@ header .nav .nav__hub-link { opacity: .8; }
 .ccl-record-submit .hub-card form label{display:block;font-size:.82rem;font-weight:700;margin-top:.45rem;line-height:1.5}
 .ccl-record-submit .hub-card form input,.ccl-record-submit .hub-card form select{display:block;width:100%;box-sizing:border-box;padding:.8rem;border:1px solid var(--ui-border);border-radius:.6rem;background:var(--color-background);color:var(--color-on-background);font:inherit}
 .ccl-record-submit .hub-card form button{margin-top:.8rem}
+
+/* Profile showcases and notifications */
+.ccl-hub .profile-showcase{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:.6rem}
+.ccl-hub .profile-showcase span{padding:.45rem .7rem;border:1px solid var(--ui-border);border-radius:.6rem;background:#0b1624c7;font-size:.8rem}
+.ccl-hub .notification-unread{border-left:3px solid var(--color-primary);padding-left:.8rem}
+.ccl-hub .notification-unread strong{color:var(--color-on-background)}
+.ccl-hub .hub-card>h3{margin:1.4rem 0 .6rem;line-height:1.4}

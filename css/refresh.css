@@ -652,3 +652,42 @@ main.dark .hub-card:hover,main.dark .level-container .level:hover,main.dark .met
   .nav .nav__tab.router-link-active::after { bottom:1px; }
   header .logo h2 { font-size:1.65rem; }
 }
+
+
+/* Preserve the recognizable rating palette on every level row. */
+.page-list .list .level button {
+  background-image:none;
+  background-color:var(--color-background);
+}
+.page-list .list .level button:hover {
+  filter:brightness(1.09);
+  background-image:none;
+}
+.page-list .list .level.active button {
+  background-image:none;
+  border-color:rgba(255,255,255,.55);
+  box-shadow:0 0 0 2px var(--ccl-accent),0 8px 19px rgba(0,0,0,.18);
+  transform:translateX(3px);
+}
+/* Crisp, understated wordmark in place of the gradient lettering. */
+header .logo h2 {
+  background:none;
+  -webkit-background-clip:initial;
+  background-clip:initial;
+  color:#fff;
+  font-size:1.6rem;
+  letter-spacing:-.035em;
+  font-weight:700;
+  text-shadow:none;
+  position:relative;
+}
+header .logo h2::after {
+  content:"";
+  display:block;
+  width:24px;
+  height:3px;
+  margin-top:3px;
+  border-radius:4px;
+  background:#75d8e3;
+}
+@media(max-width:680px){header .logo h2{font-size:1.5rem}}

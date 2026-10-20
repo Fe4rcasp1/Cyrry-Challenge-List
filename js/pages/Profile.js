@@ -2,10 +2,10 @@ import { fetchLeaderboard, fetchCreatorLeaderboard } from '../content.js';
 import { getLevelRating } from '../ratings.js';
 const badge = (id, title, desc, earned) => ({ id, title, desc, earned });
 export default {
-    data: () => ({ loading: true, player: null, creator: null, rank: null, error: '' }),
+    data: () => ({ loading: true, player: null, creator: null, rank: null, staffRole: null, error: '' }),
     template: `
       <main class="ccl-hub">
-        <section class="hub-head"><router-link to="/hub">← Back to CCL Hub</router-link><h1>{{ displayName }}</h1><p>Player profile · based on public CCL records</p></section>
+        <section class="hub-head"><router-link to="/hub">← Back to CCL Hub</router-link><h1>{{ displayName }}</h1><div v-if="profileRoles.length" class="profile-role-list"><span v-for="role in profileRoles" :key="role.label" class="profile-role-badge" :class="role.className">{{role.icon}} {{role.label}}</span></div><p>Player profile · based on public CCL records</p></section>
         <p v-if="loading">Loading player profile…</p><p v-else-if="error">{{ error }}</p>
         <template v-else>
           <section class="hub-card"><h2>Statistics</h2><div class="hub-stats">
@@ -23,6 +23,16 @@ export default {
       </main>`,
     computed: {
         displayName() { return this.player?.user || this.creator?.user || this.$route.params.username; },
+        profileRoles() {
+            const roles = [];
+            if (this.staffRole) {
+                const label = this.staffRole.charAt(0).toUpperCase() + this.staffRole.slice(1);
+                roles.push({label, icon:'🛡️', className:'profile-role-staff profile-role-' + this.staffRole});
+            }
+            if (this.rank === 1) roles.push({label:'Top 1 Player', icon:'👑', className:'profile-role-first'});
+            else if (this.rank !== null && this.rank <= 10) roles.push({label:'Top 10 Player', icon:'🏆', className:'profile-role-top10'});
+            return roles;
+        },
         badges() {
             const c = this.player?.completed.length || 0, v = this.player?.verified.length || 0, p = this.player?.progressed.length || 0, made = this.creator?.created.length || 0;
             const mythic = this.creator?.created.some(x => x.rating === 'mythic') || false;
@@ -38,6 +48,10 @@ export default {
             this.rank = index >= 0 ? index + 1 : null;
             this.creator = creators.find(x => x.user.toLowerCase() === username) || null;
             if (!this.player && !this.creator) this.error = 'No public CCL player or creator records found for this username.';
+            try {
+                const roleResponse = await fetch('/api/profiles/roles?username=' + encodeURIComponent(this.displayName), {cache:'no-store'});
+                if (roleResponse.ok) this.staffRole = (await roleResponse.json()).role || null;
+            } catch (e) { console.warn('Unable to load staff role',e); }
         } catch (e) { this.error = 'Unable to load player data right now.'; }
         this.loading = false;
     }

@@ -2,6 +2,7 @@ import { store } from "../main.js";
 import { embed } from "../util.js";
 import { score } from "../score.js";
 import { getLevelRating } from "../ratings.js";
+import { isFavorite, toggleFavorite } from "../favorites.js";
 import { fetchEditors, fetchList } from "../content.js";
 
 import Spinner from "../components/Spinner.js";
@@ -72,6 +73,7 @@ export default {
             <div class="level-container">
                 <div class="level" v-if="level">
                     <h1>{{ level.name }}</h1>
+                    <button type="button" class="hub-fav-button" @click="toggleLevelFavorite" :aria-pressed="favorite" :aria-label="favorite ? 'Remove favorite' : 'Save favorite'">{{ favorite ? "★ Saved to Favorites" : "☆ Save to Favorites" }}</button>
                     <LevelAuthors :author="level.author" :creators="level.creators" :verifier="level.verifier"></LevelAuthors>
                     <iframe v-if="level.verification" class="video" id="videoframe" :src="video" frameborder="0"></iframe>
                     <p v-else class="type-label-md">Verification video not provided yet.</p>
@@ -227,6 +229,7 @@ export default {
     data: () => ({
         list: [],
         searchQuery: "",
+        favorite: false,
         sectionFilter: "all",
         ratingFilter: "all",
         editors: [],
@@ -262,6 +265,9 @@ export default {
             );
         },
     },
+    watch: {
+        selected() { this.syncFavorite(); }
+    },
     async mounted() {
         // Hide loading spinner
         this.list = await fetchList(this.listFile);
@@ -286,8 +292,11 @@ export default {
         }
 
         this.loading = false;
+        this.syncFavorite();
     },
     methods: {
+        syncFavorite() { this.favorite = isFavorite(this.level?.id, this.platformer); },
+        toggleLevelFavorite() { toggleFavorite(this.level, this.platformer); this.syncFavorite(); },
         embed,
         score,
         resetFilters() { this.searchQuery = ""; this.sectionFilter = "all"; this.ratingFilter = "all"; },

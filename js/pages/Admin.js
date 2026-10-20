@@ -81,7 +81,7 @@ export default {
         </section>
         <section v-if="tab==='submissions' && canReview" class="hub-card admin-panel">
           <div class="admin-section-head"><h2>Pending record submissions</h2><button class="admin-btn" :disabled="busy" @click="loadSubmissions">Refresh</button></div>
-          <p class="hub-muted">Approving a submission marks it reviewed. Apply the verified record to the level JSON separately using Level Editor.</p>
+          <p class="hub-muted">Approving a verified submission updates the public list record automatically. Check video proof carefully before approval.</p>
           <p v-if="!submissions.length" class="admin-empty">No pending records.</p>
           <article v-for="s in submissions" :key="s.id" class="admin-claim">
             <h3>{{s.leaderboard_username}} — {{s.level_path.replaceAll('_',' ')}}</h3>
@@ -248,7 +248,7 @@ export default {
         async loadSubmissions() { await this.run(async()=>{this.submissions=(await api('/api/admin/submissions')).submissions||[]}) },
         async reviewRecord(item,status) {
             if(!confirm(status+' record for '+item.leaderboard_username+'?'))return;
-            await this.run(async()=>{await api('/api/admin/submissions/review','POST',{id:item.id,status});this.submissions=this.submissions.filter(s=>s.id!==item.id);this.notice='Record '+status+'. Remember to apply approved records in the Level Editor.'});
+            await this.run(async()=>{await api('/api/admin/submissions/review','POST',{id:item.id,status});this.submissions=this.submissions.filter(s=>s.id!==item.id);this.notice='Record '+status+'. Approved records are applied to the public list.'});
         },
         async loadWeeklyEntries() { await this.run(async()=>{this.weeklyEntries=(await api('/api/admin/weekly/entries')).entries||[]}) },
         async reviewWeekly(item,status) {

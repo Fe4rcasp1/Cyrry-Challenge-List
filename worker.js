@@ -117,6 +117,32 @@ async function handle(request, env) {
      const rows=await env.DB.prepare('SELECT users.id,users.username,account_roles.role FROM users LEFT JOIN account_roles ON users.id=account_roles.user_id ORDER BY users.username LIMIT 500').all();
      return json({users:rows.results});
    }
+   if (path === '/api/admin/users/delete' && request.method === 'POST') {
+     // Account deletion is owner-only, never self-service through the staff API.
+     if (role !== 'owner') return json({error:'Owner role required.'},403);
+     const data = await body(request);
+     const targetId = String(data.userId || '');
+     const confirmation = String(data.confirmUsername || '');
+     if (!/^[0-9a-f-]{36}$/i.test(targetId)) return json({error:'Invalid account ID.'},400);
+     if (targetId === user.id) return json({error:'You cannot delete your own account.'},403);
+     const target = await env.DB.prepare('SELECT id,username FROM users WHERE id=?').bind(targetId).first();
+     if (!target) return json({error:'Account not found.'},404);
+     if (target.username !== confirmation) return json({error:'Username confirmation did not match.'},400);
+     const targetRole = await env.DB.prepare('SELECT role FROM account_roles WHERE user_id=?').bind(targetId).first();
+     if (targetRole?.role === 'owner') return json({error:'Owner accounts cannot be deleted here. Reassign their role first.'},403);
+     // Deleting associated sessions and claims explicitly works even if D1 foreign keys
+     // were not enabled in the original migration. Keep audit history intact.
+     await env.DB.batch([
+       env.DB.prepare('DELETE FROM sessions WHERE user_id=?').bind(targetId),
+       env.DB.prepare('DELETE FROM claims WHERE user_id=?').bind(targetId),
+       env.DB.prepare('DELETE FROM account_roles WHERE user_id=?').bind(targetId),
+       env.DB.prepare('UPDATE level_overrides SET updated_by=? WHERE updated_by=?').bind(user.id,targetId),
+       env.DB.prepare('DELETE FROM users WHERE id=?').bind(targetId)
+     ]);
+     await env.DB.prepare('INSERT INTO admin_audit(id,actor_id,action,target) VALUES(?,?,?,?)')
+       .bind(crypto.randomUUID(),user.id,'account_deleted',targetId).run();
+     return json({ok:true});
+   }
    if (path === '/api/admin/roles' && request.method === 'POST') {
      if (role !== 'owner') return json({error:'Owner role required.'},403);
      const data=await body(request), target=String(data.userId||''), next=String(data.role||'');

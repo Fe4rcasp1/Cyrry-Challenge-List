@@ -325,3 +325,13 @@ header .nav .nav__hub-link { opacity: .8; }
  header .nav { justify-content: flex-start; }
  .impossible-embed-page { height: calc(100vh - 8rem); }
 }
+
+/* Account signup and login */
+.ccl-hub .hub-auth-error { color: #d53b48; font-weight: 700; }
+.ccl-hub form { display: flex; flex-direction: column; align-items: flex-start; gap: .5rem; max-width: 540px; }
+.ccl-hub form .hub-search { margin: .1rem 0 .7rem; }
+.ccl-hub form label { font-size: .85rem; font-weight: 700; }
+.ccl-hub form textarea.hub-search { min-height: 115px; resize: vertical; }
+.ccl-hub .leaderboard-switcher { display: flex; gap: .5rem; margin-bottom: 1rem; }
+.ccl-hub .leaderboard-switcher button { padding: .7rem 1rem; border: 1px solid var(--ui-border); border-radius: .6rem; cursor: pointer; }
+.ccl-hub .leaderboard-switcher button.active { background: var(--color-primary); color: white; }

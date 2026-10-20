@@ -8,7 +8,6 @@ import Admin from './pages/Admin.js';
 import Community from './pages/Community.js';
 import SubmitRecord from './pages/SubmitRecord.js';
 import Notifications from './pages/Notifications.js';
-import Enjoyment from './pages/Enjoyment.js';
 import Impossible from './pages/Impossible.js';
 
 export default [
@@ -24,6 +23,6 @@ export default [
     { path: '/community', component: Community },
     { path: '/submit-record', component: SubmitRecord },
     { path: '/notifications', component: Notifications },
-    { path: '/enjoyment', component: Enjoyment },
+    { path: '/enjoyment', redirect: '/' },
     { path: '/player/:username', component: Profile },
 ];

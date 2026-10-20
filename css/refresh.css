@@ -402,3 +402,12 @@ header .nav .nav__hub-link { opacity: .8; }
 .ccl-admin .admin-flash {padding:.85rem 1rem;border-radius:.6rem;border:1px solid var(--ui-border)}
 .ccl-admin .admin-success {color:#24bf83;border-color:#24bf8370;background:#24bf8315}
 @media(max-width:650px) {.ccl-admin .admin-editor-controls {grid-template-columns:1fr}.ccl-admin .admin-user {grid-template-columns:minmax(0,1fr) minmax(100px,1fr)}.ccl-admin .admin-user-head {display:none}.ccl-admin .admin-user .admin-subtle-pill {display:none}}
+
+/* Account management: four-column row with a clearly destructive action */
+.ccl-admin .admin-user {grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(130px,1fr) auto}
+.ccl-admin .admin-delete-account {white-space:nowrap;padding:.65rem .85rem}
+.ccl-admin .admin-delete-account:disabled {opacity:.35;cursor:not-allowed}
+@media(max-width:650px) {
+ .ccl-admin .admin-user {grid-template-columns:minmax(0,1fr) minmax(100px,1fr);gap:.6rem}
+ .ccl-admin .admin-user .admin-delete-account {grid-column:2}
+}

@@ -173,6 +173,15 @@ async function handle(request, env) {
    }
    return json({error:'Admin endpoint not found.'},404);
  }
+ // Public profile staff badges: only approved claims link leaderboard names to accounts.
+ if (path === '/api/profiles/roles' && request.method === 'GET') {
+   const username = String(url.searchParams.get('username') || '').trim();
+   if (!/^[A-Za-z0-9_-]{1,32}$/.test(username)) return json({role:null});
+   const match = await env.DB.prepare(
+     "SELECT account_roles.role FROM claims JOIN account_roles ON account_roles.user_id=claims.user_id WHERE claims.status='approved' AND claims.leaderboard_username=? COLLATE NOCASE LIMIT 1"
+   ).bind(username).first();
+   return json({role:match?.role || null},200,{'cache-control':'public, max-age=60'});
+ }
  if (path === '/api/levels/overrides' && request.method === 'GET') {
    const listType=url.searchParams.get('list');
    if (!['normal','platformer'].includes(listType)) return json({error:'Invalid list.'},400);

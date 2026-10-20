@@ -1,11 +1,27 @@
 import { fetchLeaderboard, fetchCreatorLeaderboard } from '../content.js';
 import { getLevelRating } from '../ratings.js';
+import { store } from '../main.js';
 const badge = (id, title, desc, earned) => ({ id, title, desc, earned });
 export default {
     data: () => ({ loading: true, player: null, creator: null, rank: null, staffRole: null, achievementFilter: 'all', customProfile: null, history: [], error: '' }),
     template: `
       <main class="ccl-hub">
-        <section class="hub-head profile-custom-head" :style="customProfile ? {borderColor:customProfile.accent} : {}"><div v-if="customProfile?.banner_url" class="profile-banner" :style="{backgroundImage:'url(' + customProfile.banner_url + ')'}"></div><router-link to="/hub">← Back to CCL Hub</router-link><img v-if="customProfile?.avatar_url" class="profile-avatar" :src="customProfile.avatar_url" alt="Player avatar" referrerpolicy="no-referrer" /><h1>{{ displayName }}</h1><div v-if="profileRoles.length" class="profile-role-list"><span v-for="role in profileRoles" :key="role.label" class="profile-role-badge" :class="role.className">{{role.icon}} {{role.label}}</span></div><p>Player profile · based on public CCL records</p><p v-if="customProfile?.bio" class="profile-bio">{{customProfile.bio}}</p></section>
+        <section class="hub-head profile-custom-head" :style="customProfile ? {borderColor:customProfile.accent} : {}">
+          <div v-if="customProfile?.banner_url" class="profile-banner" :style="{backgroundImage:'url(' + customProfile.banner_url + ')'}"></div>
+          <div class="profile-header-content">
+            <div class="profile-header-actions">
+              <router-link to="/hub" class="profile-back-link">← Back to CCL Hub</router-link>
+              <router-link v-if="canEditProfile" to="/account" class="profile-settings-link" aria-label="Profile settings" title="Edit profile settings">
+                <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-1.9 1.9-.06-.06A1.7 1.7 0 0 0 16 18.4a1.7 1.7 0 0 0-1 1.56V20h-2.7v-.04A1.7 1.7 0 0 0 11.3 18.4a1.7 1.7 0 0 0-1.88.34l-.06.06-1.9-1.9.06-.06A1.7 1.7 0 0 0 7.86 15a1.7 1.7 0 0 0-1.56-1H6.2v-2.7h.1A1.7 1.7 0 0 0 7.86 10a1.7 1.7 0 0 0-.34-1.88l-.06-.06 1.9-1.9.06.06A1.7 1.7 0 0 0 11.3 6.56a1.7 1.7 0 0 0 1-1.56V5h2.7v.04A1.7 1.7 0 0 0 16 6.6a1.7 1.7 0 0 0 1.88-.34l.06-.06 1.9 1.9-.06.06A1.7 1.7 0 0 0 19.4 10a1.7 1.7 0 0 0 1.56 1h.04v2.7h-.04A1.7 1.7 0 0 0 19.4 15Z"/></svg>
+              </router-link>
+            </div>
+            <img v-if="customProfile?.avatar_url" class="profile-avatar" :src="customProfile.avatar_url" alt="Player avatar" referrerpolicy="no-referrer" />
+            <h1>{{ displayName }}</h1>
+            <div v-if="profileRoles.length" class="profile-role-list"><span v-for="role in profileRoles" :key="role.label" class="profile-role-badge" :class="role.className">{{role.icon}} {{role.label}}</span></div>
+            <p>Player profile · based on public CCL records</p>
+            <p v-if="customProfile?.bio" class="profile-bio">{{customProfile.bio}}</p>
+          </div>
+        </section>
         <p v-if="loading">Loading player profile…</p><p v-else-if="error">{{ error }}</p>
         <template v-else>
           <section class="hub-card"><h2>Statistics</h2><div class="hub-stats">
@@ -29,6 +45,7 @@ export default {
         </template>
       </main>`,
     computed: {
+        canEditProfile() { return !!store.user && String(store.profileUsername || '').toLowerCase() === String(this.$route.params.username || '').toLowerCase(); },
         displayName() { return this.player?.user || this.creator?.user || this.$route.params.username; },
         profileRoles() {
             const roles = [];

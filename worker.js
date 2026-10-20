@@ -365,7 +365,7 @@ if(!['normal','platformer'].includes(type))return json({error:'Select a valid li
    if(!safeUrl(video)||video.length>500)return json({error:'Enter a valid public HTTPS video proof link (500 characters maximum).'},400);
    if(note.length>500)return json({error:'Submission note is too long.'},400);
    if(username.toLowerCase()!==claim.leaderboard_username.toLowerCase())return json({error:'CCL username must match your approved profile: '+claim.leaderboard_username},400);
-   if(!/^[^\\x00-\\x1f]{2,64}$/.test(discord))return json({error:'Discord username must be between 2 and 64 characters.'},400);
+   if(discord.length<2||discord.length>64||[...discord].some(char=>char.charCodeAt(0)<32||char.charCodeAt(0)===127))return json({error:'Discord username must be between 2 and 64 characters and contain no control characters.'},400);
    if(!Number.isInteger(enjoyment)||enjoyment<0||enjoyment>10)return json({error:'Enjoyment must be a whole number between 0 and 10.'},400);
    const listResponse=await env.ASSETS.fetch(new Request(new URL('/data/'+(type==='normal'?'_list.json':'_platformer.json'),request.url)));
    if(!listResponse.ok||!(await listResponse.json()).includes(level))return json({error:'Level not found on selected list.'},404);

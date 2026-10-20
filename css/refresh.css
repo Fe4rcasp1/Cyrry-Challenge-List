@@ -183,3 +183,11 @@ main > div { scrollbar-width: thin; scrollbar-color: var(--ui-border) transparen
 .creator-rating.rating-epic { background: #ef922d; color: #171c27; }
 .creator-rating.rating-legendary { background: #a855f7; color: #fff; }
 .creator-rating.rating-mythic { background: #08bfd4; color: #171c27; }
+
+/* Challenge and platformer list filtering */
+.page-list .level-filters { display: grid; grid-template-columns: minmax(0, 1fr); gap: .45rem; margin-top: .35rem; }
+.page-list .level-filters label { color: var(--ui-muted); font-size: .73rem; font-weight: 700; margin-top: .25rem; }
+.page-list .level-filters .filter-select { display: block; width: 100%; min-width: 0; padding: .72rem .85rem; border: 1px solid var(--ui-border); border-radius: .7rem; background: var(--ui-card); color: var(--color-on-background); font: inherit; font-size: .82rem; cursor: pointer; }
+.page-list .level-filters .filter-select:focus-visible, .page-list .level-filters .filter-reset:focus-visible { outline: 3px solid #77aaff; outline-offset: 2px; }
+.page-list .level-filters .filter-reset { width: 100%; padding: .65rem; margin-top: .2rem; border: 1px solid var(--ui-border); border-radius: .7rem; background: var(--color-background-hover); color: var(--color-on-background); font: inherit; font-size: .78rem; font-weight: 700; cursor: pointer; }
+.page-list .level-filters .filter-reset:hover { border-color: var(--color-primary); }

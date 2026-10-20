@@ -175,3 +175,11 @@ main > div { scrollbar-width: thin; scrollbar-color: var(--ui-border) transparen
 .page-leaderboard .error-container { grid-row: 2; }
 .page-leaderboard .board-container, .page-leaderboard .player-container { grid-row: 3; }
 @media (max-width: 700px) { .page-leaderboard { display: flex; flex-direction: column; height: auto; } .page-leaderboard .board-container, .page-leaderboard .player-container { padding: 1rem; overflow: visible; } .page-leaderboard .player { padding-right: 0; } }
+
+/* Creator leaderboard rating labels */
+.creator-rating { display: inline-flex; align-items: center; margin: .4rem 0 .15rem; padding: .25rem .55rem; border-radius: .45rem; font-size: .73rem; font-weight: 700; line-height: 1.3; background: var(--ui-border); color: var(--color-on-background); }
+.creator-rating.rating-rate { background: #808080; color: #fff; }
+.creator-rating.rating-featured { background: #e4c526; color: #171c27; }
+.creator-rating.rating-epic { background: #ef922d; color: #171c27; }
+.creator-rating.rating-legendary { background: #a855f7; color: #fff; }
+.creator-rating.rating-mythic { background: #08bfd4; color: #171c27; }

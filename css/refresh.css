@@ -306,3 +306,22 @@ header .logo h2 { font-weight: 700; letter-spacing: -.055em; }
 .hub-fav-button, .hub-profile-link { display: inline-flex; align-self: flex-start; padding: .6rem .9rem; border: 1px solid var(--ui-border); border-radius: .65rem; background: var(--color-background); color: var(--color-on-background); font: inherit; font-size: .8rem; cursor: pointer; text-decoration: none; }
 .hub-fav-button:hover, .hub-profile-link:hover { border-color: var(--color-primary); }
 @media (max-width:680px) { .ccl-hub { height:auto; min-height:100vh; padding: 1rem; } }
+
+/* Combined CCL navigation */
+header { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; }
+header .logo { flex: 0 0 auto; display: flex; flex-direction: column; gap: .3rem; }
+header .header-quicklinks { display: flex; flex-wrap: wrap; gap: .35rem .65rem; }
+header .header-quicklinks a { font-size: .67rem; font-weight: 700; color: var(--color-on-background); text-decoration: none; white-space: nowrap; opacity: .85; }
+header .header-quicklinks a:hover { color: var(--color-primary); opacity: 1; }
+header .nav { flex: 1 1 auto; min-width: 0; flex-wrap: wrap; justify-content: flex-end; gap: .15rem; }
+header .nav .nav__tab { white-space: nowrap; }
+header .nav .nav__tab .type-label-lg { font-size: clamp(.67rem,.85vw,.9rem); }
+header .nav .nav__hub-link { opacity: .8; }
+.impossible-embed-page { display: flex; flex-direction: column; min-height: 0; height: calc(100vh - 5.2rem); width: 100%; background: var(--color-background); }
+.impossible-embed-info { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .55rem 1rem; border-bottom: 1px solid var(--ui-border); font-size: .83rem; color: var(--color-on-background); }
+.impossible-embed-info a { color: var(--color-primary); text-decoration: none; }
+.impossible-embed-frame { width: 100%; flex: 1 1 auto; min-height: 550px; border: 0; background: var(--color-background); }
+@media (max-width: 950px) {
+ header .nav { justify-content: flex-start; }
+ .impossible-embed-page { height: calc(100vh - 8rem); }
+}

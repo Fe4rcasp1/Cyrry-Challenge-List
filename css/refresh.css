@@ -165,3 +165,13 @@ main > div { scrollbar-width: thin; scrollbar-color: var(--ui-border) transparen
 .search-panel .search-count { font-size: .7rem; color: var(--ui-muted); }
 .search-empty { padding: 1rem; color: var(--ui-muted); font-size: .85rem; }
 .page-leaderboard .board-container .search-panel { position: sticky; top: 0; z-index: 2; background: var(--color-background); border-bottom: 1px solid var(--ui-border); }
+
+/* Two leaderboard views */
+.page-leaderboard { grid-template-rows: auto auto minmax(0,1fr); }
+.page-leaderboard .leaderboard-switcher { grid-column: 1 / -1; grid-row: 1; display: flex; gap: .5rem; padding: 1.4rem 1rem .7rem; flex-wrap: wrap; overflow: visible; }
+.page-leaderboard .leaderboard-switcher button { padding: .85rem 1.2rem; background: var(--ui-card); color: var(--color-on-background); border: 1px solid var(--ui-border); border-radius: .8rem; font: inherit; font-size: .9rem; cursor: pointer; transition: background .18s, transform .18s; }
+.page-leaderboard .leaderboard-switcher button:hover { background: var(--color-background-hover); transform: translateY(-1px); }
+.page-leaderboard .leaderboard-switcher button.active { background: var(--color-primary); color: #fff; border-color: var(--color-primary); }
+.page-leaderboard .error-container { grid-row: 2; }
+.page-leaderboard .board-container, .page-leaderboard .player-container { grid-row: 3; }
+@media (max-width: 700px) { .page-leaderboard { display: flex; flex-direction: column; height: auto; } .page-leaderboard .board-container, .page-leaderboard .player-container { padding: 1rem; overflow: visible; } .page-leaderboard .player { padding-right: 0; } }

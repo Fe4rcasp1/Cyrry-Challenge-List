@@ -16,6 +16,7 @@ const roleIconMap = {
 
 export default {
     components: { Spinner, LevelAuthors },
+    props: { listFile: { type: String, default: "_list.json" }, platformer: { type: Boolean, default: false } },
     template: `
         <main v-if="loading">
             <Spinner></Spinner>
@@ -24,7 +25,7 @@ export default {
             <div class="list-container">
                 <table class="list" v-if="list">
                     <tr class="section-header">
-                        <td colspan="2" class="type-label-lg">Main List</td>
+                        <td colspan="2" class="type-label-lg">{{ platformer ? "Platformer List" : "Main List" }}</td>
                     </tr>
                     <tr v-for="([level, err], i) in list">
                         <td class="rank">
@@ -35,7 +36,7 @@ export default {
                                 <span class="type-label-lg">{{ level?.name || \`Error (\${err}.json)\` }}</span>
                             </button>
                         </td>
-                        <tr v-if="(i + 1) % 100 === 0 && (i + 1) < list.length" class="section-header">
+                        <tr v-if="!platformer && (i + 1) % 100 === 0 && (i + 1) < list.length" class="section-header">
                             <td colspan="2" class="type-label-lg">Extended</td>
                         </tr>
                     </tr>
@@ -208,9 +209,10 @@ export default {
     }),
     computed: {
         level() {
-            return this.list[this.selected][0];
+            return this.list[this.selected]?.[0] || null;
         },
         video() {
+            if (!this.level) return "";
             if (!this.level.showcase) {
                 return embed(this.level.verification);
             }
@@ -224,7 +226,7 @@ export default {
     },
     async mounted() {
         // Hide loading spinner
-        this.list = await fetchList();
+        this.list = await fetchList(this.listFile);
         this.editors = await fetchEditors();
 
         // Error handling

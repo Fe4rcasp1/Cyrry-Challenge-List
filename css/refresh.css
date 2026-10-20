@@ -471,3 +471,9 @@ header .nav .nav__hub-link { opacity: .8; }
 .ccl-hub .profile-back-link {display:inline-flex; align-items:center; text-decoration:none; color:var(--color-on-background); font-size:.85rem; font-weight:700; }
 .ccl-hub .profile-settings-link {display:inline-flex; align-items:center; justify-content:center; width:42px; height:42px; border:1px solid var(--ui-border); border-radius:.65rem; background:var(--color-background); color:var(--color-on-background); text-decoration:none; }
 .ccl-hub .profile-settings-link:hover {border-color:var(--color-primary); color:var(--color-primary); }
+
+/* Dedicated record submission page */
+.ccl-record-submit .hub-card form{display:flex;flex-direction:column;align-items:stretch;gap:.65rem;max-width:620px}
+.ccl-record-submit .hub-card form label{display:block;font-size:.82rem;font-weight:700;margin-top:.45rem;line-height:1.5}
+.ccl-record-submit .hub-card form input,.ccl-record-submit .hub-card form select{display:block;width:100%;box-sizing:border-box;padding:.8rem;border:1px solid var(--ui-border);border-radius:.6rem;background:var(--color-background);color:var(--color-on-background);font:inherit}
+.ccl-record-submit .hub-card form button{margin-top:.8rem}

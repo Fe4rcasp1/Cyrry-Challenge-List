@@ -296,7 +296,8 @@ async function handle(request, env) {
  }
  if (path === '/api/community/weekly' && request.method === 'GET') {
    const rows=await env.DB.prepare("SELECT id,week_start,list_type,level_path,title,description FROM weekly_challenges ORDER BY week_start DESC LIMIT 12").all();
-   return json({challenges:rows.results});
+   const winners=await env.DB.prepare("SELECT weekly_challenge_entries.challenge_id,users.username FROM weekly_challenge_entries JOIN users ON users.id=weekly_challenge_entries.user_id WHERE weekly_challenge_entries.status='approved' ORDER BY weekly_challenge_entries.created_at ASC LIMIT 500").all();
+   return json({challenges:rows.results,completions:winners.results});
  }
  if (path === '/api/community/weekly/enter' && request.method === 'POST') {
    const user=await currentUser(request,env.DB);if(!user)return json({error:'Log in first.'},401);

@@ -291,6 +291,11 @@ export default {
             }
         }
 
+        const targetId = this.$route.query.level;
+        if (targetId && this.list) {
+            const index = this.list.findIndex(([level]) => String(level?.id) === String(targetId));
+            if (index >= 0) this.selected = index;
+        }
         this.loading = false;
         this.syncFavorite();
     },

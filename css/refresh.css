@@ -335,3 +335,13 @@ header .nav .nav__hub-link { opacity: .8; }
 .ccl-hub .leaderboard-switcher { display: flex; gap: .5rem; margin-bottom: 1rem; }
 .ccl-hub .leaderboard-switcher button { padding: .7rem 1rem; border: 1px solid var(--ui-border); border-radius: .6rem; cursor: pointer; }
 .ccl-hub .leaderboard-switcher button.active { background: var(--color-primary); color: white; }
+
+/* Staff dashboard */
+.admin-tabs,.admin-actions{display:flex;flex-wrap:wrap;gap:.65rem;margin:1rem 0}
+.admin-tabs button,.admin-actions button,.admin-claim button,.admin-user select{cursor:pointer;padding:.65rem .9rem;border:1px solid var(--ui-border);border-radius:.5rem}
+.admin-tabs button.active{background:var(--color-primary);color:white}
+.admin-claim{padding:1rem 0;border-bottom:1px solid var(--ui-border)}
+.admin-evidence{white-space:pre-wrap;overflow-wrap:anywhere;font-family:inherit;padding:.75rem;border:1px solid var(--ui-border);border-radius:.5rem}
+.admin-json{width:100%;min-height:440px;font-family:monospace;font-size:.8rem;padding:1rem;background:var(--color-background);color:var(--color-on-background);border:1px solid var(--ui-border);border-radius:.5rem}
+.admin-level-select{width:100%;max-width:500px;margin:.5rem 0 1rem}
+.admin-user{display:flex;gap:1rem;align-items:center;justify-content:space-between;padding:.6rem 0;border-bottom:1px solid var(--ui-border)}

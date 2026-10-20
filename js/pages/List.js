@@ -44,7 +44,23 @@ export default {
                             <option value="legendary">Legendary</option>
                             <option value="mythic">Mythic</option>
                         </select>
-                        <button type="button" class="filter-reset" v-if="searchQuery || sectionFilter !== 'all' || ratingFilter !== 'all'" @click="resetFilters">Clear filters</button>
+                        <label :for="platformer ? 'platformer-enjoyment' : 'challenge-enjoyment'">Enjoyment</label>
+                        <select :id="platformer ? 'platformer-enjoyment' : 'challenge-enjoyment'" v-model="enjoymentFilter" class="filter-select">
+                            <option value="all">All enjoyment ratings</option>
+                            <option value="rated">Rated levels only</option>
+                            <option value="9">9+/10</option>
+                            <option value="8">8+/10</option>
+                            <option value="7">7+/10</option>
+                            <option value="5">5+/10</option>
+                            <option value="unrated">Unrated levels</option>
+                        </select>
+                        <label :for="platformer ? 'platformer-enjoyment-sort' : 'challenge-enjoyment-sort'">Sort enjoyment</label>
+                        <select :id="platformer ? 'platformer-enjoyment-sort' : 'challenge-enjoyment-sort'" v-model="enjoymentSort" class="filter-select">
+                            <option value="rank">List ranking</option>
+                            <option value="highest">Highest enjoyment first</option>
+                            <option value="lowest">Lowest enjoyment first</option>
+                        </select>
+                        <button type="button" class="filter-reset" v-if="searchQuery || sectionFilter !== 'all' || ratingFilter !== 'all' || enjoymentFilter !== 'all' || enjoymentSort !== 'rank'" @click="resetFilters">Clear filters</button>
                     </div>
                     <p class="search-count">{{ filteredLevels.length }} of {{ list.length }} levels</p>
                 </div>
@@ -62,9 +78,10 @@ export default {
                             <button @click="selected = item.index" :style="selected === item.index && item.level ? { backgroundColor: ratingColor(item.level), color: ratingTextColor(item.level) } : {}">
                                 <span class="type-label-lg">{{ item.level?.name || \`Error (\${item.err}.json)\` }}</span>
                             </button>
+                            <small v-if="enjoymentByPath[levelPaths[item.index]]" class="list-enjoyment-label">★ {{enjoymentByPath[levelPaths[item.index]].average}}/10 ({{enjoymentByPath[levelPaths[item.index]].ratings}})</small>
                         </td>
                         </tr>
-                        <tr v-if="!searchQuery.trim() && sectionFilter === 'all' && ratingFilter === 'all' && !platformer && item.index === 99 && (item.index + 1) < list.length" class="section-header">
+                        <tr v-if="!searchQuery.trim() && sectionFilter === 'all' && ratingFilter === 'all' && enjoymentFilter === 'all' && enjoymentSort === 'rank' && !platformer && item.index === 99 && (item.index + 1) < list.length" class="section-header">
                             <td colspan="2" class="type-label-lg">Extended</td>
                         </tr>
                     </template>
@@ -88,7 +105,7 @@ export default {
                         </li>
                         <li>
                             <div class="type-title-sm">Enjoyment</div>
-                            <p>{{ level.Enjoyment || 'N/A' }}</p>
+                            <p>{{ enjoymentByPath[levelPaths[selected]] ? enjoymentByPath[levelPaths[selected]].average + '/10 (' + enjoymentByPath[levelPaths[selected]].ratings + ' ratings)' : (level.Enjoyment || 'N/A') }}</p>
                         </li>
                     </ul>
                     <h2>Records</h2>
@@ -232,6 +249,10 @@ export default {
         favorite: false,
         sectionFilter: "all",
         ratingFilter: "all",
+        enjoymentFilter: "all",
+        enjoymentSort: "rank",
+        enjoymentByPath: {},
+        levelPaths: [],
         editors: [],
         loading: true,
         selected: 0,
@@ -242,12 +263,25 @@ export default {
     computed: {
         filteredLevels() {
             const query = this.searchQuery.trim().toLocaleLowerCase();
-            return (this.list || []).map(([level, err], index) => ({ level, err, index })).filter(({ level, err, index }) => {
+            const filtered = (this.list || []).map(([level, err], index) => ({ level, err, index })).filter(({ level, err, index }) => {
                 if (this.sectionFilter === "main" && index >= 100) return false;
                 if (this.sectionFilter === "extended" && index < 100) return false;
                 if (this.ratingFilter !== "all" && getLevelRating(level, this.platformer) !== this.ratingFilter) return false;
+                const enjoyment = this.enjoymentByPath[this.levelPaths[index]];
+                if (this.enjoymentFilter === "rated" && !enjoyment) return false;
+                if (this.enjoymentFilter === "unrated" && enjoyment) return false;
+                if (!["all", "rated", "unrated"].includes(this.enjoymentFilter) && (!enjoyment || Number(enjoyment.average) < Number(this.enjoymentFilter))) return false;
                 return !query || [level?.name, level?.author, ...(level?.creators || []), level?.id, err].some(value => String(value ?? "").toLocaleLowerCase().includes(query));
             });
+            if (this.enjoymentSort !== "rank") filtered.sort((a,b) => {
+                const x=this.enjoymentByPath[this.levelPaths[a.index]]?.average;
+                const y=this.enjoymentByPath[this.levelPaths[b.index]]?.average;
+                if(x==null && y==null)return a.index-b.index;
+                if(x==null)return 1;
+                if(y==null)return -1;
+                return (this.enjoymentSort === "highest" ? Number(y)-Number(x) : Number(x)-Number(y)) || a.index-b.index;
+            });
+            return filtered;
         },
         level() {
             return this.list[this.selected]?.[0] || null;
@@ -271,6 +305,18 @@ export default {
     async mounted() {
         // Hide loading spinner
         this.list = await fetchList(this.listFile);
+        try {
+            const [namesResponse, ratingsResponse] = await Promise.all([
+                fetch('/data/' + this.listFile),
+                fetch('/api/community/enjoyment', { cache: 'no-store' })
+            ]);
+            if (namesResponse.ok) this.levelPaths = await namesResponse.json();
+            if (ratingsResponse.ok) {
+                const ratings = (await ratingsResponse.json()).levels || [];
+                const type = this.platformer ? 'platformer' : 'normal';
+                this.enjoymentByPath = Object.fromEntries(ratings.filter(x => x.list_type === type).map(x => [x.level_path, x]));
+            }
+        } catch (error) { console.warn('Enjoyment filters unavailable', error); }
         this.editors = await fetchEditors();
 
         // Error handling
@@ -311,7 +357,7 @@ export default {
         toggleLevelFavorite() { toggleFavorite(this.level, this.platformer); this.syncFavorite(); },
         embed,
         score,
-        resetFilters() { this.searchQuery = ""; this.sectionFilter = "all"; this.ratingFilter = "all"; },
+        resetFilters() { this.searchQuery = ""; this.sectionFilter = "all"; this.ratingFilter = "all"; this.enjoymentFilter = "all"; this.enjoymentSort = "rank"; },
         ratingColor(level) { return ({ rate: "#808080", featured: "#e4c526", epic: "#ef922d", legendary: "#a855f7", mythic: "#08bfd4" })[getLevelRating(level, this.platformer)] || "#244f88"; },
         ratingTextColor(level) { return ["featured", "epic", "mythic"].includes(getLevelRating(level, this.platformer)) ? "#171c27" : "#fff"; },
     },

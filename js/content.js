@@ -1,4 +1,5 @@
 import { round, score } from './score.js';
+import { getLevelRating } from './ratings.js';
 
 /**
  * Path to directory containing `_list.json` and all levels
@@ -124,7 +125,7 @@ export async function fetchLeaderboard() {
 }
 
 /**
- * Creator leaderboard: each distinct listed creator receives one point per level.
+ * Creator leaderboard: creators earn 1–5 points per level based on its rating.
  * Uses the normal CCL level list, keeping it independent of platformer rankings.
  */
 export async function fetchCreatorLeaderboard() {
@@ -137,6 +138,9 @@ export async function fetchCreatorLeaderboard() {
             errors.push(err || `Level #${rank + 1}`);
             return;
         }
+        const rating = getLevelRating(level);
+        const ratingPoints = { rate: 1, featured: 2, epic: 3, legendary: 4, mythic: 5 };
+        const points = ratingPoints[rating] ?? 0;
         const seen = new Set();
         for (const raw of Array.isArray(level.creators) ? level.creators : []) {
             if (typeof raw !== 'string') continue;
@@ -146,11 +150,12 @@ export async function fetchCreatorLeaderboard() {
             seen.add(key);
             if (!creators.has(key)) creators.set(key, { user, total: 0, created: [] });
             const entry = creators.get(key);
-            entry.total += 1;
+            entry.total += points;
             entry.created.push({
                 rank: rank + 1,
                 level: level.name,
-                score: 1,
+                score: points,
+                rating: rating || "Unrated",
                 link: level.verification || '',
             });
         }

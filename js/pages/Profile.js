@@ -3,12 +3,12 @@ import { getLevelRating } from '../ratings.js';
 import { store } from '../main.js';
 const badge = (id, title, desc, earned) => ({ id, title, desc, earned });
 export default {
-    data: () => ({ loading: true, player: null, creator: null, rank: null, staffRole: null, achievementFilter: 'all', customProfile: null, history: [], error: '' }),
+    data: () => ({ loading: true, player: null, creator: null, rank: null, staffRole: null, achievementFilter: 'all', customProfile: null, history: [], advancedStats:null, recentRecords:[], error: '' }),
     template: `
       <main class="ccl-hub">
         <section class="hub-head profile-custom-head" :style="customProfile ? {borderColor:customProfile.accent} : {}">
           <div v-if="customProfile?.banner_url" class="profile-banner" :style="{backgroundImage:'url(' + customProfile.banner_url + ')'}"></div>
-          <div class="profile-header-content">
+          <div class="profile-header-content" :style="customProfile?.background_url ? {backgroundImage:'linear-gradient(#0a1421d9,#0a1421e8),url('+customProfile.background_url+')',backgroundSize:'cover',backgroundPosition:'center'} : {}">
             <div class="profile-header-actions">
               <router-link to="/hub" class="profile-back-link">← Back to CCL Hub</router-link>
               <router-link v-if="canEditProfile" to="/account" class="profile-settings-link" aria-label="Profile settings" title="Edit profile settings">
@@ -19,7 +19,7 @@ export default {
             <h1>{{ displayName }}</h1>
             <div v-if="profileRoles.length" class="profile-role-list"><span v-for="role in profileRoles" :key="role.label" class="profile-role-badge" :class="role.className">{{role.icon}} {{role.label}}</span></div>
             <p>Player profile · based on public CCL records</p>
-            <p v-if="customProfile?.bio" class="profile-bio">{{customProfile.bio}}</p>
+            <p v-if="customProfile?.bio" class="profile-bio">{{customProfile.bio}}</p><div class="profile-showcase"><span v-if="customProfile?.favorite_level">♥ Favorite: {{customProfile.favorite_level}}</span><span v-if="customProfile?.showcase_level">★ Showcase: {{customProfile.showcase_level}}</span><span v-if="customProfile?.featured_badge">🏆 Featured: {{customProfile.featured_badge}}</span></div>
           </div>
         </section>
         <p v-if="loading">Loading player profile…</p><p v-else-if="error">{{ error }}</p>
@@ -32,6 +32,7 @@ export default {
             <div><strong>{{ creator ? creator.total : 0 }}</strong><span>Creator points</span></div>
             <div><strong>{{ creator ? creator.created.length : 0 }}</strong><span>Created levels</span></div>
           </div></section>
+          <section class="hub-card"><h2>Advanced statistics</h2><div class="hub-stats"><div><strong>{{hardestRank}}</strong><span>Hardest clear</span></div><div><strong>{{player ? player.progressed.length : 0}}</strong><span>Progress records</span></div><div><strong>{{advancedStats?.approved_records ?? '—'}}</strong><span>Approved submissions</span></div><div><strong>{{advancedStats?.average_enjoyment ?? '—'}}</strong><span>Average enjoyment / 10</span></div></div><h3>Recent approved records</h3><p v-if="!recentRecords.length">No approved on-site submissions yet.</p><div v-for="r in recentRecords" :key="r.level_path+r.reviewed_at" class="hub-change"><strong>{{r.level_path.replaceAll('_',' ')}} · {{r.percent}}%</strong><span>{{r.enjoyment}}/10 enjoyment</span></div></section>
           <section class="hub-card"><h2>Ranking history</h2>
             <p class="hub-muted">Snapshots start when staff save them. Historical rankings before the first snapshot are not available.</p>
             <p v-if="!history.length">No snapshots saved for this player yet.</p>
@@ -45,6 +46,7 @@ export default {
         </template>
       </main>`,
     computed: {
+        hardestRank() { const clears=[...(this.player?.completed||[]),...(this.player?.verified||[])];return clears.length?'#'+Math.min(...clears.map(x=>x.rank)):'—'; },
         canEditProfile() { return !!store.user && String(store.profileUsername || '').toLowerCase() === String(this.$route.params.username || '').toLowerCase(); },
         displayName() { return this.player?.user || this.creator?.user || this.$route.params.username; },
         profileRoles() {
@@ -116,12 +118,14 @@ export default {
             this.creator = creators.find(x => x.user.toLowerCase() === username) || null;
             if (!this.player && !this.creator) this.error = 'No public CCL player or creator records found for this username.';
             try {
-                const [profileResponse,historyResponse]=await Promise.all([
+                const [profileResponse,historyResponse,statsResponse]=await Promise.all([
                     fetch('/api/community/profile?username='+encodeURIComponent(this.displayName),{cache:'no-store'}),
-                    fetch('/api/community/history?username='+encodeURIComponent(this.displayName),{cache:'no-store'})
+                    fetch('/api/community/history?username='+encodeURIComponent(this.displayName),{cache:'no-store'}),
+                    fetch('/api/community/player-stats?username='+encodeURIComponent(this.displayName),{cache:'no-store'})
                 ]);
                 if(profileResponse.ok)this.customProfile=(await profileResponse.json()).profile;
                 if(historyResponse.ok)this.history=(await historyResponse.json()).history||[];
+                if(statsResponse.ok){const d=await statsResponse.json();this.advancedStats=d.stats;this.recentRecords=d.recent||[];}
             }catch(e){console.warn('Community profile details unavailable',e)}
             try {
                 const roleResponse = await fetch('/api/profiles/roles?username=' + encodeURIComponent(this.displayName), {cache:'no-store'});

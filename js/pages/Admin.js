@@ -114,7 +114,7 @@ export default {
           <div class="admin-field"><label for="admin-user-search">Find an account</label>
             <input id="admin-user-search" v-model="userFilter" placeholder="Search by username…" /></div>
           <div class="admin-users">
-            <div class="admin-user admin-user-head"><span>Username</span><span>Current role</span><span>Change role</span></div>
+            <div class="admin-user admin-user-head"><span>Username</span><span>Current role</span><span>Change role</span><span>Actions</span></div>
             <div v-for="u in filteredUsers" :key="u.id" class="admin-user">
               <strong>{{u.username}}</strong><span class="admin-subtle-pill">{{u.role||'member'}}</span>
               <select :value="u.role||'member'" :disabled="busy"
@@ -123,6 +123,10 @@ export default {
                 <option value="editor">Editor</option><option value="admin">Admin</option>
                 <option value="owner">Owner</option>
               </select>
+              <button class="admin-btn admin-btn-reject admin-delete-account" type="button"
+                :disabled="busy || u.role==='owner'"
+                :title="u.role==='owner' ? 'Reassign owner role before deleting' : 'Permanently delete this account'"
+                @click="deleteAccount(u)">Delete</button>
             </div>
             <p v-if="!filteredUsers.length" class="admin-empty">No matching accounts.</p>
           </div>
@@ -200,6 +204,18 @@ export default {
             });
         },
         async loadUsers() { await this.run(async () => { this.users = (await api('/api/admin/users')).users || []; }); },
+        async deleteAccount(u) {
+            if (u.role === 'owner') return;
+            const typed = prompt('Permanently delete account "' + u.username + '"? This removes login access, sessions, and profile claims. Type the exact username to confirm:');
+            if (typed === null) return;
+            if (typed !== u.username) { this.error = 'Username confirmation did not match. Nothing was deleted.'; return; }
+            if (!confirm('FINAL WARNING: Permanently delete ' + u.username + '? This cannot be undone.')) return;
+            await this.run(async () => {
+                await api('/api/admin/users/delete', 'POST', { userId: u.id, confirmUsername: typed });
+                this.users = this.users.filter(account => account.id !== u.id);
+                this.notice = 'Account ' + u.username + ' was permanently deleted.';
+            });
+        },
         async setRole(u, role) {
             if (role === (u.role || 'member') || !confirm('Change ' + u.username + ' to ' + role + '?')) return;
             await this.run(async () => {

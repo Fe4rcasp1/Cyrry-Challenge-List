@@ -9,6 +9,7 @@ export default {
     },
     data: () => ({
         leaderboard: [],
+        searchQuery: "",
         loading: true,
         selected: 0,
         err: [],
@@ -25,24 +26,30 @@ export default {
                     </p>
                 </div>
                 <div class="board-container">
+                    <div class="search-panel">
+                        <label for="player-search">Search players</label>
+                        <input id="player-search" class="list-search" type="search" v-model="searchQuery" placeholder="Search by username…" autocomplete="off" />
+                        <p class="search-count">{{ filteredPlayers.length }} of {{ leaderboard.length }} players</p>
+                    </div>
+                    <p v-if="leaderboard.length && !filteredPlayers.length" class="search-empty">No usernames found.</p>
                     <table class="board">
-                        <tr v-for="(ientry, i) in leaderboard">
+                        <tr v-for="player in filteredPlayers" :key="player.index">
                             <td class="rank">
-                                <p class="type-label-lg">#{{ i + 1 }}</p>
+                                <p class="type-label-lg">#{{ player.index + 1 }}</p>
                             </td>
                             <td class="total">
-                                <p class="type-label-lg">{{ localize(ientry.total) }}</p>
+                                <p class="type-label-lg">{{ localize(player.entry.total) }}</p>
                             </td>
-                            <td class="user" :class="{ 'active': selected == i }">
-                                <button @click="selected = i">
-                                    <span class="type-label-lg">{{ ientry.user }}</span>
+                            <td class="user" :class="{ 'active': selected == player.index }">
+                                <button @click="selected = player.index">
+                                    <span class="type-label-lg">{{ player.entry.user }}</span>
                                 </button>
                             </td>
                         </tr>
                     </table>
                 </div>
                 <div class="player-container">
-                    <div class="player">
+                    <div class="player" v-if="entry">
                         <h1>#{{ selected + 1 }} {{ entry.user }}</h1>
                         <h3>{{ entry.total }}</h3>
                         <h2 v-if="entry.verified.length > 0">Verified ({{ entry.verified.length}})</h2>
@@ -93,6 +100,10 @@ export default {
         </main>
     `,
     computed: {
+        filteredPlayers() {
+            const query = this.searchQuery.trim().toLocaleLowerCase();
+            return this.leaderboard.map((entry, index) => ({ entry, index })).filter(({ entry }) => !query || entry.user.toLocaleLowerCase().includes(query));
+        },
         entry() {
             return this.leaderboard[this.selected];
         },

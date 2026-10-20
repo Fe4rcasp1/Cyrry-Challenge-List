@@ -12,9 +12,9 @@ async function api(path, method = 'GET', payload) {
 
 export default {
     data: () => ({
-        role: '', tab: 'claims', claims: [], users: [], levelFiles: [],
+        role: '', tab: 'claims', claims: [], users: [], levelFiles: [], audit: [], submissions: [], weeklyEntries: [],
         listType: 'normal', levelPath: '', levelText: '', originalLevelText: '',
-        filter: '', userFilter: '', loading: true, busy: false, error: '', notice: ''
+        filter: '', userFilter: '', weeklyWeek: '', weeklyTitle: '', weeklyDescription: '', loading: true, busy: false, error: '', notice: ''
     }),
     computed: {
         canReview() { return ['owner', 'admin', 'moderator'].includes(this.role); },
@@ -51,6 +51,9 @@ export default {
           <button v-if="canReview" type="button" :class="{active:tab==='claims'}" @click="switchTab('claims')">
             Profile claims <span class="admin-tab-count">{{claims.length}}</span>
           </button>
+          <button v-if="canReview" type="button" :class="{active:tab==='submissions'}" @click="switchTab('submissions')">Record reviews</button>
+          <button v-if="canReview" type="button" :class="{active:tab==='weekly'}" @click="switchTab('weekly')">Weekly challenges</button>
+          <button v-if="canManage || role==='admin'" type="button" :class="{active:tab==='audit'}" @click="switchTab('audit')">Activity log</button>
           <button v-if="canEdit" type="button" :class="{active:tab==='levels'}" @click="switchTab('levels')">Level editor</button>
           <button v-if="canManage" type="button" :class="{active:tab==='users'}" @click="switchTab('users')">Staff roles</button>
         </nav>
@@ -75,6 +78,42 @@ export default {
               </div>
             </article>
           </div>
+        </section>
+        <section v-if="tab==='submissions' && canReview" class="hub-card admin-panel">
+          <div class="admin-section-head"><h2>Pending record submissions</h2><button class="admin-btn" :disabled="busy" @click="loadSubmissions">Refresh</button></div>
+          <p class="hub-muted">Approving a submission marks it reviewed. Apply the verified record to the level JSON separately using Level Editor.</p>
+          <p v-if="!submissions.length" class="admin-empty">No pending records.</p>
+          <article v-for="s in submissions" :key="s.id" class="admin-claim">
+            <h3>{{s.leaderboard_username}} — {{s.level_path.replaceAll('_',' ')}}</h3>
+            <p>{{s.list_type}} · {{s.percent}}% · {{s.created_at}}</p>
+            <p v-if="s.note">{{s.note}}</p>
+            <a :href="s.video_url" target="_blank" rel="noopener noreferrer">Watch video evidence ↗</a>
+            <div class="admin-actions"><button class="admin-btn admin-btn-approve" :disabled="busy" @click="reviewRecord(s,'approved')">Approve</button><button class="admin-btn admin-btn-reject" :disabled="busy" @click="reviewRecord(s,'rejected')">Reject</button></div>
+          </article>
+        </section>
+        <section v-if="tab==='weekly' && canReview" class="hub-card admin-panel">
+          <h2>Weekly challenge entries</h2><p v-if="!weeklyEntries.length" class="admin-empty">No pending entries.</p>
+          <article v-for="e in weeklyEntries" :key="e.id" class="admin-claim">
+            <h3>{{e.username}} — {{e.title}}</h3><a :href="e.video_url" target="_blank" rel="noopener noreferrer">Watch proof ↗</a>
+            <div class="admin-actions"><button class="admin-btn admin-btn-approve" :disabled="busy" @click="reviewWeekly(e,'approved')">Approve</button><button class="admin-btn admin-btn-reject" :disabled="busy" @click="reviewWeekly(e,'rejected')">Reject</button></div>
+          </article>
+          <div v-if="canEdit" class="admin-editor"><h3>Publish a weekly challenge</h3>
+            <p class="hub-muted">Choose a Monday (UTC) and a level. One challenge per week.</p>
+            <form @submit.prevent="publishWeekly">
+              <label>Week starting Monday (UTC)</label><input v-model="weeklyWeek" type="date" required />
+              <label>Title</label><input v-model.trim="weeklyTitle" maxlength="100" required />
+              <label>Description</label><textarea v-model.trim="weeklyDescription" maxlength="500" rows="3"></textarea>
+              <label>List</label><select v-model="listType" @change="changeList"><option value="normal">Normal CCL</option><option value="platformer">Platformer CCL</option></select>
+              <label>Level</label><select v-model="levelPath" required><option value="">Select level</option><option v-for="f in levelFiles" :key="f" :value="f">{{f.replaceAll('_',' ')}}</option></select>
+              <button class="admin-btn admin-btn-primary" :disabled="busy">Publish challenge</button>
+            </form>
+          </div>
+        </section>
+        <section v-if="tab==='audit' && (canManage || role==='admin')" class="hub-card admin-panel">
+          <div class="admin-section-head"><h2>Staff activity log</h2><button class="admin-btn" :disabled="busy" @click="loadAudit">Refresh</button></div>
+          <p class="hub-muted">Most recent 200 actions. Entries are preserved for accountability.</p>
+          <p v-if="!audit.length" class="admin-empty">No activity recorded yet.</p>
+          <div v-for="a in audit" :key="a.id" class="hub-change"><strong>{{a.action.replaceAll('_',' ')}} · {{a.actor||'Deleted account'}}</strong><span>{{a.created_at}}</span><small>{{a.target}}</small></div>
         </section>
         <section v-if="tab==='levels' && canEdit" class="hub-card admin-panel">
           <div class="admin-section-head"><div><h2>Level editor</h2>
@@ -157,6 +196,9 @@ export default {
             if (tab === 'claims') await this.loadClaims();
             if (tab === 'levels') await this.loadFiles();
             if (tab === 'users') await this.loadUsers();
+            if (tab === 'submissions') await this.loadSubmissions();
+            if (tab === 'weekly') { await Promise.all([this.loadWeeklyEntries(),this.loadFiles()]); }
+            if (tab === 'audit') await this.loadAudit();
         },
         async loadClaims() { await this.run(async () => { this.claims = (await api('/api/admin/claims')).claims || []; }); },
         async review(c, status) {
@@ -203,6 +245,20 @@ export default {
                 this.notice = 'Level changes saved successfully.';
             });
         },
+        async loadSubmissions() { await this.run(async()=>{this.submissions=(await api('/api/admin/submissions')).submissions||[]}) },
+        async reviewRecord(item,status) {
+            if(!confirm(status+' record for '+item.leaderboard_username+'?'))return;
+            await this.run(async()=>{await api('/api/admin/submissions/review','POST',{id:item.id,status});this.submissions=this.submissions.filter(s=>s.id!==item.id);this.notice='Record '+status+'. Remember to apply approved records in the Level Editor.'});
+        },
+        async loadWeeklyEntries() { await this.run(async()=>{this.weeklyEntries=(await api('/api/admin/weekly/entries')).entries||[]}) },
+        async reviewWeekly(item,status) {
+            if(!confirm(status+' weekly entry for '+item.username+'?'))return;
+            await this.run(async()=>{await api('/api/admin/weekly/review','POST',{id:item.id,status});this.weeklyEntries=this.weeklyEntries.filter(e=>e.id!==item.id);this.notice='Weekly entry '+status+'.'});
+        },
+        async publishWeekly() {
+            await this.run(async()=>{await api('/api/admin/weekly','POST',{weekStart:this.weeklyWeek,listType:this.listType,levelPath:this.levelPath,title:this.weeklyTitle,description:this.weeklyDescription});this.notice='Weekly challenge published.';this.weeklyTitle='';this.weeklyDescription=''});
+        },
+        async loadAudit() { await this.run(async()=>{this.audit=(await api('/api/admin/audit')).entries||[]}) },
         async loadUsers() { await this.run(async () => { this.users = (await api('/api/admin/users')).users || []; }); },
         async deleteAccount(u) {
             if (u.role === 'owner') return;

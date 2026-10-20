@@ -39,8 +39,8 @@ export default {
                         <td class="rank">
                             <p class="type-label-lg">#{{ item.index + 1 }}</p>
                         </td>
-                        <td class="level"   :class="{ 'active': selected == item.index, 'error': !item.level }" :style="selected === item.index && item.level ? { backgroundColor: ratingColor(item.level), color: ratingTextColor(item.level) } : {}">
-                            <button @click="selected = item.index">
+                        <td class="level"   :class="{ 'active': selected == item.index, 'error': !item.level }">
+                            <button @click="selected = item.index" :style="selected === item.index && item.level ? { backgroundColor: ratingColor(item.level), color: ratingTextColor(item.level) } : {}">
                                 <span class="type-label-lg">{{ item.level?.name || \`Error (\${item.err}.json)\` }}</span>
                             </button>
                         </td>

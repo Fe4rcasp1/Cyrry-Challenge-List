@@ -163,7 +163,7 @@ async function handle(request, env) {
    }
    if (path === '/api/admin/submissions' && request.method === 'GET') {
      if(!canReview)return json({error:'Not permitted.'},403);
-     const rows=await env.DB.prepare("SELECT id,leaderboard_username,list_type,level_path,percent,video_url,note,created_at FROM record_submissions WHERE status='pending' ORDER BY created_at ASC LIMIT 200").all();
+     const rows=await env.DB.prepare("SELECT id,leaderboard_username,discord_name,enjoyment,list_type,level_path,percent,video_url,note,created_at FROM record_submissions WHERE status='pending' ORDER BY created_at ASC LIMIT 200").all();
      return json({submissions:rows.results});
    }
    if (path === '/api/admin/submissions/review' && request.method === 'POST') {
@@ -184,8 +184,8 @@ async function handle(request, env) {
        if(!Array.isArray(updatedLevel.records))return json({error:'Level records are invalid.'},500);
        const existing=updatedLevel.records.find(x=>String(x.user||'').toLowerCase()===submission.leaderboard_username.toLowerCase());
        if(existing){
-         if(Number(existing.percent)<submission.percent){existing.percent=submission.percent;existing.link=submission.video_url;}
-       }else updatedLevel.records.push({user:submission.leaderboard_username,percent:submission.percent,link:submission.video_url});
+         if(Number(existing.percent)<submission.percent){existing.percent=submission.percent;existing.link=submission.video_url;} if(submission.enjoyment!==null)existing.enjoyment=submission.enjoyment;
+       }else updatedLevel.records.push({user:submission.leaderboard_username,percent:submission.percent,link:submission.video_url,enjoyment:submission.enjoyment});
        if(updatedLevel.records.length>500)return json({error:'Level has reached the record limit.'},409);
      }
      const statements=[];
@@ -285,13 +285,13 @@ async function handle(request, env) {
    const user=await currentUser(request,env.DB);if(!user)return json({error:'Log in first.'},401);
    const claim=await env.DB.prepare("SELECT leaderboard_username FROM claims WHERE user_id=? AND status='approved' LIMIT 1").bind(user.id).first();
    if(!claim)return json({error:'You need an approved leaderboard profile claim to submit records.'},403);
-   const data=await body(request),type=String(data.listType||''),level=String(data.levelPath||''),video=String(data.videoUrl||''),percent=Number(data.percent),note=String(data.note||'').trim();
-   if(!['normal','platformer'].includes(type)||!/^[A-Za-z0-9_-]{1,120}$/.test(level)||!Number.isInteger(percent)||percent<1||percent>100||!safeUrl(video)||video.length>500||note.length>500)return json({error:'Invalid submission details.'},400);
+   const data=await body(request),type=String(data.listType||''),level=String(data.levelPath||''),video=String(data.videoUrl||''),percent=Number(data.percent),note=String(data.note||'').trim(),username=String(data.username||'').trim(),discord=String(data.discordName||'').trim(),enjoyment=Number(data.enjoyment);
+   if(!['normal','platformer'].includes(type)||!/^[A-Za-z0-9_-]{1,120}$/.test(level)||!Number.isInteger(percent)||percent<1||percent>100||!safeUrl(video)||video.length>500||note.length>500||username.toLowerCase()!==claim.leaderboard_username.toLowerCase()||!/^[^\\x00-\\x1f]{2,64}$/.test(discord)||!Number.isInteger(enjoyment)||enjoyment<0||enjoyment>10)return json({error:'Invalid submission details.'},400);
    const listResponse=await env.ASSETS.fetch(new Request(new URL('/data/'+(type==='normal'?'_list.json':'_platformer.json'),request.url)));
    if(!listResponse.ok||!(await listResponse.json()).includes(level))return json({error:'Level not found on selected list.'},404);
    const existing=await env.DB.prepare("SELECT id FROM record_submissions WHERE user_id=? AND list_type=? AND level_path=? AND status='pending'").bind(user.id,type,level).first();
    if(existing)return json({error:'You already have a pending submission for this level.'},409);
-   await env.DB.prepare('INSERT INTO record_submissions(id,user_id,leaderboard_username,list_type,level_path,percent,video_url,note) VALUES(?,?,?,?,?,?,?,?)').bind(crypto.randomUUID(),user.id,claim.leaderboard_username,type,level,percent,video,note).run();
+   await env.DB.prepare('INSERT INTO record_submissions(id,user_id,leaderboard_username,list_type,level_path,percent,video_url,note,discord_name,enjoyment) VALUES(?,?,?,?,?,?,?,?,?,?)').bind(crypto.randomUUID(),user.id,claim.leaderboard_username,type,level,percent,video,note,discord,enjoyment).run();
    return json({ok:true},201);
  }
  if (path === '/api/community/weekly' && request.method === 'GET') {

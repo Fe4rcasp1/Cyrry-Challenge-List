@@ -4,6 +4,7 @@ import Roulette from './pages/Roulette.js';
 import Hub from './pages/Hub.js';
 import Profile from './pages/Profile.js';
 import Account from './pages/Account.js';
+import Admin from './pages/Admin.js';
 import Impossible from './pages/Impossible.js';
 
 export default [
@@ -15,5 +16,6 @@ export default [
     { path: '/roulette', component: Roulette },
     { path: '/hub', component: Hub },
     { path: '/account', component: Account },
+    { path: '/admin', component: Admin },
     { path: '/player/:username', component: Profile },
 ];

@@ -1,4 +1,5 @@
 import { fetchLeaderboard, fetchCreatorLeaderboard } from '../content.js';
+import { store } from '../main.js';
 async function api(path, data) {
  const res = await fetch(path, { method: data ? 'POST' : 'GET', credentials: 'same-origin', headers: data ? { 'content-type':'application/json' } : {}, body: data ? JSON.stringify(data) : undefined });
  const result = await res.json();
@@ -46,10 +47,10 @@ export default {
   try { const [[players], [creators]] = await Promise.all([fetchLeaderboard(),fetchCreatorLeaderboard()]); this.leaderboardNames = [...new Set([...players.map(x=>x.user),...creators.map(x=>x.user)])]; } catch(e) { console.error(e); }
  },
  methods: {
-  async signup() { await this.action(async()=>{ const result=await api('/api/auth/register',{username:this.username,email:this.email,password:this.password}); this.user=result.user; this.claimName=this.username; this.password=''; this.message='Account created. Claim your leaderboard profile below if applicable.'; }); },
-  async signIn() { await this.action(async()=>{ const result=await api('/api/auth/login',{login:this.login,password:this.password}); this.password=''; this.user=result.user; const me=await api('/api/auth/me'); this.claims=me.claims||[]; this.message='Logged in successfully.'; }); },
+  async signup() { await this.action(async()=>{ const result=await api('/api/auth/register',{username:this.username,email:this.email,password:this.password}); this.user=result.user; await store.refreshAuth(); this.claimName=this.username; this.password=''; this.message='Account created. Claim your leaderboard profile below if applicable.'; }); },
+  async signIn() { await this.action(async()=>{ const result=await api('/api/auth/login',{login:this.login,password:this.password}); this.password=''; this.user=result.user; await store.refreshAuth(); const me=await api('/api/auth/me'); this.claims=me.claims||[]; this.message='Logged in successfully.'; }); },
   async claim() { await this.action(async()=>{ await api('/api/claims',{username:this.claimName,evidence:this.evidence}); const me=await api('/api/auth/me'); this.claims=me.claims||[]; this.evidence=''; this.message='Claim submitted for admin review.'; }); },
-  async logout() { await this.action(async()=>{ await api('/api/auth/logout',{}); this.user=null; this.claims=[]; this.message='Logged out.'; }); },
+  async logout() { await this.action(async()=>{ await api('/api/auth/logout',{}); this.user=null; await store.refreshAuth(); this.claims=[]; this.message='Logged out.'; }); },
   async action(fn) { this.busy=true; this.error=''; this.message=''; try { await fn(); } catch(e) { this.error=e.message; } finally { this.busy=false; } }
  }
 };

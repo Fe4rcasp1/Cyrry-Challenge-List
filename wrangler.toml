@@ -1,0 +1,13 @@
+name = "cyrry-challenge-list"
+main = "worker.js"
+compatibility_date = "2026-10-20"
+
+[assets]
+directory = "."
+binding = "ASSETS"
+run_worker_first = ["/api/*"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "ccl-accounts"
+database_id = "e4165d1b-47cf-403a-8da9-2138062f747d"

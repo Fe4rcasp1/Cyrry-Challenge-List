@@ -458,3 +458,16 @@ header .nav .nav__hub-link { opacity: .8; }
 .ccl-community .weekly-section-title { display:block; font-size:1.15rem; line-height:1.4; margin:1.5rem 0 .75rem !important; }
 .ccl-community .hub-card > p { display:block; line-height:1.5; margin:0 0 .75rem; }
 .ccl-community .hub-card > .hub-change { min-height:2.5rem; }
+
+
+/* Full-bleed profile banner with header actions aligned in the upper corner. */
+.ccl-hub .profile-custom-head {padding:0; overflow:hidden; border-radius:1rem; }
+.ccl-hub .profile-custom-head .profile-banner {display:block; width:100%; height:clamp(170px,23vw,290px); margin:0; border-radius:0; background-size:cover; background-position:center; }
+.ccl-hub .profile-header-content {padding:1.2rem clamp(1rem,2vw,1.5rem) 1.5rem; display:flex; flex-direction:column; align-items:flex-start; gap:.55rem; }
+.ccl-hub .profile-header-content > h1,.ccl-hub .profile-header-content > p,.ccl-hub .profile-header-content > .profile-role-list {margin:0; line-height:1.45; }
+.ccl-hub .profile-header-content > h1 {line-height:1.2; margin:.2rem 0; }
+.ccl-hub .profile-header-content .profile-avatar {margin:.35rem 0; }
+.ccl-hub .profile-header-actions {display:flex; flex-direction:column; align-items:flex-end; align-self:stretch; gap:.5rem; margin-bottom:.3rem; }
+.ccl-hub .profile-back-link {display:inline-flex; align-items:center; text-decoration:none; color:var(--color-on-background); font-size:.85rem; font-weight:700; }
+.ccl-hub .profile-settings-link {display:inline-flex; align-items:center; justify-content:center; width:42px; height:42px; border:1px solid var(--ui-border); border-radius:.65rem; background:var(--color-background); color:var(--color-on-background); text-decoration:none; }
+.ccl-hub .profile-settings-link:hover {border-color:var(--color-primary); color:var(--color-primary); }

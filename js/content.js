@@ -122,3 +122,38 @@ export async function fetchLeaderboard() {
     // Sort by total score
     return [res.sort((a, b) => b.total - a.total), errs];
 }
+
+/**
+ * Creator leaderboard: each distinct listed creator receives one point per level.
+ * Uses the normal CCL level list, keeping it independent of platformer rankings.
+ */
+export async function fetchCreatorLeaderboard() {
+    const list = await fetchList();
+    if (!list) return [[], ['Failed to load the level list.']];
+    const creators = new Map();
+    const errors = [];
+    list.forEach(([level, err], rank) => {
+        if (!level) {
+            errors.push(err || `Level #${rank + 1}`);
+            return;
+        }
+        const seen = new Set();
+        for (const raw of Array.isArray(level.creators) ? level.creators : []) {
+            if (typeof raw !== 'string') continue;
+            const user = raw.trim();
+            const key = user.toLocaleLowerCase();
+            if (!key || seen.has(key)) continue;
+            seen.add(key);
+            if (!creators.has(key)) creators.set(key, { user, total: 0, created: [] });
+            const entry = creators.get(key);
+            entry.total += 1;
+            entry.created.push({
+                rank: rank + 1,
+                level: level.name,
+                score: 1,
+                link: level.verification || '',
+            });
+        }
+    });
+    return [[...creators.values()].sort((a, b) => b.total - a.total || a.user.localeCompare(b.user)), errors];
+}

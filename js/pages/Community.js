@@ -5,8 +5,8 @@ async function api(path,payload) {
  const data=await res.json();if(!res.ok)throw new Error(data.error||'Request failed');return data;
 }
 export default {
- data:()=>({tab:'records',listType:'normal',levelPath:'',levelFiles:[],percent:100,videoUrl:'',note:'',weekly:[],submissions:[],entryUrl:'',busy:false,error:'',notice:''}),
- computed:{store(){return store},currentWeek(){const d=new Date();d.setUTCHours(0,0,0,0);d.setUTCDate(d.getUTCDate()-(d.getUTCDay()+6)%7);return d.toISOString().slice(0,10)},activeChallenge(){return this.weekly.find(x=>x.week_start===this.currentWeek)},},
+ data:()=>({tab:'records',listType:'normal',levelPath:'',levelFiles:[],percent:100,videoUrl:'',note:'',weekly:[],completions:[],submissions:[],entryUrl:'',busy:false,error:'',notice:''}),
+ computed:{store(){return store},currentWeek(){const d=new Date();d.setUTCHours(0,0,0,0);d.setUTCDate(d.getUTCDate()-(d.getUTCDay()+6)%7);return d.toISOString().slice(0,10)},activeChallenge(){return this.weekly.find(x=>x.week_start===this.currentWeek)},completionsForActive(){return this.completions.filter(x=>x.challenge_id===this.activeChallenge?.id)},},
  template:`
  <main class="ccl-hub ccl-community">
  <section class="hub-head"><h1>CCL Community</h1><p>Submit records and compete in weekly challenges.</p></section>
@@ -33,14 +33,14 @@ export default {
  <form v-if="store.user&&store.profileUsername" @submit.prevent="enterWeekly"><label>Your video proof</label><input v-model.trim="entryUrl" type="url" required placeholder="https://..." /><button class="hub-fav-button" :disabled="busy">Enter challenge</button></form>
  <p v-else>Log in and claim your player profile to enter.</p></div>
  <div v-else class="admin-empty"><strong>No challenge scheduled this week</strong><p>Staff can publish the next weekly challenge from the admin dashboard.</p></div>
- <h3>Past challenges</h3><div v-for="w in weekly" :key="w.id" class="hub-change"><strong>{{w.title}}</strong><span>{{w.week_start}}</span></div>
+ <h3>Verified finishers</h3><p v-if="!completionsForActive.length">No verified finishers yet.</p><div v-for="(e,i) in completionsForActive" :key="i" class="hub-change"><strong>{{e.username}}</strong><span>✓ Completed</span></div><h3>Past challenges</h3><div v-for="w in weekly" :key="w.id" class="hub-change"><strong>{{w.title}}</strong><span>{{w.week_start}}</span></div>
  </section>
  </main>`,
  async mounted(){await Promise.all([this.loadFiles(),this.loadWeekly(),this.loadSubmissions()]);},
  methods:{
  async action(fn){this.busy=true;this.error='';this.notice='';try{await fn()}catch(e){this.error=e.message}finally{this.busy=false}},
  async loadFiles(){try{const res=await fetch('/data/'+(this.listType==='normal'?'_list.json':'_platformer.json'));this.levelFiles=await res.json();this.levelPath=''}catch(e){this.error='Could not load levels.'}},
- async loadWeekly(){try{this.weekly=(await api('/api/community/weekly')).challenges||[]}catch(e){this.error='Weekly challenges unavailable. Check the D1 migration.'}},
+ async loadWeekly(){try{const result=await api('/api/community/weekly');this.weekly=result.challenges||[];this.completions=result.completions||[]}catch(e){this.error='Weekly challenges unavailable. Check the D1 migration.'}},
  async loadSubmissions(){if(!store.user)return;try{this.submissions=(await api('/api/community/submissions')).submissions||[]}catch(e){console.warn(e)}},
  async submitRecord(){await this.action(async()=>{await api('/api/community/submissions',{listType:this.listType,levelPath:this.levelPath,percent:this.percent,videoUrl:this.videoUrl,note:this.note});this.videoUrl='';this.note='';await this.loadSubmissions();this.notice='Record submitted for staff review.'})},
  async enterWeekly(){await this.action(async()=>{await api('/api/community/weekly/enter',{challengeId:this.activeChallenge.id,videoUrl:this.entryUrl});this.entryUrl='';this.notice='Weekly challenge entry submitted.'})}

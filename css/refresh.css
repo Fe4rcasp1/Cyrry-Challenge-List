@@ -442,3 +442,19 @@ header .nav .nav__hub-link { opacity: .8; }
 .ccl-community form,.ccl-admin .admin-editor form{display:flex;flex-direction:column;align-items:stretch;gap:.65rem;max-width:640px}
 .ccl-community form label,.ccl-admin .admin-editor form label{font-size:.8rem;font-weight:700}
 .ccl-community .admin-empty{padding:2rem;border:1px dashed var(--ui-border);border-radius:.7rem}
+
+
+/* Weekly community layout: override compact global heading/paragraph spacing. */
+.ccl-community .hub-card { display:flex; flex-direction:column; align-items:stretch; gap:0; }
+.ccl-community .hub-card > h2 { display:block; margin:0 0 1.5rem; line-height:1.4; }
+.ccl-community .weekly-details { display:flex; flex-direction:column; align-items:flex-start; gap:.85rem; margin-bottom:1.8rem; }
+.ccl-community .weekly-details > * { position:static; margin:0; line-height:1.5; }
+.ccl-community .weekly-details .weekly-title { display:block; font-size:1.4rem; line-height:1.3; margin:0; }
+.ccl-community .weekly-details p { display:block; margin:0; line-height:1.55; }
+.ccl-community .weekly-details form { width:100%; margin-top:.35rem; }
+.ccl-community .weekly-details form label { display:block; margin:0; line-height:1.5; }
+.ccl-community .weekly-details form input { display:block; width:100%; box-sizing:border-box; }
+.ccl-community .weekly-details form button { margin-top:.35rem; }
+.ccl-community .weekly-section-title { display:block; font-size:1.15rem; line-height:1.4; margin:1.5rem 0 .75rem !important; }
+.ccl-community .hub-card > p { display:block; line-height:1.5; margin:0 0 .75rem; }
+.ccl-community .hub-card > .hub-change { min-height:2.5rem; }

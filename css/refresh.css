@@ -351,3 +351,54 @@ header .nav .nav__hub-link { opacity: .8; }
 .page-list .list .level.completed-by-user.active button {
     box-shadow: inset 0 0 0 3px #22c55e;
 }
+
+/* Admin dashboard refresh */
+.ccl-admin { gap: 1.15rem; }
+.ccl-admin .admin-heading { display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap; }
+.ccl-admin .admin-eyebrow { font-size:.68rem;font-weight:800;letter-spacing:.13em;color:var(--ui-muted);margin:0 0 .45rem; }
+.ccl-admin .admin-role-pill,.ccl-admin .admin-subtle-pill {display:inline-flex;align-items:center;padding:.35rem .7rem;border-radius:999px;border:1px solid var(--ui-border);font-size:.73rem;font-weight:700;text-transform:capitalize;white-space:nowrap}
+.ccl-admin .admin-role-pill {color:#24bf83;border-color:#24bf8370;background:#24bf8315}
+.ccl-admin .admin-tabs {display:flex;gap:.35rem;margin:0;padding:.3rem;border:1px solid var(--ui-border);border-radius:.8rem;max-width:max-content;background:var(--color-background);flex-wrap:wrap}
+.ccl-admin .admin-tabs button {border:0;background:transparent;color:var(--color-on-background);padding:.75rem 1.05rem;border-radius:.6rem;font:inherit;font-size:.84rem;font-weight:700}
+.ccl-admin .admin-tabs button.active {background:var(--color-primary);color:var(--color-on-primary)}
+.ccl-admin .admin-tab-count {display:inline-block;margin-left:.4rem;padding:.08rem .4rem;border-radius:99px;background:#ffffff24;font-size:.7rem}
+.ccl-admin .admin-panel {padding:clamp(1rem,2.5vw,1.65rem);display:flex;flex-direction:column;gap:1rem}
+.ccl-admin .admin-section-head {display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.ccl-admin .admin-section-head h2,.ccl-admin .admin-section-head h3 {margin:0 0 .4rem}
+.ccl-admin .admin-section-head p {margin:0}
+.ccl-admin .admin-btn {border:1px solid var(--ui-border);border-radius:.55rem;padding:.65rem .95rem;font:inherit;font-size:.8rem;font-weight:700;cursor:pointer}
+.ccl-admin .admin-btn:disabled {opacity:.45;cursor:not-allowed}
+.ccl-admin .admin-btn-primary {background:var(--color-primary);color:var(--color-on-primary)}
+.ccl-admin .admin-btn-secondary {background:var(--color-background);color:var(--color-on-background)}
+.ccl-admin .admin-btn-approve {background:#168a55;color:white;border-color:#168a55}
+.ccl-admin .admin-btn-reject {background:transparent;color:#e26770;border-color:#e2677070}
+.ccl-admin .admin-empty {padding:2.6rem 1rem;text-align:center;border:1px dashed var(--ui-border);border-radius:.75rem;color:var(--ui-muted)}
+.ccl-admin .admin-empty strong {display:block;color:var(--color-on-background);margin-bottom:.4rem}
+.ccl-admin .admin-claim-list {display:grid;gap:1rem}
+.ccl-admin .admin-claim {border:1px solid var(--ui-border);border-radius:.8rem;padding:1.15rem;background:var(--color-background)}
+.ccl-admin .admin-claim-top {display:flex;align-items:flex-start;justify-content:space-between;gap:.75rem}
+.ccl-admin .admin-claim-top h3 {margin:0;font-size:1.15rem}
+.ccl-admin .admin-pending {border-radius:99px;padding:.3rem .65rem;background:#d9a43825;color:#d9a438;font-size:.72rem;font-weight:700}
+.ccl-admin .admin-claim-details {display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:.8rem;margin:1rem 0}
+.ccl-admin .admin-claim-details>div {display:flex;flex-direction:column;gap:.3rem;min-width:0;overflow-wrap:anywhere}
+.ccl-admin .admin-claim-details small {color:var(--ui-muted);font-size:.7rem}
+.ccl-admin .admin-claim-details strong,.ccl-admin .admin-claim-details span {font-size:.8rem}
+.ccl-admin .admin-evidence-label {font-size:.75rem;font-weight:700;margin-bottom:.45rem}
+.ccl-admin .admin-evidence {white-space:pre-wrap;overflow-wrap:anywhere;font-family:inherit;font-size:.8rem;line-height:1.55;margin:0;padding:1rem;border:1px solid var(--ui-border);background:var(--color-background);border-radius:.65rem}
+.ccl-admin .admin-actions {display:flex;gap:.65rem;flex-wrap:wrap;margin:1rem 0 0}
+.ccl-admin .admin-editor-controls {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.9rem}
+.ccl-admin .admin-field {display:flex;flex-direction:column;gap:.45rem;min-width:0}
+.ccl-admin .admin-field-full {grid-column:1/-1}
+.ccl-admin .admin-field label {font-size:.76rem;font-weight:700}
+.ccl-admin .admin-field input,.ccl-admin .admin-field select,.ccl-admin .admin-user select {width:100%;min-width:0;padding:.72rem .8rem;border:1px solid var(--ui-border);border-radius:.55rem;background:var(--color-background);color:var(--color-on-background);font:inherit;font-size:.82rem}
+.ccl-admin .admin-editor {border-top:1px solid var(--ui-border);padding-top:1.2rem}
+.ccl-admin .admin-json {display:block;width:100%;box-sizing:border-box;min-height:400px;resize:vertical;font: .8rem/1.55 ui-monospace,SFMono-Regular,Menlo,monospace;padding:1rem;margin-top:.9rem;background:var(--color-background);color:var(--color-on-background);border:1px solid var(--ui-border);border-radius:.65rem}
+.ccl-admin .admin-unsaved {color:#e1a33b;font-size:.73rem;font-weight:700}
+.ccl-admin .admin-validation {color:#e26770;font-size:.78rem;margin-top:.45rem}
+.ccl-admin .admin-users {border:1px solid var(--ui-border);border-radius:.65rem;overflow:hidden}
+.ccl-admin .admin-user {display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(130px,1fr);gap:.8rem;align-items:center;padding:.75rem 1rem;border-bottom:1px solid var(--ui-border);font-size:.8rem}
+.ccl-admin .admin-user:last-child {border-bottom:0}
+.ccl-admin .admin-user-head {font-size:.7rem;font-weight:700;color:var(--ui-muted);background:var(--color-background)}
+.ccl-admin .admin-flash {padding:.85rem 1rem;border-radius:.6rem;border:1px solid var(--ui-border)}
+.ccl-admin .admin-success {color:#24bf83;border-color:#24bf8370;background:#24bf8315}
+@media(max-width:650px) {.ccl-admin .admin-editor-controls {grid-template-columns:1fr}.ccl-admin .admin-user {grid-template-columns:minmax(0,1fr) minmax(100px,1fr)}.ccl-admin .admin-user-head {display:none}.ccl-admin .admin-user .admin-subtle-pill {display:none}}

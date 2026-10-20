@@ -86,6 +86,7 @@ export default {
           <article v-for="s in submissions" :key="s.id" class="admin-claim">
             <h3>{{s.leaderboard_username}} — {{s.level_path.replaceAll('_',' ')}}</h3>
             <p>{{s.list_type}} · {{s.percent}}% · {{s.created_at}}</p>
+            <p><strong>Discord:</strong> {{s.discord_name}} · <strong>Enjoyment:</strong> {{s.enjoyment}}/10</p>
             <p v-if="s.note">{{s.note}}</p>
             <a :href="s.video_url" target="_blank" rel="noopener noreferrer">Watch video evidence ↗</a>
             <div class="admin-actions"><button class="admin-btn admin-btn-approve" :disabled="busy" @click="reviewRecord(s,'approved')">Approve</button><button class="admin-btn admin-btn-reject" :disabled="busy" @click="reviewRecord(s,'rejected')">Reject</button></div>

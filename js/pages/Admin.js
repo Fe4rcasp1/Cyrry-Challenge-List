@@ -27,7 +27,7 @@ export default {
  <section v-if="tab==='users' && canManage" class="hub-card"><h2>Staff permissions</h2><p>Owner can assign roles; admin can edit levels and review claims; editor can edit levels; moderator can review claims.</p><div v-for="u in users" :key="u.id" class="admin-user"><strong>{{u.username}}</strong><span>{{u.role||'member'}}</span><select :value="u.role||'member'" @change="setRole(u,$event.target.value);$event.target.value=u.role||'member'"><option value="member">Member</option><option value="moderator">Moderator</option><option value="editor">Editor</option><option value="admin">Admin</option><option value="owner">Owner</option></select></div></section>
  </template><p v-if="error" class="hub-auth-error" role="alert">{{error}}</p><p v-if="notice" role="status">{{notice}}</p></main>`,
  computed:{canEdit(){return ['owner','admin','editor'].includes(this.role)},canManage(){return this.role==='owner'},filteredFiles(){return this.levelFiles.filter(x=>x.toLowerCase().includes(this.filter.toLowerCase())).slice(0,300)}},
- async mounted(){try{const me=await api('/api/admin/me');this.role=me.role||'';if(this.role)await this.loadClaims()}catch(e){this.error=e.message}finally{this.loading=false}},
+ async mounted(){try{const me=await api('/api/admin/me');this.role=me.role||'';if(this.role){if(this.role==='editor'){this.tab='levels';await this.loadFiles()}else await this.loadClaims()}}catch(e){this.error=e.message}finally{this.loading=false}},
  methods:{
  async run(fn){this.error='';this.notice='';this.busy=true;try{await fn()}catch(e){this.error=e.message}finally{this.busy=false}},
  async loadClaims(){await this.run(async()=>{this.claims=(await api('/api/admin/claims')).claims})},

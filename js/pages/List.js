@@ -23,22 +23,30 @@ export default {
         </main>
         <main v-else class="page-list">
             <div class="list-container">
+                <div class="search-panel">
+                    <label :for="platformer ? 'platformer-search' : 'level-search'">Search levels</label>
+                    <input :id="platformer ? 'platformer-search' : 'level-search'" class="list-search" type="search" v-model="searchQuery" placeholder="Search by level name, creator, or ID…" autocomplete="off" />
+                    <p class="search-count">{{ filteredLevels.length }} of {{ list.length }} levels</p>
+                </div>
+                <p v-if="list.length && !filteredLevels.length" class="search-empty">No levels found. Try a different search.</p>
                 <table class="list" v-if="list">
                     <tr class="section-header">
                         <td colspan="2" class="type-label-lg">{{ platformer ? "Platformer List" : "Main List" }}</td>
                     </tr>
-                    <tr v-for="([level, err], i) in list">
+                    <tr v-for="item in filteredLevels" :key="item.index">
+                        <template v-if="true">
                         <td class="rank">
-                            <p class="type-label-lg">#{{ i + 1 }}</p>
+                            <p class="type-label-lg">#{{ item.index + 1 }}</p>
                         </td>
-                        <td class="level" :class="{ 'active': selected == i, 'error': !level }">
-                            <button @click="selected = i">
-                                <span class="type-label-lg">{{ level?.name || \`Error (\${err}.json)\` }}</span>
+                        <td class="level"  :class="{ 'active': selected == item.index, 'error': !item.level }">
+                            <button @click="selected = item.index">
+                                <span class="type-label-lg">{{ item.level?.name || \`Error (\${item.err}.json)\` }}</span>
                             </button>
                         </td>
-                        <tr v-if="!platformer && (i + 1) % 100 === 0 && (i + 1) < list.length" class="section-header">
+                        <tr v-if="!searchQuery.trim() && !platformer && (item.index + 1) % 100 === 0 && (item.index + 1) < list.length" class="section-header">
                             <td colspan="2" class="type-label-lg">Extended</td>
                         </tr>
+                        </template>
                     </tr>
                 </table>
             </div>
@@ -201,6 +209,7 @@ export default {
     `,
     data: () => ({
         list: [],
+        searchQuery: "",
         editors: [],
         loading: true,
         selected: 0,
@@ -209,6 +218,10 @@ export default {
         store
     }),
     computed: {
+        filteredLevels() {
+            const query = this.searchQuery.trim().toLocaleLowerCase();
+            return (this.list || []).map(([level, err], index) => ({ level, err, index })).filter(({ level, err }) => !query || [level?.name, level?.author, level?.id, err].some(value => String(value ?? "").toLocaleLowerCase().includes(query)));
+        },
         level() {
             return this.list[this.selected]?.[0] || null;
         },

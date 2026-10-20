@@ -11,12 +11,12 @@ export default {
  <section class="hub-head"><h1>CCL Community</h1><p>Take on this week's challenge and see verified finishers.</p></section>
  <p v-if="error" class="hub-auth-error" role="alert">{{error}}</p><p v-if="notice" role="status">{{notice}}</p>
  <section class="hub-card"><h2>Weekly challenge</h2>
- <div v-if="activeChallenge"><span class="admin-subtle-pill">Week of {{activeChallenge.week_start}}</span><h3>{{activeChallenge.title}}</h3>
+ <div v-if="activeChallenge" class="weekly-details"><span class="admin-subtle-pill">Week of {{activeChallenge.week_start}}</span><h3 class="weekly-title">{{activeChallenge.title}}</h3>
  <p>{{activeChallenge.description}}</p><p><strong>Level:</strong> {{activeChallenge.level_path.replaceAll('_',' ')}} ({{activeChallenge.list_type}})</p>
  <form v-if="store.user&&store.profileUsername" @submit.prevent="enterWeekly"><label>Your video proof</label><input v-model.trim="entryUrl" type="url" required placeholder="https://..." /><button class="hub-fav-button" :disabled="busy">Enter challenge</button></form>
  <p v-else>Log in and claim your player profile to enter.</p></div>
  <div v-else class="admin-empty"><strong>No challenge scheduled this week</strong><p>Staff can publish the next weekly challenge from the admin dashboard.</p></div>
- <h3>Verified finishers</h3><p v-if="!completionsForActive.length">No verified finishers yet.</p><div v-for="(e,i) in completionsForActive" :key="i" class="hub-change"><strong>{{e.username}}</strong><span>✓ Completed</span></div><h3>Past challenges</h3><div v-for="w in weekly" :key="w.id" class="hub-change"><strong>{{w.title}}</strong><span>{{w.week_start}}</span></div>
+ <h3 class="weekly-section-title">Verified finishers</h3><p v-if="!completionsForActive.length">No verified finishers yet.</p><div v-for="(e,i) in completionsForActive" :key="i" class="hub-change"><strong>{{e.username}}</strong><span>✓ Completed</span></div><h3 class="weekly-section-title">Past challenges</h3><div v-for="w in weekly" :key="w.id" class="hub-change"><strong>{{w.title}}</strong><span>{{w.week_start}}</span></div>
  </section>
  </main>`,
  async mounted(){await this.loadWeekly();},

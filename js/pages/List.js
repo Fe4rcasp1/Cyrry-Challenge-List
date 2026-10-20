@@ -58,7 +58,7 @@ export default {
                         <td class="rank">
                             <p class="type-label-lg">#{{ item.index + 1 }}</p>
                         </td>
-                        <td class="level"   :class="{ 'active': selected == item.index, 'error': !item.level }">
+                        <td class="level"   :class="{ 'active': selected == item.index, 'error': !item.level, 'completed-by-user': isCompletedByUser(item.level) }">
                             <button @click="selected = item.index" :style="selected === item.index && item.level ? { backgroundColor: ratingColor(item.level), color: ratingTextColor(item.level) } : {}">
                                 <span class="type-label-lg">{{ item.level?.name || \`Error (\${item.err}.json)\` }}</span>
                             </button>
@@ -300,6 +300,13 @@ export default {
         this.syncFavorite();
     },
     methods: {
+        isCompletedByUser(level) {
+            const username = this.store.profileUsername;
+            if (!username || !level) return false;
+            const normalized = username.toLocaleLowerCase();
+            return (level.verifier || '').toLocaleLowerCase() === normalized ||
+                (level.records || []).some(record => (record.user || '').toLocaleLowerCase() === normalized && Number(record.percent) === 100);
+        },
         syncFavorite() { this.favorite = isFavorite(this.level?.id, this.platformer); },
         toggleLevelFavorite() { toggleFavorite(this.level, this.platformer); this.syncFavorite(); },
         embed,

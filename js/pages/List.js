@@ -27,9 +27,27 @@ export default {
                 <div class="search-panel">
                     <label :for="platformer ? 'platformer-search' : 'level-search'">Search levels</label>
                     <input :id="platformer ? 'platformer-search' : 'level-search'" class="list-search" type="search" v-model="searchQuery" placeholder="Search by level name, creator, or ID…" autocomplete="off" />
+                    <div class="level-filters">
+                        <label :for="platformer ? 'platformer-section' : 'challenge-section'">List section</label>
+                        <select :id="platformer ? 'platformer-section' : 'challenge-section'" v-model="sectionFilter" class="filter-select">
+                            <option value="all">All levels</option>
+                            <option value="main">Main List (1–100)</option>
+                            <option value="extended">Extended List (101+)</option>
+                        </select>
+                        <label :for="platformer ? 'platformer-rating' : 'challenge-rating'">Rating</label>
+                        <select :id="platformer ? 'platformer-rating' : 'challenge-rating'" v-model="ratingFilter" class="filter-select">
+                            <option value="all">All ratings</option>
+                            <option value="rate">Rate</option>
+                            <option value="featured">Featured</option>
+                            <option value="epic">Epic</option>
+                            <option value="legendary">Legendary</option>
+                            <option value="mythic">Mythic</option>
+                        </select>
+                        <button type="button" class="filter-reset" v-if="searchQuery || sectionFilter !== 'all' || ratingFilter !== 'all'" @click="resetFilters">Clear filters</button>
+                    </div>
                     <p class="search-count">{{ filteredLevels.length }} of {{ list.length }} levels</p>
                 </div>
-                <p v-if="list.length && !filteredLevels.length" class="search-empty">No levels found. Try a different search.</p>
+                <p v-if="list.length && !filteredLevels.length" class="search-empty">No levels match these filters.</p>
                 <table class="list" v-if="list">
                     <tr class="section-header">
                         <td colspan="2" class="type-label-lg">{{ platformer ? "Platformer List" : "Main List" }}</td>
@@ -45,7 +63,7 @@ export default {
                             </button>
                         </td>
                         </tr>
-                        <tr v-if="!searchQuery.trim() && !platformer && (item.index + 1) % 100 === 0 && (item.index + 1) < list.length" class="section-header">
+                        <tr v-if="!searchQuery.trim() && sectionFilter === "all" && ratingFilter === "all" && !platformer && (item.index + 1) % 100 === 0 && (item.index + 1) < list.length" class="section-header">
                             <td colspan="2" class="type-label-lg">Extended</td>
                         </tr>
                     </template>
@@ -211,6 +229,8 @@ export default {
     data: () => ({
         list: [],
         searchQuery: "",
+        sectionFilter: "all",
+        ratingFilter: "all",
         editors: [],
         loading: true,
         selected: 0,
@@ -221,7 +241,12 @@ export default {
     computed: {
         filteredLevels() {
             const query = this.searchQuery.trim().toLocaleLowerCase();
-            return (this.list || []).map(([level, err], index) => ({ level, err, index })).filter(({ level, err }) => !query || [level?.name, level?.author, level?.id, err].some(value => String(value ?? "").toLocaleLowerCase().includes(query)));
+            return (this.list || []).map(([level, err], index) => ({ level, err, index })).filter(({ level, err, index }) => {
+                if (this.sectionFilter === "main" && index >= 100) return false;
+                if (this.sectionFilter === "extended" && index < 100) return false;
+                if (this.ratingFilter !== "all" && getLevelRating(level, this.platformer) !== this.ratingFilter) return false;
+                return !query || [level?.name, level?.author, ...(level?.creators || []), level?.id, err].some(value => String(value ?? "").toLocaleLowerCase().includes(query));
+            });
         },
         level() {
             return this.list[this.selected]?.[0] || null;
@@ -267,6 +292,7 @@ export default {
     methods: {
         embed,
         score,
+        resetFilters() { this.searchQuery = ""; this.sectionFilter = "all"; this.ratingFilter = "all"; },
         ratingColor(level) { return ({ rate: "#808080", featured: "#e4c526", epic: "#ef922d", legendary: "#a855f7", mythic: "#08bfd4" })[getLevelRating(level, this.platformer)] || "#244f88"; },
         ratingTextColor(level) { return ["featured", "epic", "mythic"].includes(getLevelRating(level, this.platformer)) ? "#171c27" : "#fff"; },
     },

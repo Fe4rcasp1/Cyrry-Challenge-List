@@ -63,7 +63,7 @@ export default {
                             </button>
                         </td>
                         </tr>
-                        <tr v-if="!searchQuery.trim() && sectionFilter === "all" && ratingFilter === "all" && !platformer && (item.index + 1) % 100 === 0 && (item.index + 1) < list.length" class="section-header">
+                        <tr v-if="!searchQuery.trim() && sectionFilter === 'all' && ratingFilter === 'all' && !platformer && (item.index + 1) % 100 === 0 && (item.index + 1) < list.length" class="section-header">
                             <td colspan="2" class="type-label-lg">Extended</td>
                         </tr>
                     </template>

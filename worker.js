@@ -247,6 +247,50 @@ async function handle(request, env) {
      await env.DB.batch(entries.map(e=>env.DB.prepare("INSERT INTO ranking_snapshots(id,leaderboard_username,points,rank,captured_at) VALUES(?,?,?,?,?) ON CONFLICT(leaderboard_username,captured_at) DO UPDATE SET points=excluded.points,rank=excluded.rank").bind(crypto.randomUUID(),e.user,e.points,e.rank,day)));
      return json({ok:true,count:entries.length});
    }
+   if (path === '/api/admin/enjoyment' && request.method === 'GET') {
+     if(!canEdit&&!canReview)return json({error:'Not permitted.'},403);
+     const listType=String(url.searchParams.get('list')||''),levelPath=String(url.searchParams.get('level')||'');
+     if(!['normal','platformer'].includes(listType)||!/^[A-Za-z0-9_-]{1,120}$/.test(levelPath))return json({error:'Invalid level.'},400);
+     const listResponse=await env.ASSETS.fetch(new Request(new URL('/data/'+(listType==='normal'?'_list.json':'_platformer.json'),request.url)));
+     if(!listResponse.ok||!(await listResponse.json()).includes(levelPath))return json({error:'Level not on this list.'},404);
+     const override=await env.DB.prepare('SELECT level_json FROM level_overrides WHERE list_type=? AND level_path=?').bind(listType,levelPath).first();
+     let level;
+     if(override)level=JSON.parse(override.level_json);
+     else {
+       const response=await env.ASSETS.fetch(new Request(new URL('/data/'+encodeURIComponent(levelPath)+'.json',request.url)));
+       if(!response.ok)return json({error:'Level data unavailable.'},503);
+       level=await response.json();
+     }
+     const manual=await env.DB.prepare('SELECT leaderboard_username,enjoyment FROM manual_enjoyment_ratings WHERE list_type=? AND level_path=?').bind(listType,levelPath).all();
+     const byUser=new Map(manual.results.map(x=>[x.leaderboard_username.toLowerCase(),x.enjoyment]));
+     const records=(Array.isArray(level.records)?level.records:[]).filter(x=>x&&typeof x.user==='string').map(x=>({username:x.user,enjoyment:byUser.get(x.user.toLowerCase())??(Number.isInteger(x.enjoyment)?x.enjoyment:null),percent:x.percent}));
+     return json({records});
+   }
+   if (path === '/api/admin/enjoyment' && request.method === 'POST') {
+     if(!canEdit&&!canReview)return json({error:'Not permitted.'},403);
+     const data=await body(request),listType=String(data.listType||''),levelPath=String(data.levelPath||''),username=String(data.username||'').trim(),enjoyment=Number(data.enjoyment);
+     if(!['normal','platformer'].includes(listType)||!/^[A-Za-z0-9_-]{1,120}$/.test(levelPath)||!username||username.length>64||!Number.isInteger(enjoyment)||enjoyment<0||enjoyment>10)return json({error:'Select an existing record and a whole-number enjoyment rating (0–10).'},400);
+     const listResponse=await env.ASSETS.fetch(new Request(new URL('/data/'+(listType==='normal'?'_list.json':'_platformer.json'),request.url)));
+     if(!listResponse.ok||!(await listResponse.json()).includes(levelPath))return json({error:'Level not on this list.'},404);
+     const override=await env.DB.prepare('SELECT level_json FROM level_overrides WHERE list_type=? AND level_path=?').bind(listType,levelPath).first();
+     let level;
+     if(override)level=JSON.parse(override.level_json);
+     else {
+       const response=await env.ASSETS.fetch(new Request(new URL('/data/'+encodeURIComponent(levelPath)+'.json',request.url)));
+       if(!response.ok)return json({error:'Level data unavailable.'},503);
+       level=await response.json();
+     }
+     if(!Array.isArray(level.records))return json({error:'Level has no records.'},400);
+     const record=level.records.find(x=>String(x?.user||'').toLowerCase()===username.toLowerCase());
+     if(!record)return json({error:'That player does not have a record on this level.'},404);
+     record.enjoyment=enjoyment;
+     await env.DB.batch([
+       env.DB.prepare("INSERT INTO level_overrides(list_type,level_path,level_json,updated_by) VALUES(?,?,?,?) ON CONFLICT(list_type,level_path) DO UPDATE SET level_json=excluded.level_json,updated_by=excluded.updated_by,updated_at=CURRENT_TIMESTAMP").bind(listType,levelPath,JSON.stringify(level),user.id),
+       env.DB.prepare("INSERT INTO manual_enjoyment_ratings(list_type,level_path,leaderboard_username,enjoyment,updated_by) VALUES(?,?,?,?,?) ON CONFLICT(list_type,level_path,leaderboard_username) DO UPDATE SET enjoyment=excluded.enjoyment,updated_by=excluded.updated_by,updated_at=CURRENT_TIMESTAMP").bind(listType,levelPath,record.user,enjoyment,user.id),
+       env.DB.prepare('INSERT INTO admin_audit(id,actor_id,action,target) VALUES(?,?,?,?)').bind(crypto.randomUUID(),user.id,'enjoyment_edit',listType+':'+levelPath+':'+record.user)
+     ]);
+     return json({ok:true});
+   }
    if (path === '/api/admin/levels' && request.method === 'POST') {
      if (!canEdit) return json({error:'Level editing not permitted.'},403);
      const data=await body(request), listType=String(data.listType||''), levelPath=String(data.path||'');
@@ -295,7 +339,7 @@ async function handle(request, env) {
    return json({ok:true});
  }
  if (path === '/api/community/enjoyment' && request.method === 'GET') {
-   const rows=await env.DB.prepare("SELECT list_type,level_path,ROUND(AVG(enjoyment),2) AS average,COUNT(*) AS ratings FROM record_submissions WHERE status='approved' AND enjoyment IS NOT NULL GROUP BY list_type,level_path ORDER BY average DESC,ratings DESC,level_path LIMIT 300").all();
+   const rows=await env.DB.prepare("SELECT list_type,level_path,ROUND(AVG(enjoyment),2) AS average,COUNT(*) AS ratings FROM (SELECT list_type,level_path,leaderboard_username,enjoyment FROM manual_enjoyment_ratings UNION ALL SELECT s.list_type,s.level_path,s.leaderboard_username,s.enjoyment FROM record_submissions s WHERE s.status='approved' AND s.enjoyment IS NOT NULL AND s.id=(SELECT t.id FROM record_submissions t WHERE t.status='approved' AND t.list_type=s.list_type AND t.level_path=s.level_path AND t.leaderboard_username=s.leaderboard_username COLLATE NOCASE ORDER BY t.reviewed_at DESC,t.created_at DESC,t.id DESC LIMIT 1) AND NOT EXISTS(SELECT 1 FROM manual_enjoyment_ratings m WHERE m.list_type=s.list_type AND m.level_path=s.level_path AND m.leaderboard_username=s.leaderboard_username COLLATE NOCASE)) GROUP BY list_type,level_path ORDER BY average DESC,ratings DESC,level_path LIMIT 300").all();
    return json({levels:rows.results});
  }
  if (path === '/api/community/player-stats' && request.method === 'GET') {

@@ -155,3 +155,13 @@ main > div { scrollbar-width: thin; scrollbar-color: var(--ui-border) transparen
   .page-roulette .levels .level { grid-template-columns: 8rem 1fr; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; } }
+
+/* Instant search on both level lists and leaderboard */
+.search-panel { display: flex; flex-direction: column; gap: .55rem; padding: .8rem .55rem 1rem; }
+.search-panel label { color: var(--color-on-background); font-size: .8rem; font-weight: 700; }
+.search-panel .list-search { width: 100%; min-width: 0; padding: .85rem 1rem; border: 1px solid var(--ui-border); border-radius: .8rem; background: var(--ui-card); color: var(--color-on-background); font: inherit; font-size: .85rem; outline: none; transition: border-color .2s ease, box-shadow .2s ease; }
+.search-panel .list-search:focus { border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(73, 128, 203, .17); }
+.search-panel .list-search::placeholder { color: var(--ui-muted); opacity: .85; }
+.search-panel .search-count { font-size: .7rem; color: var(--ui-muted); }
+.search-empty { padding: 1rem; color: var(--ui-muted); font-size: .85rem; }
+.page-leaderboard .board-container .search-panel { position: sticky; top: 0; z-index: 2; background: var(--color-background); border-bottom: 1px solid var(--ui-border); }

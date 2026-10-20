@@ -2,10 +2,10 @@ import { fetchLeaderboard, fetchCreatorLeaderboard } from '../content.js';
 import { getLevelRating } from '../ratings.js';
 const badge = (id, title, desc, earned) => ({ id, title, desc, earned });
 export default {
-    data: () => ({ loading: true, player: null, creator: null, rank: null, staffRole: null, achievementFilter: 'all', error: '' }),
+    data: () => ({ loading: true, player: null, creator: null, rank: null, staffRole: null, achievementFilter: 'all', customProfile: null, history: [], error: '' }),
     template: `
       <main class="ccl-hub">
-        <section class="hub-head"><router-link to="/hub">← Back to CCL Hub</router-link><h1>{{ displayName }}</h1><div v-if="profileRoles.length" class="profile-role-list"><span v-for="role in profileRoles" :key="role.label" class="profile-role-badge" :class="role.className">{{role.icon}} {{role.label}}</span></div><p>Player profile · based on public CCL records</p></section>
+        <section class="hub-head profile-custom-head" :style="customProfile ? {borderColor:customProfile.accent} : {}"><div v-if="customProfile?.banner_url" class="profile-banner" :style="{backgroundImage:'url(\'' + customProfile.banner_url + '\')'}"></div><router-link to="/hub">← Back to CCL Hub</router-link><img v-if="customProfile?.avatar_url" class="profile-avatar" :src="customProfile.avatar_url" alt="Player avatar" referrerpolicy="no-referrer" /><h1>{{ displayName }}</h1><div v-if="profileRoles.length" class="profile-role-list"><span v-for="role in profileRoles" :key="role.label" class="profile-role-badge" :class="role.className">{{role.icon}} {{role.label}}</span></div><p>Player profile · based on public CCL records</p><p v-if="customProfile?.bio" class="profile-bio">{{customProfile.bio}}</p></section>
         <p v-if="loading">Loading player profile…</p><p v-else-if="error">{{ error }}</p>
         <template v-else>
           <section class="hub-card"><h2>Statistics</h2><div class="hub-stats">
@@ -16,6 +16,13 @@ export default {
             <div><strong>{{ creator ? creator.total : 0 }}</strong><span>Creator points</span></div>
             <div><strong>{{ creator ? creator.created.length : 0 }}</strong><span>Created levels</span></div>
           </div></section>
+          <section class="hub-card"><h2>Ranking history</h2>
+            <p class="hub-muted">Snapshots start when staff save them. Historical rankings before the first snapshot are not available.</p>
+            <p v-if="!history.length">No snapshots saved for this player yet.</p>
+            <div v-else class="profile-history">
+              <div v-for="(h,i) in history" :key="i" class="hub-change"><strong>{{h.captured_at}}</strong><span>#{{h.rank}} · {{h.points}} points</span></div>
+            </div>
+          </section>
           <section class="hub-card"><div class="admin-section-head"><h2>Achievements & Badges</h2><span class="admin-subtle-pill">{{earnedCount}} / {{badges.length}} unlocked</span></div><div class="profile-achievement-progress"><div :style="{width:achievementPercent + '%'}"></div></div><div class="profile-achievement-controls"><button type="button" :class="{active:achievementFilter==='all'}" @click="achievementFilter='all'">All</button><button type="button" :class="{active:achievementFilter==='earned'}" @click="achievementFilter='earned'">Unlocked</button><button type="button" :class="{active:achievementFilter==='locked'}" @click="achievementFilter='locked'">Locked</button></div><div class="hub-badges"><div v-for="b in filteredBadges" :key="b.id" class="hub-badge" :class="{ locked: !b.earned }"><strong>{{ b.earned ? '🏆' : '🔒' }} {{ b.title }}</strong><small>{{ b.desc }}</small></div></div><p class="hub-muted">Badges are calculated from current public list data; they are not permanent awards.</p></section>
           <section v-if="player" class="hub-card"><h2>Completed levels</h2><p v-if="!player.completed.length">No completed records yet.</p><div v-for="item in player.completed" :key="'c'+item.rank" class="hub-change"><strong>#{{ item.rank }} {{ item.level }}</strong><span>+{{ item.score }} points</span></div><h2>Verified levels</h2><div v-for="item in player.verified" :key="'v'+item.rank" class="hub-change"><strong>#{{ item.rank }} {{ item.level }}</strong><span>+{{ item.score }} points</span></div><h2>Progress records</h2><div v-for="item in player.progressed" :key="'p'+item.rank" class="hub-change"><strong>#{{ item.rank }} {{ item.level }}</strong><span>{{ item.percent }}% · +{{ item.score }} points</span></div></section>
           <section v-if="creator" class="hub-card"><h2>Created levels</h2><div v-for="item in creator.created" :key="item.rank" class="hub-change"><strong>#{{ item.rank }} {{ item.level }}</strong><span class="creator-rating" :class="'rating-' + item.rating.toLowerCase()">{{ item.rating }} · +{{ item.score }}</span></div></section>
@@ -91,6 +98,14 @@ export default {
             this.rank = index >= 0 ? index + 1 : null;
             this.creator = creators.find(x => x.user.toLowerCase() === username) || null;
             if (!this.player && !this.creator) this.error = 'No public CCL player or creator records found for this username.';
+            try {
+                const [profileResponse,historyResponse]=await Promise.all([
+                    fetch('/api/community/profile?username='+encodeURIComponent(this.displayName),{cache:'no-store'}),
+                    fetch('/api/community/history?username='+encodeURIComponent(this.displayName),{cache:'no-store'})
+                ]);
+                if(profileResponse.ok)this.customProfile=(await profileResponse.json()).profile;
+                if(historyResponse.ok)this.history=(await historyResponse.json()).history||[];
+            }catch(e){console.warn('Community profile details unavailable',e)}
             try {
                 const roleResponse = await fetch('/api/profiles/roles?username=' + encodeURIComponent(this.displayName), {cache:'no-store'});
                 if (roleResponse.ok) this.staffRole = (await roleResponse.json()).role || null;

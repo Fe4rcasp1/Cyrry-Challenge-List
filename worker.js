@@ -315,7 +315,14 @@ async function handle(request, env) {
    const claim=await env.DB.prepare("SELECT leaderboard_username FROM claims WHERE user_id=? AND status='approved' LIMIT 1").bind(user.id).first();
    if(!claim)return json({error:'You need an approved leaderboard profile claim to submit records.'},403);
    const data=await body(request),type=String(data.listType||''),level=String(data.levelPath||''),video=String(data.videoUrl||''),percent=Number(data.percent),note=String(data.note||'').trim(),username=String(data.username||'').trim(),discord=String(data.discordName||'').trim(),enjoyment=Number(data.enjoyment);
-   if(!['normal','platformer'].includes(type)||!/^[A-Za-z0-9_-]{1,120}$/.test(level)||!Number.isInteger(percent)||percent<1||percent>100||!safeUrl(video)||video.length>500||note.length>500||username.toLowerCase()!==claim.leaderboard_username.toLowerCase()||!/^[^\\x00-\\x1f]{2,64}$/.test(discord)||!Number.isInteger(enjoyment)||enjoyment<0||enjoyment>10)return json({error:'Invalid submission details.'},400);
+if(!['normal','platformer'].includes(type))return json({error:'Select a valid list.'},400);
+   if(!/^[A-Za-z0-9_-]{1,120}$/.test(level))return json({error:'Select a valid level.'},400);
+   if(!Number.isInteger(percent)||percent<1||percent>100)return json({error:'Completion percentage must be a whole number from 1 to 100.'},400);
+   if(!safeUrl(video)||video.length>500)return json({error:'Enter a valid public HTTPS video proof link (500 characters maximum).'},400);
+   if(note.length>500)return json({error:'Submission note is too long.'},400);
+   if(username.toLowerCase()!==claim.leaderboard_username.toLowerCase())return json({error:'CCL username must match your approved profile: '+claim.leaderboard_username},400);
+   if(!/^[^\\x00-\\x1f]{2,64}$/.test(discord))return json({error:'Discord username must be between 2 and 64 characters.'},400);
+   if(!Number.isInteger(enjoyment)||enjoyment<0||enjoyment>10)return json({error:'Enjoyment must be a whole number between 0 and 10.'},400);
    const listResponse=await env.ASSETS.fetch(new Request(new URL('/data/'+(type==='normal'?'_list.json':'_platformer.json'),request.url)));
    if(!listResponse.ok||!(await listResponse.json()).includes(level))return json({error:'Level not found on selected list.'},404);
    const existing=await env.DB.prepare("SELECT id FROM record_submissions WHERE user_id=? AND list_type=? AND level_path=? AND status='pending'").bind(user.id,type,level).first();

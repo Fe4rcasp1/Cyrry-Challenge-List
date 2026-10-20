@@ -66,8 +66,8 @@ export default {
                             <table class="table">
                                 <tr v-for="created in entry.created" :key="created.rank">
                                     <td class="rank"><p>#{{ created.rank }}</p></td>
-                                    <td class="level"><a v-if="created.link" class="type-label-lg" :href="created.link" target="_blank" rel="noopener noreferrer">{{ created.level }}</a><p v-else>{{ created.level }}</p></td>
-                                    <td class="score"><p>+1</p></td>
+                                    <td class="level"><a v-if="created.link" class="type-label-lg" :href="created.link" target="_blank" rel="noopener noreferrer">{{ created.level }}</a><p v-else>{{ created.level }}</p><span class="creator-rating" :class="`rating-${created.rating.toLowerCase()}`">{{ ratingLabel(created.rating) }}</span></td>
+                                    <td class="score"><p>+{{ created.score }}</p></td>
                                 </tr>
                             </table>
                         </template>
@@ -144,6 +144,7 @@ export default {
     },
     methods: {
         localize,
+        ratingLabel(rating) { return rating.charAt(0).toUpperCase() + rating.slice(1); },
         switchLeaderboard(type) {
             if (this.leaderboardType === type) return;
             this.leaderboardType = type;

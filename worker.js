@@ -294,6 +294,17 @@ async function handle(request, env) {
    await env.DB.prepare("INSERT INTO player_profiles(user_id,bio,avatar_url,banner_url,accent,favorite_level,featured_badge,showcase_level,background_url) VALUES(?,?,?,?,?,?,?,?,?) ON CONFLICT(user_id) DO UPDATE SET bio=excluded.bio,avatar_url=excluded.avatar_url,banner_url=excluded.banner_url,accent=excluded.accent,favorite_level=excluded.favorite_level,featured_badge=excluded.featured_badge,showcase_level=excluded.showcase_level,background_url=excluded.background_url,updated_at=CURRENT_TIMESTAMP").bind(user.id,bio,avatar,banner,accent,favorite,featured,showcase,background).run();
    return json({ok:true});
  }
+ if (path === '/api/community/enjoyment' && request.method === 'GET') {
+   const rows=await env.DB.prepare("SELECT list_type,level_path,ROUND(AVG(enjoyment),2) AS average,COUNT(*) AS ratings FROM record_submissions WHERE status='approved' AND enjoyment IS NOT NULL GROUP BY list_type,level_path ORDER BY average DESC,ratings DESC,level_path LIMIT 300").all();
+   return json({levels:rows.results});
+ }
+ if (path === '/api/community/player-stats' && request.method === 'GET') {
+   const username=String(url.searchParams.get('username')||'').trim();
+   if(!/^[A-Za-z0-9_-]{1,32}$/.test(username))return json({stats:null});
+   const stats=await env.DB.prepare("SELECT COUNT(*) AS approved_records,ROUND(AVG(enjoyment),2) AS average_enjoyment,MAX(percent) AS best_percent FROM record_submissions WHERE leaderboard_username=? COLLATE NOCASE AND status='approved'").bind(username).first();
+   const recent=await env.DB.prepare("SELECT list_type,level_path,percent,enjoyment,reviewed_at FROM record_submissions WHERE leaderboard_username=? COLLATE NOCASE AND status='approved' ORDER BY reviewed_at DESC LIMIT 6").bind(username).all();
+   return json({stats,recent:recent.results});
+ }
  if (path === '/api/community/submissions' && request.method === 'GET') {
    const user=await currentUser(request,env.DB);if(!user)return json({error:'Log in first.'},401);
    const rows=await env.DB.prepare('SELECT id,leaderboard_username,list_type,level_path,percent,video_url,status,created_at FROM record_submissions WHERE user_id=? ORDER BY created_at DESC LIMIT 100').bind(user.id).all();

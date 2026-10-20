@@ -12,7 +12,7 @@ async function api(path, method = 'GET', payload) {
 
 export default {
     data: () => ({
-        role: '', tab: 'claims', claims: [], users: [], levelFiles: [], audit: [], submissions: [], weeklyEntries: [],
+        role: '', tab: 'claims', claims: [], users: [], levelFiles: [], audit: [], submissions: [], weeklyEntries: [], enjoymentRecords: [], enjoymentList:'normal', enjoymentLevel:'', enjoymentFiles:[], enjoymentUsername:'', enjoymentValue:5,
         listType: 'normal', levelPath: '', levelText: '', originalLevelText: '',
         filter: '', userFilter: '', weeklyWeek: '', weeklyTitle: '', weeklyDescription: '', loading: true, busy: false, error: '', notice: ''
     }),
@@ -52,6 +52,7 @@ export default {
             Profile claims <span class="admin-tab-count">{{claims.length}}</span>
           </button>
           <button v-if="canReview" type="button" :class="{active:tab==='submissions'}" @click="switchTab('submissions')">Record reviews</button>
+          <button v-if="canEdit || canReview" type="button" :class="{active:tab==='enjoyment'}" @click="switchTab('enjoyment')">Enjoyment ratings</button>
           <button v-if="canReview" type="button" :class="{active:tab==='weekly'}" @click="switchTab('weekly')">Weekly challenges</button>
           <button v-if="canManage || role==='admin'" type="button" :class="{active:tab==='audit'}" @click="switchTab('audit')">Activity log</button>
           <button v-if="canEdit" type="button" :class="{active:tab==='levels'}" @click="switchTab('levels')">Level editor</button>
@@ -91,6 +92,21 @@ export default {
             <a :href="s.video_url" target="_blank" rel="noopener noreferrer">Watch video evidence ↗</a>
             <div class="admin-actions"><button class="admin-btn admin-btn-approve" :disabled="busy" @click="reviewRecord(s,'approved')">Approve</button><button class="admin-btn admin-btn-reject" :disabled="busy" @click="reviewRecord(s,'rejected')">Reject</button></div>
           </article>
+        </section>
+        <section v-if="tab==='enjoyment' && (canEdit || canReview)" class="hub-card admin-panel">
+          <h2>Manage enjoyment ratings</h2><p class="hub-muted">Add or change a 0–10 enjoyment rating for any existing level record. Changes update the level and Community Enjoyment Rankings immediately after saving.</p>
+          <div class="admin-editor">
+            <label>List</label><select v-model="enjoymentList" @change="loadEnjoymentFiles"><option value="normal">Normal CCL</option><option value="platformer">Platformer CCL</option></select>
+            <label>Level</label><select v-model="enjoymentLevel" @change="loadEnjoymentRecords"><option value="">Select a level</option><option v-for="name in enjoymentFiles" :key="name" :value="name">{{name.replaceAll('_',' ')}}</option></select>
+            <template v-if="enjoymentLevel">
+              <p v-if="!enjoymentRecords.length" class="hub-muted">No records found on this level.</p>
+              <form v-else @submit.prevent="saveEnjoyment">
+                <label>Player with an existing record</label><select v-model="enjoymentUsername" @change="syncEnjoymentValue" required><option value="">Select player</option><option v-for="rec in enjoymentRecords" :key="rec.username" :value="rec.username">{{rec.username}} · {{rec.percent}}% · {{rec.enjoyment===null?'Unrated':rec.enjoyment+'/10'}}</option></select>
+                <label>Enjoyment (0–10)</label><input v-model.number="enjoymentValue" type="number" min="0" max="10" step="1" required />
+                <button class="admin-btn admin-btn-primary" type="submit" :disabled="busy || !enjoymentUsername">Save enjoyment rating</button>
+              </form>
+            </template>
+          </div>
         </section>
         <section v-if="tab==='weekly' && canReview" class="hub-card admin-panel">
           <h2>Weekly challenge entries</h2><p v-if="!weeklyEntries.length" class="admin-empty">No pending entries.</p>
@@ -198,6 +214,7 @@ export default {
             if (tab === 'levels') await this.loadFiles();
             if (tab === 'users') await this.loadUsers();
             if (tab === 'submissions') await this.loadSubmissions();
+            if (tab === 'enjoyment') await this.loadEnjoymentFiles();
             if (tab === 'weekly') { await Promise.all([this.loadWeeklyEntries(),this.loadFiles()]); }
             if (tab === 'audit') await this.loadAudit();
         },
@@ -244,6 +261,28 @@ export default {
                 await api('/api/admin/levels', 'POST', { listType: this.listType, path: this.levelPath, level: JSON.parse(this.levelText) });
                 this.originalLevelText = this.levelText;
                 this.notice = 'Level changes saved successfully.';
+            });
+        },
+        async loadEnjoymentFiles() {
+            this.enjoymentLevel='';this.enjoymentRecords=[];this.enjoymentUsername='';
+            await this.run(async()=>{const response=await fetch('/data/'+(this.enjoymentList==='normal'?'_list.json':'_platformer.json'));if(!response.ok)throw Error('Could not load level list');this.enjoymentFiles=await response.json()});
+        },
+        async loadEnjoymentRecords() {
+            this.enjoymentUsername='';this.enjoymentRecords=[];
+            if(!this.enjoymentLevel)return;
+            await this.run(async()=>{const result=await api('/api/admin/enjoyment?list='+encodeURIComponent(this.enjoymentList)+'&level='+encodeURIComponent(this.enjoymentLevel));this.enjoymentRecords=result.records||[]});
+        },
+        syncEnjoymentValue() {
+            const record=this.enjoymentRecords.find(x=>x.username===this.enjoymentUsername);
+            this.enjoymentValue=record?.enjoyment??5;
+        },
+        async saveEnjoyment() {
+            if(!Number.isInteger(this.enjoymentValue)||this.enjoymentValue<0||this.enjoymentValue>10){this.error='Enjoyment must be a whole number between 0 and 10.';return;}
+            await this.run(async()=>{
+                await api('/api/admin/enjoyment','POST',{listType:this.enjoymentList,levelPath:this.enjoymentLevel,username:this.enjoymentUsername,enjoyment:this.enjoymentValue});
+                const result=await api('/api/admin/enjoyment?list='+encodeURIComponent(this.enjoymentList)+'&level='+encodeURIComponent(this.enjoymentLevel));
+                this.enjoymentRecords=result.records||[];
+                this.notice='Enjoyment rating saved for '+this.enjoymentUsername+'.';
             });
         },
         async loadSubmissions() { await this.run(async()=>{this.submissions=(await api('/api/admin/submissions')).submissions||[]}) },

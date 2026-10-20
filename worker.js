@@ -86,15 +86,6 @@ async function handle(request, env) {
    catch { return json({ error: 'A claim for that username has already been submitted.' }, 409); }
    return json({ ok:true, status:'pending' }, 201);
  }
- if (path === '/api/claims/review' && request.method === 'POST') {
-   const admin = request.headers.get('authorization') || '';
-   if (!env.ADMIN_TOKEN || !constantTime(admin, 'Bearer ' + env.ADMIN_TOKEN)) return json({ error:'Unauthorized' }, 401);
-   const data = await body(request);
-   if (!['approved','rejected'].includes(data.status)) return json({ error:'Invalid status' },400);
-   const result = await env.DB.prepare("UPDATE claims SET status=?, reviewed_at=CURRENT_TIMESTAMP WHERE id=? AND status='pending'").bind(data.status,String(data.id || '')).run();
-   return json({ updated: result.meta.changes });
- }
-
  // All staff permissions are resolved from D1 on every request, never trusted from client state.
  if (path.startsWith('/api/admin/')) {
    const user = await currentUser(request, env.DB);

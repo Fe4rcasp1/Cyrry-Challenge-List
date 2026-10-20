@@ -33,8 +33,8 @@ export default {
                     <tr class="section-header">
                         <td colspan="2" class="type-label-lg">{{ platformer ? "Platformer List" : "Main List" }}</td>
                     </tr>
-                    <tr v-for="item in filteredLevels" :key="item.index">
-                        <template v-if="true">
+                    <template v-for="item in filteredLevels" :key="item.index">
+                        <tr>
                         <td class="rank">
                             <p class="type-label-lg">#{{ item.index + 1 }}</p>
                         </td>
@@ -43,11 +43,11 @@ export default {
                                 <span class="type-label-lg">{{ item.level?.name || \`Error (\${item.err}.json)\` }}</span>
                             </button>
                         </td>
+                        </tr>
                         <tr v-if="!searchQuery.trim() && !platformer && (item.index + 1) % 100 === 0 && (item.index + 1) < list.length" class="section-header">
                             <td colspan="2" class="type-label-lg">Extended</td>
                         </tr>
-                        </template>
-                    </tr>
+                    </template>
                 </table>
             </div>
             <div class="level-container">

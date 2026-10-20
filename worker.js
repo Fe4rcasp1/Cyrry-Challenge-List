@@ -40,6 +40,19 @@ async function handle(request, env) {
  }
  if (request.method === 'POST' && request.headers.get('origin') && new URL(request.headers.get('origin')).origin !== url.origin) return json({ error: 'Invalid origin.' }, 403);
  if (request.method === 'POST' && !String(request.headers.get('content-type')).includes('application/json')) return json({ error: 'Expected JSON.' }, 415);
+ if (path === '/api/notifications' && request.method === 'GET') {
+   const user=await currentUser(request,env.DB);if(!user)return json({error:'Log in first.'},401);
+   const rows=await env.DB.prepare("SELECT id,kind,message,link,is_read,created_at FROM notifications WHERE user_id=? ORDER BY created_at DESC LIMIT 80").bind(user.id).all();
+   return json({notifications:rows.results,unread:rows.results.filter(x=>!x.is_read).length});
+ }
+ if (path === '/api/notifications/read' && request.method === 'POST') {
+   const user=await currentUser(request,env.DB);if(!user)return json({error:'Log in first.'},401);
+   const data=await body(request),id=String(data.id||'');
+   if(id==='all')await env.DB.prepare("UPDATE notifications SET is_read=1 WHERE user_id=?").bind(user.id).run();
+   else if(/^[0-9a-f-]{36}$/i.test(id))await env.DB.prepare("UPDATE notifications SET is_read=1 WHERE user_id=? AND id=?").bind(user.id,id).run();
+   else return json({error:'Invalid notification.'},400);
+   return json({ok:true});
+ }
  if (path === '/api/auth/register' && request.method === 'POST') {
    const data = await body(request);
    const username = String(data.username || '').trim(), email = String(data.email || '').trim().toLowerCase(), password = String(data.password || '');
@@ -109,6 +122,8 @@ async function handle(request, env) {
        const result = await env.DB.prepare("UPDATE claims SET status=?,reviewed_at=CURRENT_TIMESTAMP WHERE id=? AND status='pending'").bind(data.status,data.id).run();
        if (!result.meta.changes) return json({error:'Claim not pending or not found.'},404);
        await env.DB.prepare('INSERT INTO admin_audit(id,actor_id,action,target) VALUES(?,?,?,?)').bind(crypto.randomUUID(),user.id,'claim_'+data.status,data.id).run();
+       const claim=await env.DB.prepare('SELECT user_id,leaderboard_username FROM claims WHERE id=?').bind(data.id).first();
+       if(claim)await env.DB.prepare('INSERT INTO notifications(id,user_id,kind,message,link) VALUES(?,?,?,?,?)').bind(crypto.randomUUID(),claim.user_id,'claim','Your profile claim for '+claim.leaderboard_username+' was '+data.status+'.','/#/account').run();
        return json({ok:true});
      } catch(e) { console.error(e); return json({error:'Could not review claim; it may already be owned.'},409); }
    }
@@ -192,6 +207,7 @@ async function handle(request, env) {
      if(updatedLevel)statements.push(env.DB.prepare("INSERT INTO level_overrides(list_type,level_path,level_json,updated_by) VALUES(?,?,?,?) ON CONFLICT(list_type,level_path) DO UPDATE SET level_json=excluded.level_json,updated_by=excluded.updated_by,updated_at=CURRENT_TIMESTAMP").bind(submission.list_type,submission.level_path,JSON.stringify(updatedLevel),user.id));
      statements.push(env.DB.prepare("UPDATE record_submissions SET status=?,reviewer_id=?,reviewed_at=CURRENT_TIMESTAMP WHERE id=? AND status='pending'").bind(data.status,user.id,data.id));
      statements.push(env.DB.prepare('INSERT INTO admin_audit(id,actor_id,action,target) VALUES(?,?,?,?)').bind(crypto.randomUUID(),user.id,'record_'+data.status,data.id));
+     statements.push(env.DB.prepare('INSERT INTO notifications(id,user_id,kind,message,link) VALUES(?,?,?,?,?)').bind(crypto.randomUUID(),submission.user_id,'record','Your '+submission.level_path.replaceAll('_',' ')+' record was '+data.status+'.','/#/submit-record'));
      await env.DB.batch(statements);
      return json({ok:true,note:updatedLevel?'Approved record applied to public list.':'Submission rejected.'});
    }
@@ -219,6 +235,8 @@ async function handle(request, env) {
      const result=await env.DB.prepare("UPDATE weekly_challenge_entries SET status=?,reviewed_by=? WHERE id=? AND status='pending'").bind(data.status,user.id,data.id).run();
      if(!result.meta.changes)return json({error:'Entry already reviewed.'},409);
      await env.DB.prepare('INSERT INTO admin_audit(id,actor_id,action,target) VALUES(?,?,?,?)').bind(crypto.randomUUID(),user.id,'weekly_'+data.status,data.id).run();
+     const entry=await env.DB.prepare('SELECT user_id FROM weekly_challenge_entries WHERE id=?').bind(data.id).first();
+     if(entry)await env.DB.prepare('INSERT INTO notifications(id,user_id,kind,message,link) VALUES(?,?,?,?,?)').bind(crypto.randomUUID(),entry.user_id,'weekly','Your weekly challenge entry was '+data.status+'.','/#/community').run();
      return json({ok:true});
    }
    if (path === '/api/admin/rankings/snapshot' && request.method === 'POST') {
@@ -265,15 +283,15 @@ async function handle(request, env) {
    if (!/^[A-Za-z0-9_-]{1,32}$/.test(username)) return json({profile:null});
    const owner=await profileOwner(username);
    if (!owner) return json({profile:null});
-   const profile=await env.DB.prepare('SELECT bio,avatar_url,banner_url,accent FROM player_profiles WHERE user_id=?').bind(owner.id).first();
+   const profile=await env.DB.prepare('SELECT bio,avatar_url,banner_url,accent,favorite_level,featured_badge,showcase_level,background_url FROM player_profiles WHERE user_id=?').bind(owner.id).first();
    return json({profile:profile||null});
  }
  if (path === '/api/community/profile' && request.method === 'POST') {
    const user=await currentUser(request,env.DB);if(!user)return json({error:'Log in first.'},401);
    const data=await body(request);
-   const bio=String(data.bio||'').trim(),avatar=String(data.avatar_url||'').trim(),banner=String(data.banner_url||'').trim(),accent=String(data.accent||'');
-   if(bio.length>500 || avatar.length>500 || banner.length>500 || (avatar&&!safeUrl(avatar)) || (banner&&!safeUrl(banner)) || !/^#[0-9a-fA-F]{6}$/.test(accent))return json({error:'Invalid profile details.'},400);
-   await env.DB.prepare("INSERT INTO player_profiles(user_id,bio,avatar_url,banner_url,accent) VALUES(?,?,?,?,?) ON CONFLICT(user_id) DO UPDATE SET bio=excluded.bio,avatar_url=excluded.avatar_url,banner_url=excluded.banner_url,accent=excluded.accent,updated_at=CURRENT_TIMESTAMP").bind(user.id,bio,avatar,banner,accent).run();
+   const bio=String(data.bio||'').trim(),avatar=String(data.avatar_url||'').trim(),banner=String(data.banner_url||'').trim(),accent=String(data.accent||''),favorite=String(data.favorite_level||'').trim(),featured=String(data.featured_badge||'').trim(),showcase=String(data.showcase_level||'').trim(),background=String(data.background_url||'').trim();
+   if(bio.length>500 || avatar.length>500 || banner.length>500 || (avatar&&!safeUrl(avatar)) || (banner&&!safeUrl(banner)) || !/^#[0-9a-fA-F]{6}$/.test(accent)||favorite.length>120||featured.length>80||showcase.length>120||background.length>500||(background&&!safeUrl(background)))return json({error:'Invalid profile details.'},400);
+   await env.DB.prepare("INSERT INTO player_profiles(user_id,bio,avatar_url,banner_url,accent,favorite_level,featured_badge,showcase_level,background_url) VALUES(?,?,?,?,?,?,?,?,?) ON CONFLICT(user_id) DO UPDATE SET bio=excluded.bio,avatar_url=excluded.avatar_url,banner_url=excluded.banner_url,accent=excluded.accent,favorite_level=excluded.favorite_level,featured_badge=excluded.featured_badge,showcase_level=excluded.showcase_level,background_url=excluded.background_url,updated_at=CURRENT_TIMESTAMP").bind(user.id,bio,avatar,banner,accent,favorite,featured,showcase,background).run();
    return json({ok:true});
  }
  if (path === '/api/community/submissions' && request.method === 'GET') {

@@ -46,7 +46,8 @@ export default {
                 <div class="level" v-if="level">
                     <h1>{{ level.name }}</h1>
                     <LevelAuthors :author="level.author" :creators="level.creators" :verifier="level.verifier"></LevelAuthors>
-                    <iframe class="video" id="videoframe" :src="video" frameborder="0"></iframe>
+                    <iframe v-if="level.verification" class="video" id="videoframe" :src="video" frameborder="0"></iframe>
+                    <p v-else class="type-label-md">Verification video not provided yet.</p>
                     <ul class="stats">
                         <li>
                             <div class="type-title-sm">Points when completed</div>

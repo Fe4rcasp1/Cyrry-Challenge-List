@@ -7,7 +7,7 @@ async function api(path, data) {
  return result;
 }
 export default {
- data: () => ({ mode:'login', username:'', email:'', password:'', login:'', evidence:'', claimName:'', user:null, claims:[], leaderboardNames:[], busy:false, message:'', error:'', bio:'', avatarUrl:'', bannerUrl:'', accent:'#477bc1' }),
+ data: () => ({ mode:'login', username:'', email:'', password:'', login:'', evidence:'', claimName:'', user:null, claims:[], leaderboardNames:[], busy:false, message:'', error:'', bio:'', avatarUrl:'', bannerUrl:'', accent:'#477bc1',favoriteLevel:'',featuredBadge:'',showcaseLevel:'',backgroundUrl:'' }),
  template: `
  <main class="ccl-hub"><section class="hub-head"><h1>CCL Account</h1><p>Sign in to your account from any device. Leaderboard profile claims require approval.</p></section>
  <section v-if="user" class="hub-card">
@@ -21,6 +21,10 @@ export default {
     <label>Avatar image URL</label><input class="hub-search" type="url" v-model.trim="avatarUrl" maxlength="500" placeholder="https://..." />
     <label>Banner image URL</label><input class="hub-search" type="url" v-model.trim="bannerUrl" maxlength="500" placeholder="https://..." />
     <label>Accent color</label><input type="color" v-model="accent" />
+    <label>Favorite level</label><input class="hub-search" v-model.trim="favoriteLevel" maxlength="120" placeholder="Your favorite CCL level" />
+    <label>Hardest completion showcase</label><input class="hub-search" v-model.trim="showcaseLevel" maxlength="120" placeholder="Your proudest clear" />
+    <label>Featured achievement</label><input class="hub-search" v-model.trim="featuredBadge" maxlength="80" placeholder="Achievement to feature" />
+    <label>Profile background image URL</label><input class="hub-search" type="url" v-model.trim="backgroundUrl" maxlength="500" placeholder="https://..." />
     <button class="hub-fav-button" type="submit" :disabled="busy">Save profile</button>
   </form>
   <h2>Claim a leaderboard profile</h2><p class="hub-muted">Your account username alone does not establish ownership. Provide evidence for review by a CCL admin.</p>
@@ -61,10 +65,10 @@ export default {
     try {
       const name=this.approvedClaim||this.user?.username;
       const res=await api('/api/community/profile?username='+encodeURIComponent(name));
-      const p=res.profile||{};this.bio=p.bio||'';this.avatarUrl=p.avatar_url||'';this.bannerUrl=p.banner_url||'';this.accent=p.accent||'#477bc1';
+      const p=res.profile||{};this.bio=p.bio||'';this.avatarUrl=p.avatar_url||'';this.bannerUrl=p.banner_url||'';this.accent=p.accent||'#477bc1';this.favoriteLevel=p.favorite_level||'';this.showcaseLevel=p.showcase_level||'';this.featuredBadge=p.featured_badge||'';this.backgroundUrl=p.background_url||'';
     }catch(e){console.warn('Profile customization unavailable',e)}
   },
-  async saveProfile(){await this.action(async()=>{await api('/api/community/profile',{bio:this.bio,avatar_url:this.avatarUrl,banner_url:this.bannerUrl,accent:this.accent});this.message='Profile saved.'})},
+  async saveProfile(){await this.action(async()=>{await api('/api/community/profile',{bio:this.bio,avatar_url:this.avatarUrl,banner_url:this.bannerUrl,accent:this.accent,favorite_level:this.favoriteLevel,showcase_level:this.showcaseLevel,featured_badge:this.featuredBadge,background_url:this.backgroundUrl});this.message='Profile saved.'})},
   async signup() { await this.action(async()=>{ const result=await api('/api/auth/register',{username:this.username,email:this.email,password:this.password}); this.user=result.user; await store.refreshAuth(); this.claimName=this.username; this.password=''; this.message='Account created. Claim your leaderboard profile below if applicable.'; }); },
   async signIn() { await this.action(async()=>{ const result=await api('/api/auth/login',{login:this.login,password:this.password}); this.password=''; this.user=result.user; await store.refreshAuth(); const me=await api('/api/auth/me'); this.claims=me.claims||[]; await this.loadProfile();this.message='Logged in successfully.'; }); },
   async claim() { await this.action(async()=>{ await api('/api/claims',{username:this.claimName,evidence:this.evidence}); const me=await api('/api/auth/me'); this.claims=me.claims||[]; this.evidence=''; this.message='Claim submitted for admin review.'; }); },

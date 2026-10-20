@@ -13,7 +13,7 @@ export default {
  <nav class="profile-achievement-controls"><button :class="{active:tab==='records'}" @click="tab='records'">Record submissions</button><button :class="{active:tab==='weekly'}" @click="tab='weekly'">Weekly challenges</button></nav>
  <p v-if="error" class="hub-auth-error" role="alert">{{error}}</p><p v-if="notice" role="status">{{notice}}</p>
  <section v-if="tab==='records'" class="hub-card"><h2>Submit a record</h2>
- <p class="hub-muted">A staff member reviews your video. Approval does not automatically change the public level JSON; staff apply verified records separately.</p>
+ <p class="hub-muted">A staff member reviews your video. Approved records are applied to the public list automatically after staff review.</p>
  <p v-if="!store.user">You must <router-link to="/account">log in</router-link> to submit.</p>
  <p v-else-if="!store.profileUsername">You need an <router-link to="/account">approved player profile claim</router-link> before submitting.</p>
  <form v-else @submit.prevent="submitRecord">

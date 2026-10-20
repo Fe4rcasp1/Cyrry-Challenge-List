@@ -1,4 +1,4 @@
-import { fetchLeaderboard } from '../content.js';
+import { fetchLeaderboard, fetchCreatorLeaderboard } from '../content.js';
 import { localize } from '../util.js';
 
 import Spinner from '../components/Spinner.js';
@@ -9,6 +9,11 @@ export default {
     },
     data: () => ({
         leaderboard: [],
+        pointsLeaderboard: [],
+        creatorLeaderboard: [],
+        leaderboardType: "points",
+        pointsErrors: [],
+        creatorErrors: [],
         searchQuery: "",
         loading: true,
         selected: 0,
@@ -20,6 +25,10 @@ export default {
         </main>
         <main v-else class="page-leaderboard-container">
             <div class="page-leaderboard">
+                <div class="leaderboard-switcher" role="group" aria-label="Leaderboard type">
+                    <button type="button" :class="{ active: leaderboardType === 'points' }" @click="switchLeaderboard('points')">Points Leaderboard</button>
+                    <button type="button" :class="{ active: leaderboardType === 'creators' }" @click="switchLeaderboard('creators')">Creator Points</button>
+                </div>
                 <div class="error-container">
                     <p class="error" v-if="err.length > 0">
                         Leaderboard may be incorrect, as the following levels could not be loaded: {{ err.join(', ') }}
@@ -27,9 +36,9 @@ export default {
                 </div>
                 <div class="board-container">
                     <div class="search-panel">
-                        <label for="player-search">Search players</label>
+                        <label for="player-search">Search {{ leaderboardType === "creators" ? "creators" : "players" }}</label>
                         <input id="player-search" class="list-search" type="search" v-model="searchQuery" placeholder="Search by username…" autocomplete="off" />
-                        <p class="search-count">{{ filteredPlayers.length }} of {{ leaderboard.length }} players</p>
+                        <p class="search-count">{{ filteredPlayers.length }} of {{ leaderboard.length }} {{ leaderboardType === "creators" ? "creators" : "players" }}</p>
                     </div>
                     <p v-if="leaderboard.length && !filteredPlayers.length" class="search-empty">No usernames found.</p>
                     <table class="board">
@@ -38,7 +47,7 @@ export default {
                                 <p class="type-label-lg">#{{ player.index + 1 }}</p>
                             </td>
                             <td class="total">
-                                <p class="type-label-lg">{{ localize(player.entry.total) }}</p>
+                                <p class="type-label-lg">{{ leaderboardType === "creators" ? player.entry.total : localize(player.entry.total) }}</p>
                             </td>
                             <td class="user" :class="{ 'active': selected == player.index }">
                                 <button @click="selected = player.index">
@@ -51,7 +60,18 @@ export default {
                 <div class="player-container">
                     <div class="player" v-if="entry">
                         <h1>#{{ selected + 1 }} {{ entry.user }}</h1>
-                        <h3>{{ entry.total }}</h3>
+                        <h3>{{ leaderboardType === "creators" ? entry.total + " Creator Points" : localize(entry.total) + " Points" }}</h3>
+                        <template v-if="leaderboardType === 'creators'">
+                            <h2>Created Levels ({{ entry.created.length }})</h2>
+                            <table class="table">
+                                <tr v-for="created in entry.created" :key="created.rank">
+                                    <td class="rank"><p>#{{ created.rank }}</p></td>
+                                    <td class="level"><a v-if="created.link" class="type-label-lg" :href="created.link" target="_blank" rel="noopener noreferrer">{{ created.level }}</a><p v-else>{{ created.level }}</p></td>
+                                    <td class="score"><p>+1</p></td>
+                                </tr>
+                            </table>
+                        </template>
+                        <template v-else>
                         <h2 v-if="entry.verified.length > 0">Verified ({{ entry.verified.length}})</h2>
                         <table class="table">
                             <tr v-for="score in entry.verified">
@@ -94,6 +114,7 @@ export default {
                                 </td>
                             </tr>
                         </table>
+                        </template>
                     </div>
                 </div>
             </div>
@@ -109,13 +130,27 @@ export default {
         },
     },
     async mounted() {
-        const [leaderboard, err] = await fetchLeaderboard();
-        this.leaderboard = leaderboard;
-        this.err = err;
+        const [[points, pointsErrors], [creators, creatorErrors]] = await Promise.all([
+            fetchLeaderboard(), fetchCreatorLeaderboard(),
+        ]);
+        this.pointsLeaderboard = points;
+        this.creatorLeaderboard = creators;
+        this.pointsErrors = pointsErrors;
+        this.creatorErrors = creatorErrors;
+        this.leaderboard = points;
+        this.err = pointsErrors;
         // Hide loading spinner
         this.loading = false;
     },
     methods: {
         localize,
+        switchLeaderboard(type) {
+            if (this.leaderboardType === type) return;
+            this.leaderboardType = type;
+            this.leaderboard = type === "creators" ? this.creatorLeaderboard : this.pointsLeaderboard;
+            this.err = type === "creators" ? this.creatorErrors : this.pointsErrors;
+            this.selected = 0;
+            this.searchQuery = "";
+        },
     },
 };

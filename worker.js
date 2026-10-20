@@ -155,6 +155,60 @@ async function handle(request, env) {
      await env.DB.prepare('INSERT INTO admin_audit(id,actor_id,action,target) VALUES(?,?,?,?)').bind(crypto.randomUUID(),user.id,'role_'+next,target).run();
      return json({ok:true});
    }
+
+   if (path === '/api/admin/audit' && request.method === 'GET') {
+     if(role!=='owner'&&role!=='admin')return json({error:'Admin role required.'},403);
+     const rows=await env.DB.prepare('SELECT admin_audit.id,admin_audit.action,admin_audit.target,admin_audit.created_at,users.username AS actor FROM admin_audit LEFT JOIN users ON users.id=admin_audit.actor_id ORDER BY admin_audit.created_at DESC LIMIT 200').all();
+     return json({entries:rows.results});
+   }
+   if (path === '/api/admin/submissions' && request.method === 'GET') {
+     if(!canReview)return json({error:'Not permitted.'},403);
+     const rows=await env.DB.prepare("SELECT id,leaderboard_username,list_type,level_path,percent,video_url,note,created_at FROM record_submissions WHERE status='pending' ORDER BY created_at ASC LIMIT 200").all();
+     return json({submissions:rows.results});
+   }
+   if (path === '/api/admin/submissions/review' && request.method === 'POST') {
+     if(!canReview)return json({error:'Not permitted.'},403);
+     const data=await body(request);
+     if(!['approved','rejected'].includes(data.status)||!/^[0-9a-f-]{36}$/i.test(String(data.id||'')))return json({error:'Invalid review.'},400);
+     const result=await env.DB.prepare("UPDATE record_submissions SET status=?,reviewer_id=?,reviewed_at=CURRENT_TIMESTAMP WHERE id=? AND status='pending'").bind(data.status,user.id,data.id).run();
+     if(!result.meta.changes)return json({error:'Submission already reviewed.'},409);
+     await env.DB.prepare('INSERT INTO admin_audit(id,actor_id,action,target) VALUES(?,?,?,?)').bind(crypto.randomUUID(),user.id,'record_'+data.status,data.id).run();
+     return json({ok:true,note:'Approved submissions are queued for staff to apply to level records; they do not automatically alter list JSON.'});
+   }
+   if (path === '/api/admin/weekly' && request.method === 'POST') {
+     if(!canEdit)return json({error:'Editor role required.'},403);
+     const data=await body(request),week=String(data.weekStart||''),type=String(data.listType||''),level=String(data.levelPath||''),title=String(data.title||'').trim(),description=String(data.description||'').trim();
+     if(!/^\d{4}-\d{2}-\d{2}$/.test(week)||!['normal','platformer'].includes(type)||!/^[A-Za-z0-9_-]{1,120}$/.test(level)||!title||title.length>100||description.length>500)return json({error:'Invalid challenge details.'},400);
+     const d=new Date(week+'T00:00:00Z');if(!Number.isFinite(d.getTime())||d.toISOString().slice(0,10)!==week||d.getUTCDay()!==1)return json({error:'Week start must be a Monday.'},400);
+     const list=await env.ASSETS.fetch(new Request(new URL('/data/'+(type==='normal'?'_list.json':'_platformer.json'),request.url)));
+     if(!list.ok||!(await list.json()).includes(level))return json({error:'Level not found.'},404);
+     try{await env.DB.prepare('INSERT INTO weekly_challenges(id,week_start,list_type,level_path,title,description,created_by) VALUES(?,?,?,?,?,?,?)').bind(crypto.randomUUID(),week,type,level,title,description,user.id).run();}
+     catch{return json({error:'A challenge already exists for this week.'},409);}
+     await env.DB.prepare('INSERT INTO admin_audit(id,actor_id,action,target) VALUES(?,?,?,?)').bind(crypto.randomUUID(),user.id,'weekly_challenge',week).run();
+     return json({ok:true});
+   }
+   if (path === '/api/admin/weekly/entries' && request.method === 'GET') {
+     if(!canReview)return json({error:'Not permitted.'},403);
+     const rows=await env.DB.prepare("SELECT weekly_challenge_entries.id,weekly_challenge_entries.video_url,weekly_challenge_entries.created_at,weekly_challenges.title,users.username FROM weekly_challenge_entries JOIN weekly_challenges ON weekly_challenges.id=weekly_challenge_entries.challenge_id JOIN users ON users.id=weekly_challenge_entries.user_id WHERE weekly_challenge_entries.status='pending' ORDER BY weekly_challenge_entries.created_at LIMIT 200").all();
+     return json({entries:rows.results});
+   }
+   if (path === '/api/admin/weekly/review' && request.method === 'POST') {
+     if(!canReview)return json({error:'Not permitted.'},403);
+     const data=await body(request);
+     if(!['approved','rejected'].includes(data.status)||!/^[0-9a-f-]{36}$/i.test(String(data.id||'')))return json({error:'Invalid review.'},400);
+     const result=await env.DB.prepare("UPDATE weekly_challenge_entries SET status=?,reviewed_by=? WHERE id=? AND status='pending'").bind(data.status,user.id,data.id).run();
+     if(!result.meta.changes)return json({error:'Entry already reviewed.'},409);
+     await env.DB.prepare('INSERT INTO admin_audit(id,actor_id,action,target) VALUES(?,?,?,?)').bind(crypto.randomUUID(),user.id,'weekly_'+data.status,data.id).run();
+     return json({ok:true});
+   }
+   if (path === '/api/admin/rankings/snapshot' && request.method === 'POST') {
+     if(!['owner','admin'].includes(role))return json({error:'Admin role required.'},403);
+     const data=await body(request),entries=data.entries;
+     if(!Array.isArray(entries)||entries.length>1000||!entries.length||!entries.every((e,i)=>e&&/^[A-Za-z0-9_-]{1,32}$/.test(e.user)&&Number.isFinite(e.points)&&e.points>=0&&Number.isInteger(e.rank)&&e.rank===i+1))return json({error:'Invalid ranking snapshot.'},400);
+     const day=new Date().toISOString().slice(0,10);
+     await env.DB.batch(entries.map(e=>env.DB.prepare("INSERT INTO ranking_snapshots(id,leaderboard_username,points,rank,captured_at) VALUES(?,?,?,?,?) ON CONFLICT(leaderboard_username,captured_at) DO UPDATE SET points=excluded.points,rank=excluded.rank").bind(crypto.randomUUID(),e.user,e.points,e.rank,day)));
+     return json({ok:true,count:entries.length});
+   }
    if (path === '/api/admin/levels' && request.method === 'POST') {
      if (!canEdit) return json({error:'Level editing not permitted.'},403);
      const data=await body(request), listType=String(data.listType||''), levelPath=String(data.path||'');
@@ -181,6 +235,68 @@ async function handle(request, env) {
      "SELECT account_roles.role FROM claims JOIN account_roles ON account_roles.user_id=claims.user_id WHERE claims.status='approved' AND claims.leaderboard_username=? COLLATE NOCASE LIMIT 1"
    ).bind(username).first();
    return json({role:match?.role || null},200,{'cache-control':'public, max-age=60'});
+ }
+
+ // Community features require community-migration.sql on the remote D1 database.
+ const safeUrl = value => { try { const u = new URL(value); return ['https:','http:'].includes(u.protocol) && u.hostname.length > 2 && !['localhost','127.0.0.1'].includes(u.hostname); } catch { return false; } };
+ const profileOwner = async username => env.DB.prepare("SELECT users.id FROM users JOIN claims ON claims.user_id=users.id WHERE claims.status='approved' AND claims.leaderboard_username=? COLLATE NOCASE LIMIT 1").bind(username).first();
+ if (path === '/api/community/profile' && request.method === 'GET') {
+   const username=String(url.searchParams.get('username')||'').trim();
+   if (!/^[A-Za-z0-9_-]{1,32}$/.test(username)) return json({profile:null});
+   const owner=await profileOwner(username);
+   if (!owner) return json({profile:null});
+   const profile=await env.DB.prepare('SELECT bio,avatar_url,banner_url,accent FROM player_profiles WHERE user_id=?').bind(owner.id).first();
+   return json({profile:profile||null});
+ }
+ if (path === '/api/community/profile' && request.method === 'POST') {
+   const user=await currentUser(request,env.DB);if(!user)return json({error:'Log in first.'},401);
+   const data=await body(request);
+   const bio=String(data.bio||'').trim(),avatar=String(data.avatar_url||'').trim(),banner=String(data.banner_url||'').trim(),accent=String(data.accent||'');
+   if(bio.length>500 || avatar.length>500 || banner.length>500 || (avatar&&!safeUrl(avatar)) || (banner&&!safeUrl(banner)) || !/^#[0-9a-fA-F]{6}$/.test(accent))return json({error:'Invalid profile details.'},400);
+   await env.DB.prepare("INSERT INTO player_profiles(user_id,bio,avatar_url,banner_url,accent) VALUES(?,?,?,?,?) ON CONFLICT(user_id) DO UPDATE SET bio=excluded.bio,avatar_url=excluded.avatar_url,banner_url=excluded.banner_url,accent=excluded.accent,updated_at=CURRENT_TIMESTAMP").bind(user.id,bio,avatar,banner,accent).run();
+   return json({ok:true});
+ }
+ if (path === '/api/community/submissions' && request.method === 'GET') {
+   const user=await currentUser(request,env.DB);if(!user)return json({error:'Log in first.'},401);
+   const rows=await env.DB.prepare('SELECT id,leaderboard_username,list_type,level_path,percent,video_url,status,created_at FROM record_submissions WHERE user_id=? ORDER BY created_at DESC LIMIT 100').bind(user.id).all();
+   return json({submissions:rows.results});
+ }
+ if (path === '/api/community/submissions' && request.method === 'POST') {
+   const user=await currentUser(request,env.DB);if(!user)return json({error:'Log in first.'},401);
+   const claim=await env.DB.prepare("SELECT leaderboard_username FROM claims WHERE user_id=? AND status='approved' LIMIT 1").bind(user.id).first();
+   if(!claim)return json({error:'You need an approved leaderboard profile claim to submit records.'},403);
+   const data=await body(request),type=String(data.listType||''),level=String(data.levelPath||''),video=String(data.videoUrl||''),percent=Number(data.percent),note=String(data.note||'').trim();
+   if(!['normal','platformer'].includes(type)||!/^[A-Za-z0-9_-]{1,120}$/.test(level)||!Number.isInteger(percent)||percent<1||percent>100||!safeUrl(video)||video.length>500||note.length>500)return json({error:'Invalid submission details.'},400);
+   const listResponse=await env.ASSETS.fetch(new Request(new URL('/data/'+(type==='normal'?'_list.json':'_platformer.json'),request.url)));
+   if(!listResponse.ok||!(await listResponse.json()).includes(level))return json({error:'Level not found on selected list.'},404);
+   const existing=await env.DB.prepare("SELECT id FROM record_submissions WHERE user_id=? AND list_type=? AND level_path=? AND status='pending'").bind(user.id,type,level).first();
+   if(existing)return json({error:'You already have a pending submission for this level.'},409);
+   await env.DB.prepare('INSERT INTO record_submissions(id,user_id,leaderboard_username,list_type,level_path,percent,video_url,note) VALUES(?,?,?,?,?,?,?,?)').bind(crypto.randomUUID(),user.id,claim.leaderboard_username,type,level,percent,video,note).run();
+   return json({ok:true},201);
+ }
+ if (path === '/api/community/weekly' && request.method === 'GET') {
+   const rows=await env.DB.prepare("SELECT id,week_start,list_type,level_path,title,description FROM weekly_challenges ORDER BY week_start DESC LIMIT 12").all();
+   return json({challenges:rows.results});
+ }
+ if (path === '/api/community/weekly/enter' && request.method === 'POST') {
+   const user=await currentUser(request,env.DB);if(!user)return json({error:'Log in first.'},401);
+   const claim=await env.DB.prepare("SELECT id FROM claims WHERE user_id=? AND status='approved' LIMIT 1").bind(user.id).first();
+   if(!claim)return json({error:'An approved player claim is required.'},403);
+   const data=await body(request),video=String(data.videoUrl||'').trim(),challengeId=String(data.challengeId||'');
+   if(!safeUrl(video)||video.length>500)return json({error:'Enter a valid video URL.'},400);
+   const challenge=await env.DB.prepare('SELECT week_start FROM weekly_challenges WHERE id=?').bind(challengeId).first();
+   if(!challenge)return json({error:'Challenge not found.'},404);
+   const monday=new Date();monday.setUTCHours(0,0,0,0);monday.setUTCDate(monday.getUTCDate()-(monday.getUTCDay()+6)%7);
+   if(challenge.week_start!==monday.toISOString().slice(0,10))return json({error:'This challenge is no longer active.'},409);
+   try {await env.DB.prepare('INSERT INTO weekly_challenge_entries(id,challenge_id,user_id,video_url) VALUES(?,?,?,?)').bind(crypto.randomUUID(),challengeId,user.id,video).run();}
+   catch{return json({error:'You already entered this challenge.'},409);}
+   return json({ok:true},201);
+ }
+ if (path === '/api/community/history' && request.method === 'GET') {
+   const name=String(url.searchParams.get('username')||'');
+   if(!/^[A-Za-z0-9_-]{1,32}$/.test(name))return json({history:[]});
+   const rows=await env.DB.prepare('SELECT points,rank,captured_at FROM ranking_snapshots WHERE leaderboard_username=? COLLATE NOCASE ORDER BY captured_at DESC LIMIT 90').bind(name).all();
+   return json({history:rows.results.reverse()});
  }
  if (path === '/api/levels/overrides' && request.method === 'GET') {
    const listType=url.searchParams.get('list');

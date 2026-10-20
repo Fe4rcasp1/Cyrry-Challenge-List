@@ -1,6 +1,23 @@
 import routes from './routes.js';
 
 export const store = Vue.reactive({
+    user: null,
+    role: '',
+    authReady: false,
+    async refreshAuth() {
+        try {
+            const response = await fetch('/api/auth/me', { credentials:'same-origin', cache:'no-store' });
+            if (!response.ok) throw new Error('Authentication unavailable');
+            const result = await response.json();
+            this.user = result.user || null;
+            this.role = '';
+            if (this.user) {
+                const staffResponse = await fetch('/api/admin/me', { credentials:'same-origin', cache:'no-store' });
+                if (staffResponse.ok) this.role = (await staffResponse.json()).role || '';
+            }
+        } catch (error) { this.user = null; this.role = ''; console.warn('Could not refresh account status',error); }
+        finally { this.authReady = true; }
+    },
     dark: JSON.parse(localStorage.getItem('dark')) || false,
     toggleDark() {
         this.dark = !this.dark;
@@ -19,3 +36,5 @@ const router = VueRouter.createRouter({
 app.use(router);
 
 app.mount('#app');
+store.refreshAuth();
+window.addEventListener('focus', () => store.refreshAuth());

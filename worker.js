@@ -170,10 +170,30 @@ async function handle(request, env) {
      if(!canReview)return json({error:'Not permitted.'},403);
      const data=await body(request);
      if(!['approved','rejected'].includes(data.status)||!/^[0-9a-f-]{36}$/i.test(String(data.id||'')))return json({error:'Invalid review.'},400);
-     const result=await env.DB.prepare("UPDATE record_submissions SET status=?,reviewer_id=?,reviewed_at=CURRENT_TIMESTAMP WHERE id=? AND status='pending'").bind(data.status,user.id,data.id).run();
-     if(!result.meta.changes)return json({error:'Submission already reviewed.'},409);
-     await env.DB.prepare('INSERT INTO admin_audit(id,actor_id,action,target) VALUES(?,?,?,?)').bind(crypto.randomUUID(),user.id,'record_'+data.status,data.id).run();
-     return json({ok:true,note:'Approved submissions are queued for staff to apply to level records; they do not automatically alter list JSON.'});
+     const submission=await env.DB.prepare("SELECT * FROM record_submissions WHERE id=? AND status='pending'").bind(data.id).first();
+     if(!submission)return json({error:'Submission already reviewed.'},409);
+     let updatedLevel=null;
+     if(data.status==='approved'){
+       const override=await env.DB.prepare('SELECT level_json FROM level_overrides WHERE list_type=? AND level_path=?').bind(submission.list_type,submission.level_path).first();
+       if(override)updatedLevel=JSON.parse(override.level_json);
+       else{
+         const levelResponse=await env.ASSETS.fetch(new Request(new URL('/data/'+encodeURIComponent(submission.level_path)+'.json',request.url)));
+         if(!levelResponse.ok)return json({error:'Original level data unavailable.'},503);
+         updatedLevel=await levelResponse.json();
+       }
+       if(!Array.isArray(updatedLevel.records))return json({error:'Level records are invalid.'},500);
+       const existing=updatedLevel.records.find(x=>String(x.user||'').toLowerCase()===submission.leaderboard_username.toLowerCase());
+       if(existing){
+         if(Number(existing.percent)<submission.percent){existing.percent=submission.percent;existing.link=submission.video_url;}
+       }else updatedLevel.records.push({user:submission.leaderboard_username,percent:submission.percent,link:submission.video_url});
+       if(updatedLevel.records.length>500)return json({error:'Level has reached the record limit.'},409);
+     }
+     const statements=[];
+     if(updatedLevel)statements.push(env.DB.prepare("INSERT INTO level_overrides(list_type,level_path,level_json,updated_by) VALUES(?,?,?,?) ON CONFLICT(list_type,level_path) DO UPDATE SET level_json=excluded.level_json,updated_by=excluded.updated_by,updated_at=CURRENT_TIMESTAMP").bind(submission.list_type,submission.level_path,JSON.stringify(updatedLevel),user.id));
+     statements.push(env.DB.prepare("UPDATE record_submissions SET status=?,reviewer_id=?,reviewed_at=CURRENT_TIMESTAMP WHERE id=? AND status='pending'").bind(data.status,user.id,data.id));
+     statements.push(env.DB.prepare('INSERT INTO admin_audit(id,actor_id,action,target) VALUES(?,?,?,?)').bind(crypto.randomUUID(),user.id,'record_'+data.status,data.id));
+     await env.DB.batch(statements);
+     return json({ok:true,note:updatedLevel?'Approved record applied to public list.':'Submission rejected.'});
    }
    if (path === '/api/admin/weekly' && request.method === 'POST') {
      if(!canEdit)return json({error:'Editor role required.'},403);

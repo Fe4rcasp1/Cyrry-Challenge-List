@@ -60,6 +60,7 @@ export default {
                 <div class="player-container">
                     <div class="player" v-if="entry">
                         <h1>#{{ selected + 1 }} {{ entry.user }}</h1>
+                        <router-link class="hub-profile-link" :to="'/player/' + encodeURIComponent(entry.user)">View Profile & Achievements →</router-link>
                         <h3>{{ leaderboardType === "creators" ? entry.total + " Creator Points" : localize(entry.total) + " Points" }}</h3>
                         <template v-if="leaderboardType === 'creators'">
                             <h2>Created Levels ({{ entry.created.length }})</h2>

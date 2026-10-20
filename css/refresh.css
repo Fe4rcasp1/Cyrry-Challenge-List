@@ -411,3 +411,13 @@ header .nav .nav__hub-link { opacity: .8; }
  .ccl-admin .admin-user {grid-template-columns:minmax(0,1fr) minmax(100px,1fr);gap:.6rem}
  .ccl-admin .admin-user .admin-delete-account {grid-column:2}
 }
+
+/* Public profile role badges */
+.profile-role-list {display:flex;flex-wrap:wrap;gap:.55rem;margin:.65rem 0 .8rem}
+.profile-role-badge {display:inline-flex;align-items:center;gap:.35rem;padding:.45rem .8rem;border:1px solid var(--ui-border);border-radius:999px;font-size:.78rem;font-weight:800;letter-spacing:.01em;background:var(--color-background)}
+.profile-role-owner {color:#e8b84e;border-color:#e8b84e88;background:#e8b84e16}
+.profile-role-admin {color:#e46a6a;border-color:#e46a6a88;background:#e46a6a16}
+.profile-role-moderator {color:#56b8ff;border-color:#56b8ff88;background:#56b8ff16}
+.profile-role-editor {color:#ae8cff;border-color:#ae8cff88;background:#ae8cff16}
+.profile-role-first {color:#e8b84e;border-color:#e8b84e88;background:#e8b84e16}
+.profile-role-top10 {color:#5dc9ad;border-color:#5dc9ad88;background:#5dc9ad16}

@@ -428,3 +428,17 @@ header .nav .nav__hub-link { opacity: .8; }
 .ccl-hub .profile-achievement-controls{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem}
 .ccl-hub .profile-achievement-controls button{padding:.5rem .85rem;border:1px solid var(--ui-border);border-radius:999px;background:var(--color-background);color:var(--color-on-background);cursor:pointer;font:inherit;font-size:.8rem}
 .ccl-hub .profile-achievement-controls button.active{background:var(--color-primary);color:var(--color-on-primary);border-color:var(--color-primary)}
+
+/* CCL community: custom profiles, rankings and submission forms */
+.ccl-hub .profile-custom-head{overflow:hidden;border:2px solid var(--ui-border);border-radius:1rem;padding:1rem}
+.ccl-hub .profile-banner{height:145px;background-size:cover;background-position:center;border-radius:.75rem;margin-bottom:1rem}
+.ccl-hub .profile-avatar{width:86px;height:86px;object-fit:cover;border-radius:50%;border:3px solid var(--ui-border);margin:.5rem 0}
+.ccl-hub .profile-bio{white-space:pre-wrap;overflow-wrap:anywhere;max-width:70ch}
+.ccl-hub .profile-history{max-height:380px;overflow:auto}
+.leaderboard-metrics{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;padding:1rem;border:1px solid var(--ui-border);border-radius:.7rem;margin-bottom:1rem}
+.leaderboard-metrics label{font-size:.8rem;font-weight:700}
+.leaderboard-metrics select,.leaderboard-metrics button,.ccl-community form input,.ccl-community form select,.ccl-community form textarea,.ccl-admin form input,.ccl-admin form select,.ccl-admin form textarea{background:var(--color-background);color:var(--color-on-background);border:1px solid var(--ui-border);border-radius:.55rem;padding:.7rem;font:inherit;max-width:100%}
+.leaderboard-metrics button{cursor:pointer}
+.ccl-community form,.ccl-admin .admin-editor form{display:flex;flex-direction:column;align-items:stretch;gap:.65rem;max-width:640px}
+.ccl-community form label,.ccl-admin .admin-editor form label{font-size:.8rem;font-weight:700}
+.ccl-community .admin-empty{padding:2rem;border:1px dashed var(--ui-border);border-radius:.7rem}

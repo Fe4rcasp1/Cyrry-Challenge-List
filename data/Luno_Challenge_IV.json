@@ -1,24 +1,32 @@
 {
-    "id": 127999004,
-    "name": "Luno challenge IV",
-    "author": "Leagal",
-    "creators": ["Leagal"],
-    "verifier": "Leagal",
-    "verification": "https://youtu.be/P2jsJyWr1V8?si=Tld0hbkgecGEFRlH",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/D8ce8GWItaE?si=IoSOn1cuR7lFplX8",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Loopelino",
-            "link": "https://youtu.be/9BV7G2fLR_Y?si=Z3yitAoTFn8EMPF0",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 127999004,
+  "name": "Luno challenge IV",
+  "author": "Leagal",
+  "creators": [
+    "Leagal"
+  ],
+  "verifier": "Leagal",
+  "verification": "https://youtu.be/P2jsJyWr1V8?si=Tld0hbkgecGEFRlH",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/D8ce8GWItaE?si=IoSOn1cuR7lFplX8",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Loopelino",
+      "link": "https://youtu.be/9BV7G2fLR_Y?si=Z3yitAoTFn8EMPF0",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "TheOblivionGD",
+      "link": "https://youtu.be/EodILyqZb-c",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

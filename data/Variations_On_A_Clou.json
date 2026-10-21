@@ -1,11 +1,20 @@
 {
-    "id": 148026012,
-    "name": "Variations on a clou",
-    "author": "Void852",
-    "creators": ["Void852"],
-    "verifier": "Void852",
-    "verification": "https://youtu.be/QzIOaKnmT0Q?si=2w_giaFX1zZX4Llc",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": []
+  "id": 148026012,
+  "name": "Variations on a clou",
+  "author": "Void852",
+  "creators": [
+    "Void852"
+  ],
+  "verifier": "Void852",
+  "verification": "https://youtu.be/QzIOaKnmT0Q?si=2w_giaFX1zZX4Llc",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "CyrryGD",
+      "percent": 100,
+      "link": "https://youtu.be/apaR1S2Gesk?si=lCpCRmlgUMMLrOpe",
+      "enjoyment": 2
+    }
+  ]
 }

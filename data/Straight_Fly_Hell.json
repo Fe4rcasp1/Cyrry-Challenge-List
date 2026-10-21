@@ -1,18 +1,26 @@
 {
-    "id": 128097112,
-    "name": "Straight Fly Hell",
-    "author": "CyrryGD",
-    "creators": ["CyrryGD"],
-    "verifier": "CyrryGD",
-    "verification": "https://youtu.be/12rGYcW5Vzs?si=zvgWQ_ruzWCdQR9X",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "Loopelino",
-            "link": "https://youtu.be/WxaDQmhlSZw",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 128097112,
+  "name": "Straight Fly Hell",
+  "author": "CyrryGD",
+  "creators": [
+    "CyrryGD"
+  ],
+  "verifier": "CyrryGD",
+  "verification": "https://youtu.be/12rGYcW5Vzs?si=zvgWQ_ruzWCdQR9X",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "Loopelino",
+      "link": "https://youtu.be/WxaDQmhlSZw",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "TheOblivionGD",
+      "link": "https://youtu.be/QnFhBVVyQ6U",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

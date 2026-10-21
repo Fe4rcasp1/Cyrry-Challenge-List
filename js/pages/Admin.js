@@ -13,7 +13,7 @@ async function api(path, method = 'GET', payload) {
 export default {
     data: () => ({
         role: '', tab: 'claims', claims: [], users: [], levelFiles: [], audit: [], submissions: [], weeklyEntries: [], enjoymentRecords: [], enjoymentList:'normal', enjoymentLevel:'', enjoymentFiles:[], enjoymentUsername:'', enjoymentValue:5,
-        listType: 'normal', levelPath: '', levelText: '', originalLevelText: '', backupStatus:null, backupLoading:false,
+        listType: 'normal', levelPath: '', levelText: '', originalLevelText: '', backupStatus:null, backupLoading:false, reviewFeedback:{}, bulkSelected:[],bulkDrafts:{},bulkOriginals:{},bulkActive:'',bulkLoading:false,
         filter: '', userFilter: '', weeklyWeek: '', weeklyTitle: '', weeklyDescription: '', loading: true, busy: false, error: '', notice: ''
     }),
     computed: {
@@ -26,6 +26,8 @@ export default {
         filteredUsers() {
             return this.users.filter(u => u.username.toLowerCase().includes(this.userFilter.toLowerCase()));
         },
+        bulkChangedCount(){return Object.keys(this.bulkDrafts).filter(p=>this.bulkDrafts[p]!==this.bulkOriginals[p]).length;},
+        bulkErrors(){return Object.entries(this.bulkDrafts).filter(([p,v])=>v!==this.bulkOriginals[p]).flatMap(([p,v])=>{try{JSON.parse(v);return [];}catch(e){return [p+': '+e.message];}});},
         hasUnsavedChanges() { return !!this.levelPath && this.levelText !== this.originalLevelText; },
         jsonError() {
             if (!this.levelText.trim()) return 'JSON cannot be empty.';
@@ -90,7 +92,7 @@ export default {
             <p><strong>Discord:</strong> {{s.discord_name}} · <strong>Enjoyment:</strong> {{s.enjoyment}}/10</p>
             <p v-if="s.note">{{s.note}}</p>
             <a :href="s.video_url" target="_blank" rel="noopener noreferrer">Watch video evidence ↗</a>
-            <div class="admin-actions"><button class="admin-btn admin-btn-approve" :disabled="busy" @click="reviewRecord(s,'approved')">Approve</button><button class="admin-btn admin-btn-reject" :disabled="busy" @click="reviewRecord(s,'rejected')">Reject</button></div>
+            <label :for="'feedback-'+s.id">Staff feedback</label><textarea :id="'feedback-'+s.id" class="hub-search" v-model="reviewFeedback[s.id]" maxlength="1000" rows="2" placeholder="Optional approval notes or rejection reason"></textarea><div class="admin-actions"><button class="admin-btn admin-btn-approve" :disabled="busy" @click="reviewRecord(s,'approved')">Approve</button><button class="admin-btn admin-btn-reject" :disabled="busy" @click="reviewRecord(s,'rejected')">Reject</button></div>
           </article>
         </section>
         <section v-if="tab==='enjoyment' && (canEdit || canReview)" class="hub-card admin-panel">
@@ -151,6 +153,18 @@ export default {
                 <strong>{{level.list_type}} / {{level.level_path}}</strong><span>Backup not confirmed · Last edit: {{level.updated_at}}</span>
               </div>
             </template>
+          </div>
+          <div class="hub-card ccl-bulk-editor">
+            <h3>Bulk Level Editor</h3><p class="hub-muted">Select up to 30 levels, edit their JSON, then save all modified levels together.</p>
+            <div class="admin-actions"><button class="admin-btn" :disabled="busy||bulkLoading" @click="loadBulkDrafts">Load selected levels</button><button class="admin-btn admin-btn-primary" :disabled="busy||bulkLoading||!bulkChangedCount||bulkErrors.length" @click="saveBulkLevels">Save {{bulkChangedCount}} changed levels</button></div>
+            <div class="ccl-bulk-picker"><label v-for="f in filteredFiles" :key="f"><input type="checkbox" :checked="bulkSelected.includes(f)" :disabled="!bulkSelected.includes(f)&&bulkSelected.length>=30" @change="toggleBulk(f,$event.target.checked)"> {{f.replaceAll('_',' ')}}</label></div>
+            <p>{{bulkSelected.length}} / 30 selected · {{bulkChangedCount}} modified</p>
+            <div v-if="Object.keys(bulkDrafts).length">
+              <label for="bulk-active-level">Edit draft</label><select id="bulk-active-level" v-model="bulkActive"><option v-for="p in Object.keys(bulkDrafts)" :key="p" :value="p">{{p.replaceAll('_',' ')}}{{bulkDrafts[p]!==bulkOriginals[p]?' ●':''}}</option></select>
+              <textarea v-if="bulkActive" class="admin-json" v-model="bulkDrafts[bulkActive]" spellcheck="false"></textarea>
+              <p v-for="e in bulkErrors" :key="e" class="admin-validation" role="alert">{{e}}</p>
+              <button class="admin-btn" :disabled="!bulkActive" @click="bulkDrafts[bulkActive]=bulkOriginals[bulkActive]">Reset current draft</button>
+            </div>
           </div>
           <div class="admin-editor-controls">
             <div class="admin-field"><label for="admin-list-type">List</label>
@@ -254,7 +268,7 @@ export default {
         async changeList() {
             if (this.hasUnsavedChanges && !confirm('Discard unsaved level changes?')) return;
             this.levelPath = ''; this.levelText = ''; this.originalLevelText = '';
-            this.filter = ''; await this.loadFiles();
+            this.filter = '';this.bulkSelected=[];this.bulkDrafts={};this.bulkOriginals={};this.bulkActive=''; await this.loadFiles();
         },
         async loadLevel() {
             if (!this.levelPath) { this.levelText = ''; this.originalLevelText = ''; return; }
@@ -286,6 +300,22 @@ export default {
                 const result=await api('/api/admin/github-backup','POST',{});
                 this.notice=result.synced+' of '+result.total+' level files backed up to GitHub.'+(result.failed?.length?' '+result.failed.length+' failed: '+result.failed.slice(0,3).map(x=>x.path+' ('+x.reason+')').join('; '):'');await this.loadBackupStatus();
             });
+        },
+        toggleBulk(path,checked){if(checked){if(this.bulkSelected.length<30)this.bulkSelected.push(path);}else{this.bulkSelected=this.bulkSelected.filter(p=>p!==path);delete this.bulkDrafts[path];delete this.bulkOriginals[path];if(this.bulkActive===path)this.bulkActive=Object.keys(this.bulkDrafts)[0]||'';}},
+        async loadBulkDrafts(){
+            if(!this.bulkSelected.length){this.error='Select levels first.';return;}
+            if(this.bulkChangedCount&&!confirm('Discard existing bulk drafts?'))return;
+            this.bulkLoading=true;this.error='';
+            try{const result=await api('/api/levels/overrides?list='+this.listType),drafts={};
+                for(const path of this.bulkSelected){let level=result.levels[path];if(!level){const response=await fetch('/data/'+encodeURIComponent(path)+'.json');if(!response.ok)throw Error('Could not load '+path);level=await response.json();}drafts[path]=JSON.stringify(level,null,2);}
+                this.bulkDrafts=drafts;this.bulkOriginals={...drafts};this.bulkActive=this.bulkSelected[0];
+            }catch(e){this.error=e.message;}finally{this.bulkLoading=false;}
+        },
+        async saveBulkLevels(){
+            if(this.bulkErrors.length||!this.bulkChangedCount)return;
+            const levels=Object.keys(this.bulkDrafts).filter(p=>this.bulkDrafts[p]!==this.bulkOriginals[p]).map(path=>({path,level:JSON.parse(this.bulkDrafts[path])}));
+            if(!confirm('Save '+levels.length+' level changes together?'))return;
+            await this.run(async()=>{const result=await api('/api/admin/levels/bulk','POST',{listType:this.listType,levels});this.bulkOriginals={...this.bulkDrafts};const failed=result.backups.filter(x=>!x.synced);this.notice=result.saved+' levels saved to D1. '+(failed.length?failed.length+' GitHub backups pending.':'All GitHub backups confirmed.');});
         },
         async saveLevel() {
             if (this.jsonError || !this.hasUnsavedChanges || !confirm('Save changes to ' + this.levelPath + '?')) return;
@@ -320,7 +350,7 @@ export default {
         async loadSubmissions() { await this.run(async()=>{this.submissions=(await api('/api/admin/submissions')).submissions||[]}) },
         async reviewRecord(item,status) {
             if(!confirm(status+' record for '+item.leaderboard_username+'?'))return;
-            await this.run(async()=>{const result=await api('/api/admin/submissions/review','POST',{id:item.id,status});this.submissions=this.submissions.filter(s=>s.id!==item.id);this.notice=this.backupNotice('Record '+status+'. Approved records are applied to the public list.',result.githubBackup)});
+            await this.run(async()=>{const result=await api('/api/admin/submissions/review','POST',{id:item.id,status,feedback:this.reviewFeedback[item.id]||''});this.submissions=this.submissions.filter(s=>s.id!==item.id);this.notice=this.backupNotice('Record '+status+'. Approved records are applied to the public list.',result.githubBackup)});
         },
         async loadWeeklyEntries() { await this.run(async()=>{this.weeklyEntries=(await api('/api/admin/weekly/entries')).entries||[]}) },
         async reviewWeekly(item,status) {

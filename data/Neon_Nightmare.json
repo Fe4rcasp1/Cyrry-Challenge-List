@@ -1,42 +1,50 @@
 {
-    "id": 127284598,
-    "name": "Neon Nightmare",
-    "author": "MrKingFloppa",
-    "creators": ["MrKingFloppa","NxXD","Moab934","bouclierrobe","Toasty","AnxientGD"],
-    "verifier": "MrKingFloppa",
-    "verification": "https://youtu.be/SiPAEakqITE?si=tAx8Cyp9L3erbsFe",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/n3pVDUwcxU4?si=Gd6bBj0G72_dOSFs",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "chickadeeinc",
-            "link": "https://drive.google.com/file/d/1gu-cXxnIH6FCDiHowM5s_ioH9SPuUTVX/view?usp=sharing",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "CruxCrusafix",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "NotHereGD",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Fe4rcasp",
-            "link": "https://youtu.be/bbwrcMJlTPA?si=lrCxWwhLh4OYWJMv",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 127284598,
+  "name": "Neon Nightmare",
+  "author": "MrKingFloppa",
+  "creators": [
+    "MrKingFloppa",
+    "NxXD",
+    "Moab934",
+    "bouclierrobe",
+    "Toasty",
+    "AnxientGD"
+  ],
+  "verifier": "MrKingFloppa",
+  "verification": "https://youtu.be/SiPAEakqITE?si=tAx8Cyp9L3erbsFe",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/n3pVDUwcxU4?si=Gd6bBj0G72_dOSFs",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "chickadeeinc",
+      "link": "https://drive.google.com/file/d/1gu-cXxnIH6FCDiHowM5s_ioH9SPuUTVX/view?usp=sharing",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "CruxCrusafix",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "NotHereGD",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Fe4rcasp",
+      "link": "https://youtu.be/bbwrcMJlTPA?si=lrCxWwhLh4OYWJMv",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 1
+    }
+  ]
 }

@@ -1,11 +1,20 @@
 {
-    "id": 128505132,
-    "name": "Evan challenge",
-    "author": "Leagal",
-    "creators": ["Leagal"],
-    "verifier": "Leagal",
-    "verification": "https://youtu.be/_XTShmxKWPw?si=5XBlm7uD_htARKmW",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": []
+  "id": 128505132,
+  "name": "Evan challenge",
+  "author": "Leagal",
+  "creators": [
+    "Leagal"
+  ],
+  "verifier": "Leagal",
+  "verification": "https://youtu.be/_XTShmxKWPw?si=5XBlm7uD_htARKmW",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "CyrryGD",
+      "percent": 100,
+      "link": "https://youtu.be/apaR1S2Gesk?si=e51EpXBwHCUD8ioR",
+      "enjoyment": 9
+    }
+  ]
 }

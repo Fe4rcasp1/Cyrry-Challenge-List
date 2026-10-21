@@ -1,24 +1,27 @@
 {
-    "id": 143390610,
-    "name": "Spammer wammer 🏆",
-    "author": "Geomaster846",
-    "creators": ["Geomaster846"],
-    "verifier": "Geomaster846",
-    "verification": "https://youtu.be/sHz7NUfHMOQ?si=ONwMx7xlrKsuW-UU",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/hwyE3DY9Vfg?si=hfDbqYcQeyyP9Ptu",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Dextrh",
-            "link": "https://medal.tv/games/geometry-dash/clips/npezFBCLRdHmj7LaV?invite=cr-MSx3WlMsMjAyMTYzNDkw",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 143390610,
+  "name": "Spammer wammer 🏆",
+  "author": "Geomaster846",
+  "creators": [
+    "Geomaster846"
+  ],
+  "verifier": "Geomaster846",
+  "verification": "https://youtu.be/sHz7NUfHMOQ?si=ONwMx7xlrKsuW-UU",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/hwyE3DY9Vfg?si=hfDbqYcQeyyP9Ptu",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 1
+    },
+    {
+      "user": "Dextrh",
+      "link": "https://medal.tv/games/geometry-dash/clips/npezFBCLRdHmj7LaV?invite=cr-MSx3WlMsMjAyMTYzNDkw",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

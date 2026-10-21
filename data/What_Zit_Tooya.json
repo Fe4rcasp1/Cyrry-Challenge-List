@@ -1,11 +1,13 @@
 {
-    "id": 147660304,
-    "name": "what zit tooya",
-    "author": "ufb32",
-    "creators": ["ufb32"],
-    "verifier": "ufb32",
-    "verification": "https://youtu.be/Gmv__cI9tvY?si=TiJ0KEDxbMQ_OsWU",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": []
+  "id": 147660304,
+  "name": "what zit tooya",
+  "author": "ufb32",
+  "creators": [
+    "ufb32"
+  ],
+  "verifier": "ufb32",
+  "verification": "https://youtu.be/Gmv__cI9tvY?si=TiJ0KEDxbMQ_OsWU",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": []
 }

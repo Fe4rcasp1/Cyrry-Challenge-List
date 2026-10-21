@@ -1,6 +1,6 @@
 import { store } from '../main.js';
 export default {
- data:()=>({listType:'normal',levels:[],levelPath:'',username:'',discordName:'',enjoyment:'',percent:100,videoUrl:'',busy:false,error:'',notice:'',submissions:[]}),
+ data:()=>({normalLevels:[],platformerLevels:[],records:[{key:1,listType:'normal',levelPath:'',videoUrl:'',enjoyment:'',percent:100}],nextKey:2,discordName:'',busy:false,error:'',notice:'',submissions:[]}),
  computed:{store(){return store}},
  template:`
  <main class="ccl-hub ccl-record-submit">
@@ -9,14 +9,17 @@ export default {
    <p v-if="!store.user">Please <router-link to="/account">log in</router-link> to submit a record.</p>
    <p v-else-if="!store.profileUsername">An <router-link to="/account">approved player profile claim</router-link> is required before submitting.</p>
    <form v-else @submit.prevent="submit">
-    <label for="record-list">List</label><select id="record-list" v-model="listType" @change="loadLevels"><option value="normal">Normal CCL</option><option value="platformer">Platformer CCL</option></select>
-    <label for="record-level">Level</label><select id="record-level" v-model="levelPath" required><option value="">Select a level</option><option v-for="level in levels" :key="level" :value="level">{{level.replaceAll('_',' ')}}</option></select>
-    <label for="record-username">CCL username</label><input id="record-username" v-model.trim="username" required maxlength="32" autocomplete="username" placeholder="Your approved player username" />
-    <label for="record-discord">Discord username</label><input id="record-discord" v-model.trim="discordName" required maxlength="64" placeholder="Your Discord username" />
-    <label for="record-video">Video proof link</label><input id="record-video" v-model.trim="videoUrl" type="url" required maxlength="500" placeholder="https://youtube.com/..." />
-    <label for="record-enjoyment">Enjoyment (0–10)</label><input id="record-enjoyment" v-model="enjoyment" type="number" min="0" max="10" step="1" required />
-    <label for="record-percent">Completion percentage</label><input id="record-percent" v-model.number="percent" type="number" min="1" max="100" required />
-    <button type="submit" class="hub-fav-button" :disabled="busy">{{busy?'Submitting…':'Submit for review'}}</button>
+    <label for="record-discord">Discord username (shared by all records)</label><input id="record-discord" v-model.trim="discordName" required maxlength="64" placeholder="Your Discord username" />
+    <p class="hub-muted">Submitting as {{store.profileUsername}}. Add up to 20 records in one batch.</p>
+    <div v-for="(record,i) in records" :key="record.key" class="ccl-batch-record">
+     <div class="admin-section-head"><h3>Record {{i+1}}</h3><button v-if="records.length>1" type="button" class="admin-btn" :disabled="busy" @click="removeRecord(i)">Remove</button></div>
+     <label :for="'record-list-'+record.key">List</label><select :id="'record-list-'+record.key" v-model="record.listType" @change="record.levelPath=''"><option value="normal">Normal CCL</option><option value="platformer">Platformer CCL</option></select>
+     <label :for="'record-level-'+record.key">Level</label><select :id="'record-level-'+record.key" v-model="record.levelPath" required><option value="">Select a level</option><option v-for="level in (record.listType==='normal'?normalLevels:platformerLevels)" :key="level" :value="level">{{level.replaceAll('_',' ')}}</option></select>
+     <label :for="'record-video-'+record.key">Video proof</label><input :id="'record-video-'+record.key" v-model.trim="record.videoUrl" type="url" required maxlength="500" placeholder="https://youtube.com/..." />
+     <label :for="'record-enjoyment-'+record.key">Enjoyment (0–10)</label><input :id="'record-enjoyment-'+record.key" v-model.number="record.enjoyment" type="number" min="0" max="10" step="1" required />
+     <label :for="'record-percent-'+record.key">Completion percentage</label><input :id="'record-percent-'+record.key" v-model.number="record.percent" type="number" min="1" max="100" required />
+    </div>
+    <div class="admin-actions"><button type="button" class="admin-btn" :disabled="busy||records.length>=20" @click="addRecord">+ Add another record</button><button type="submit" class="hub-fav-button" :disabled="busy">{{busy?'Submitting…':'Submit '+records.length+' record'+(records.length===1?'':'s')+' for review'}}</button></div>
    </form>
    <p v-if="error" role="alert" class="hub-auth-error">{{error}}</p><p v-if="notice" role="status">{{notice}}</p>
   </section>
@@ -31,15 +34,26 @@ export default {
    </div>
   </section>
  </main>`,
- async mounted(){this.username=store.profileUsername||'';await this.loadLevels();if(store.user)await this.loadSubmissions();},
- watch:{'store.profileUsername'(name){if(name&&!this.username)this.username=name},'store.user'(user){if(user)this.loadSubmissions()}},
+ async mounted(){await this.loadLevels();if(store.user)await this.loadSubmissions();},
+ watch:{'store.user'(user){if(user)this.loadSubmissions()}},
  methods:{
-  async loadLevels(){this.levelPath='';try{const r=await fetch('/data/'+(this.listType==='normal'?'_list.json':'_platformer.json'));if(!r.ok)throw Error('Unable to load levels');this.levels=await r.json()}catch(e){this.error=e.message}},
-  async loadSubmissions(){try{const r=await fetch('/api/community/submissions',{credentials:'same-origin',cache:'no-store'});if(r.ok)this.submissions=(await r.json()).submissions||[]}catch(e){console.warn(e)}},
-  async submit(){this.error='';this.notice='';this.busy=true;try{
-    const r=await fetch('/api/community/submissions',{method:'POST',credentials:'same-origin',headers:{'content-type':'application/json'},body:JSON.stringify({listType:this.listType,levelPath:this.levelPath,username:this.username,discordName:this.discordName,videoUrl:this.videoUrl,enjoyment:Number(this.enjoyment),percent:this.percent})});
-    const data=await r.json();if(!r.ok)throw Error(data.error||'Submission failed');
-    this.notice='Record submitted! Staff can now review your video.';this.videoUrl='';this.enjoyment='';await this.loadSubmissions();
-  }catch(e){this.error=e.message}finally{this.busy=false}}
+  addRecord(){if(this.records.length<20)this.records.push({key:this.nextKey++,listType:'normal',levelPath:'',videoUrl:'',enjoyment:'',percent:100});},
+  removeRecord(i){if(this.records.length>1)this.records.splice(i,1);},
+  async loadLevels(){try{const responses=await Promise.all(['/data/_list.json','/data/_platformer.json'].map(x=>fetch(x)));if(responses.some(r=>!r.ok))throw Error('Unable to load level lists');[this.normalLevels,this.platformerLevels]=await Promise.all(responses.map(r=>r.json()));}catch(e){this.error=e.message;}},
+  async loadSubmissions(){try{const r=await fetch('/api/community/submissions',{credentials:'same-origin',cache:'no-store'});if(r.ok)this.submissions=(await r.json()).submissions||[];}catch(e){console.warn(e);}},
+  async submit(){
+   this.error='';this.notice='';
+   if(new Set(this.records.map(r=>r.listType+':'+r.levelPath)).size!==this.records.length){this.error='Each level can only appear once in a batch.';return;}
+   this.busy=true;
+   try{
+    const payload=this.records.map(r=>({listType:r.listType,levelPath:r.levelPath,videoUrl:r.videoUrl,enjoyment:Number(r.enjoyment),percent:Number(r.percent),discordName:this.discordName,username:store.profileUsername}));
+    const response=await fetch('/api/community/submissions/bulk',{method:'POST',credentials:'same-origin',headers:{'content-type':'application/json'},body:JSON.stringify({records:payload})});
+    const data=await response.json();if(!response.ok)throw Error(data.error||'Submission failed');
+    this.notice=data.submitted+' record'+(data.submitted===1?'':'s')+' submitted for review!';
+    this.records=[{key:this.nextKey++,listType:'normal',levelPath:'',videoUrl:'',enjoyment:'',percent:100}];
+    await this.loadSubmissions();
+   }catch(e){this.error=e.message;}finally{this.busy=false;}
+  }
  }
+
 };

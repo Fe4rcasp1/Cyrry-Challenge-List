@@ -1,36 +1,39 @@
 {
-    "id": 133089380,
-    "name": "MERCY",
-    "author": "chickadeeinc",
-    "creators": ["chickadeeinc"],
-    "verifier": "chickadeeinc",
-    "verification": "https://youtu.be/szlRz3MJ1AQ?si=KierRb3wbvUFO_Si",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/6HIrGFCNb6s?si=OWNu6_W5S9vsq33O",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Noname1610",
-            "link": "https://youtu.be/tMMCA-mckmI?si=XYlzoXyQXHdpcEav",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Geomaster846",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Loopelino",
-            "link": "https://youtu.be/tcdErvaFfnc?si=jJNNrKtaVfkRszl6",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 133089380,
+  "name": "MERCY",
+  "author": "chickadeeinc",
+  "creators": [
+    "chickadeeinc"
+  ],
+  "verifier": "chickadeeinc",
+  "verification": "https://youtu.be/szlRz3MJ1AQ?si=KierRb3wbvUFO_Si",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/6HIrGFCNb6s?si=OWNu6_W5S9vsq33O",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 7
+    },
+    {
+      "user": "Noname1610",
+      "link": "https://youtu.be/tMMCA-mckmI?si=XYlzoXyQXHdpcEav",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Geomaster846",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Loopelino",
+      "link": "https://youtu.be/tcdErvaFfnc?si=jJNNrKtaVfkRszl6",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

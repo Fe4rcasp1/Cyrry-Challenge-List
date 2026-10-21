@@ -267,7 +267,8 @@ async function handle(request, env) {
      statements.push(env.DB.prepare('INSERT INTO admin_audit(id,actor_id,action,target) VALUES(?,?,?,?)').bind(crypto.randomUUID(),user.id,'record_'+data.status,data.id));
      statements.push(env.DB.prepare('INSERT INTO notifications(id,user_id,kind,message,link) VALUES(?,?,?,?,?)').bind(crypto.randomUUID(),submission.user_id,'record','Your '+submission.level_path.replaceAll('_',' ')+' record was '+data.status+'.','/#/submit-record'));
      await env.DB.batch(statements);
-     return json({ok:true,note:updatedLevel?'Approved record applied to public list.':'Submission rejected.'});
+     const backup=updatedLevel ? await backupLevelToGitHub(env,submission.list_type,submission.level_path,updatedLevel) : null;
+     return json({ok:true,githubBackup:backup,note:updatedLevel?'Approved record applied to public list.':'Submission rejected.'});
    }
    if (path === '/api/admin/weekly' && request.method === 'POST') {
      if(!canEdit)return json({error:'Editor role required.'},403);
@@ -347,7 +348,8 @@ async function handle(request, env) {
        env.DB.prepare("INSERT INTO manual_enjoyment_ratings(list_type,level_path,leaderboard_username,enjoyment,updated_by) VALUES(?,?,?,?,?) ON CONFLICT(list_type,level_path,leaderboard_username) DO UPDATE SET enjoyment=excluded.enjoyment,updated_by=excluded.updated_by,updated_at=CURRENT_TIMESTAMP").bind(listType,levelPath,record.user,enjoyment,user.id),
        env.DB.prepare('INSERT INTO admin_audit(id,actor_id,action,target) VALUES(?,?,?,?)').bind(crypto.randomUUID(),user.id,'enjoyment_edit',listType+':'+levelPath+':'+record.user)
      ]);
-     return json({ok:true});
+     const backup=await backupLevelToGitHub(env,listType,levelPath,level);
+     return json({ok:true,githubBackup:backup});
    }
    if (path === '/api/admin/levels' && request.method === 'POST') {
      if (!canEdit) return json({error:'Level editing not permitted.'},403);
@@ -363,7 +365,21 @@ async function handle(request, env) {
      if (!listResponse.ok || !(await listResponse.json()).includes(levelPath)) return json({error:'Level does not exist in this list.'},404);
      await env.DB.prepare("INSERT INTO level_overrides(list_type,level_path,level_json,updated_by) VALUES(?,?,?,?) ON CONFLICT(list_type,level_path) DO UPDATE SET level_json=excluded.level_json,updated_by=excluded.updated_by,updated_at=CURRENT_TIMESTAMP").bind(listType,levelPath,serialized,user.id).run();
      await env.DB.prepare('INSERT INTO admin_audit(id,actor_id,action,target) VALUES(?,?,?,?)').bind(crypto.randomUUID(),user.id,'level_edit',listType+':'+levelPath).run();
-     return json({ok:true});
+     const backup=await backupLevelToGitHub(env,listType,levelPath,level);
+     return json({ok:true,githubBackup:backup});
+   }
+   if (path === '/api/admin/github-backup' && request.method === 'POST') {
+     if (!canEdit) return json({error:'Level editing not permitted.'},403);
+     if (!env.GITHUB_TOKEN) return json({error:'Configure GITHUB_TOKEN as a Cloudflare Worker secret first.'},503);
+     const rows=await env.DB.prepare('SELECT list_type,level_path,level_json FROM level_overrides ORDER BY updated_at DESC LIMIT 500').all();
+     const results=[];
+     for(const row of rows.results){
+       let backup;
+       try { backup=await backupLevelToGitHub(env,row.list_type,row.level_path,JSON.parse(row.level_json)); }
+       catch(e){ backup={synced:false,reason:e.message}; }
+       results.push({listType:row.list_type,path:row.level_path,...backup});
+     }
+     return json({ok:results.every(x=>x.synced),total:results.length,synced:results.filter(x=>x.synced).length,failed:results.filter(x=>!x.synced)});
    }
    return json({error:'Admin endpoint not found.'},404);
  }

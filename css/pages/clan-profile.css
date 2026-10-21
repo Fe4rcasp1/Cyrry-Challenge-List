@@ -1,0 +1,4 @@
+.profile-clan-tag{display:inline-flex;align-items:center;vertical-align:middle;color:#9fd1ff;text-decoration:none;font-size:.68em;font-weight:800;letter-spacing:.035em;padding:.12em .36em;border:1px solid rgba(125,181,255,.4);background:rgba(52,111,195,.16);border-radius:.35em;transition:background .15s ease}
+.profile-clan-tag:hover{background:rgba(52,111,195,.32)}
+.profile-clan-name{display:inline-block;margin:.35rem 0 .55rem;color:#bad8ff;text-decoration:none;font-size:.9rem;font-weight:600}
+.profile-clan-name:hover{text-decoration:underline}

@@ -76,7 +76,7 @@ export default {
                             <table class="table">
                                 <tr v-for="created in entry.created" :key="created.rank">
                                     <td class="rank"><p>#{{ created.rank }}</p></td>
-                                    <td class="level"><a v-if="created.link" class="type-label-lg" :href="created.link" target="_blank" rel="noopener noreferrer">{{ created.level }}</a><p v-else>{{ created.level }}</p><span class="creator-rating" :class="'rating-' + created.rating.toLowerCase()">{{ ratingLabel(created.rating) }}</span></td>
+                                    <td class="level"><div class="creator-level-line"><a v-if="created.link" class="type-label-lg" :href="created.link" target="_blank" rel="noopener noreferrer">{{ created.level }}</a><span v-else class="type-label-lg">{{ created.level }}</span><span v-if="created.rating" class="creator-rating" :class="'rating-' + created.rating.toLowerCase()">{{ ratingLabel(created.rating) }}</span></div></td>
                                     <td class="score"><p>+{{ created.score }}</p></td>
                                 </tr>
                             </table>

@@ -1,66 +1,69 @@
 {
-    "id": 125454500,
-    "name": "Wave Fantasy",
-    "author": "chickadeeinc",
-    "creators": ["chickadeeinc"],
-    "verifier": "chickadeeinc",
-    "verification": "https://youtu.be/4vJb2S0UNvI?si=QwFjynoMF1wOtGUS",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "jamxz11",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "skeetles",
-            "link": "https://youtu.be/jJfAyl5H-BA",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Maulr",
-            "link": "https://drive.google.com/file/d/1EMEwIzIwoM0j-5bZAM9104TseApBIBnu/view?usp=sharing",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "DLandCheems",
-            "link": "https://medal.tv/games/geometry-dash/clips/lF8zMogT56Uvgft1c?invite=cr-MSxyVjUsNzc3MjQwNDAw",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Masketified",
-            "link": "https://medal.tv/games/geometry-dash/clips/lF8Iqgwiza3QJJ-BW?invite=cr-MSxPbHosNzc3MjQwNDAw",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/uFZG45oQ0U4?si=Ryagy0uhfTL8mxxO",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Geomaster846",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Void852",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Wyattdws10",
-            "link": "https://medal.tv/games/geometry-dash/clips/nsYMgZyWeVmoo4clj?invite=cr-MSxqancsMjcxNTkzMjM1",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 125454500,
+  "name": "Wave Fantasy",
+  "author": "chickadeeinc",
+  "creators": [
+    "chickadeeinc"
+  ],
+  "verifier": "chickadeeinc",
+  "verification": "https://youtu.be/4vJb2S0UNvI?si=QwFjynoMF1wOtGUS",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "jamxz11",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "skeetles",
+      "link": "https://youtu.be/jJfAyl5H-BA",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Maulr",
+      "link": "https://drive.google.com/file/d/1EMEwIzIwoM0j-5bZAM9104TseApBIBnu/view?usp=sharing",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "DLandCheems",
+      "link": "https://medal.tv/games/geometry-dash/clips/lF8zMogT56Uvgft1c?invite=cr-MSxyVjUsNzc3MjQwNDAw",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Masketified",
+      "link": "https://medal.tv/games/geometry-dash/clips/lF8Iqgwiza3QJJ-BW?invite=cr-MSxPbHosNzc3MjQwNDAw",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/uFZG45oQ0U4?si=Ryagy0uhfTL8mxxO",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 7
+    },
+    {
+      "user": "Geomaster846",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Void852",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Wyattdws10",
+      "link": "https://medal.tv/games/geometry-dash/clips/nsYMgZyWeVmoo4clj?invite=cr-MSxqancsMjcxNTkzMjM1",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

@@ -86,9 +86,19 @@ export default {
                         </tr>
                     </template>
                 </table>
+                <section v-if="!platformer && !searchQuery.trim() && sectionFilter === 'all' && ratingFilter === 'all' && enjoymentFilter === 'all'" class="ccl-unverified-section">
+                    <div class="ccl-unverified-eyebrow">SECTION 03</div>
+                    <h2>Unverified</h2>
+                    <p>Impossible CCL levels</p>
+                    <button type="button" class="ccl-unverified-toggle" @click="showUnverified = !showUnverified" :aria-expanded="showUnverified">{{ showUnverified ? '← Back to verified levels' : 'Browse impossible levels →' }}</button>
+                </section>
             </div>
             <div class="level-container">
-                <div class="level" v-if="level">
+                <div v-if="showUnverified && !platformer" class="ccl-unverified-view">
+                    <div class="ccl-unverified-view-head"><h2>Unverified · Impossible CCL</h2><button type="button" @click="showUnverified = false">Back to CCL</button></div>
+                    <iframe src="https://cclimpossible.ccllcc.workers.dev/?embed=1#/" title="Impossible CCL levels" class="ccl-unverified-frame" loading="lazy"></iframe>
+                </div>
+                <div class="level" v-if="level && !showUnverified">
                     <h1>{{ level.name }}</h1>
                     <button type="button" class="hub-fav-button" @click="toggleLevelFavorite" :aria-pressed="favorite" :aria-label="favorite ? 'Remove favorite' : 'Save favorite'">{{ favorite ? "★ Saved to Favorites" : "☆ Save to Favorites" }}</button>
                     <LevelAuthors :author="level.author" :creators="level.creators" :verifier="level.verifier"></LevelAuthors>
@@ -129,7 +139,7 @@ export default {
                         </tr>
                     </table>
                 </div>
-                <div v-else class="level" style="height: 100%; justify-content: center; align-items: center;">
+                <div v-else-if="!showUnverified" class="level" style="height: 100%; justify-content: center; align-items: center;">
                     <p>(ノಠ益ಠ)ノ彡┻━┻</p>
                 </div>
             </div>
@@ -245,6 +255,7 @@ export default {
     `,
     data: () => ({
         list: [],
+        showUnverified: false,
         searchQuery: "",
         favorite: false,
         sectionFilter: "all",
@@ -300,7 +311,7 @@ export default {
         },
     },
     watch: {
-        selected() { this.syncFavorite(); }
+        selected() { this.syncFavorite(); this.showUnverified = false; }
     },
     async mounted() {
         // Hide loading spinner

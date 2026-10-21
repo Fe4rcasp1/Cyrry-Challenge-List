@@ -1,24 +1,27 @@
 {
-    "id": 125894021,
-    "name": "splash",
-    "author": "soopidk",
-    "creators": ["soopidk"],
-    "verifier": "soopidk",
-    "verification": "https://youtu.be/QeEo5oCjM0M?si=XsmSNjo1ZYVB7P0H",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "NotHereGD",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/kZ1qSh5qYO8?si=fA1vJlW4Wzhza7Ld",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 125894021,
+  "name": "splash",
+  "author": "soopidk",
+  "creators": [
+    "soopidk"
+  ],
+  "verifier": "soopidk",
+  "verification": "https://youtu.be/QeEo5oCjM0M?si=XsmSNjo1ZYVB7P0H",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "NotHereGD",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 0
+    },
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/kZ1qSh5qYO8?si=fA1vJlW4Wzhza7Ld",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

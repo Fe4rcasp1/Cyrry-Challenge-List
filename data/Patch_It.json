@@ -1,18 +1,21 @@
 {
-    "id": 126094554,
-    "name": "Patch It",
-    "author": "CyrryGD",
-    "creators": ["CyrryGD"],
-    "verifier": "NotHereGD",
-    "verification": "https://youtu.be/Vu1qgJmTrvs?si=D2kchPettf1tOutm",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-{
-            "user": "CyrryGD",
-            "link": "https://youtu.be/juMv2JXY5U4?si=_wNXjGgQBR_3Ad6Z",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 126094554,
+  "name": "Patch It",
+  "author": "CyrryGD",
+  "creators": [
+    "CyrryGD"
+  ],
+  "verifier": "NotHereGD",
+  "verification": "https://youtu.be/Vu1qgJmTrvs?si=D2kchPettf1tOutm",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/juMv2JXY5U4?si=_wNXjGgQBR_3Ad6Z",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 9
+    }
+  ]
 }

@@ -20,7 +20,16 @@ export default {
    </form>
    <p v-if="error" role="alert" class="hub-auth-error">{{error}}</p><p v-if="notice" role="status">{{notice}}</p>
   </section>
-  <section v-if="store.user" class="hub-card"><h2>Your submissions</h2><p v-if="!submissions.length">No submissions yet.</p><div v-for="s in submissions" :key="s.id" class="hub-change"><strong>{{s.level_path.replaceAll('_',' ')}} · {{s.percent}}%</strong><span>{{s.status}}</span></div></section>
+  <section v-if="store.user" class="hub-card"><div class="admin-section-head"><h2>Record Submission Tracker</h2><button type="button" class="admin-btn" @click="loadSubmissions">Refresh status</button></div><p class="hub-muted">Track each submission from review to decision. Staff feedback appears here after review.</p>
+   <p v-if="!submissions.length">No submissions yet.</p>
+   <div v-for="s in submissions" :key="s.id" class="hub-change">
+    <strong>{{s.level_path.replaceAll('_',' ')}} · {{s.percent}}% <span :class="'ccl-submission-status ccl-status-'+s.status">{{s.status}}</span></strong>
+    <span>{{s.list_type==='platformer'?'Platformer':'Normal'}} · Submitted: {{s.created_at}}</span>
+    <span v-if="s.reviewed_at">Reviewed: {{s.reviewed_at}}</span>
+    <p v-if="s.review_feedback"><strong>Staff feedback:</strong> {{s.review_feedback}}</p>
+    <a v-if="s.video_url" :href="s.video_url" target="_blank" rel="noopener noreferrer">View submitted proof ↗</a>
+   </div>
+  </section>
  </main>`,
  async mounted(){this.username=store.profileUsername||'';await this.loadLevels();if(store.user)await this.loadSubmissions();},
  watch:{'store.profileUsername'(name){if(name&&!this.username)this.username=name},'store.user'(user){if(user)this.loadSubmissions()}},

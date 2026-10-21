@@ -331,6 +331,7 @@ async function handle(request, env) {
    if (path === '/api/admin/submissions/review' && request.method === 'POST') {
      if(!canReview)return json({error:'Not permitted.'},403);
      const data=await body(request);
+     const feedback=String(data.feedback||'').trim();if(feedback.length>1000)return json({error:'Feedback too long.'},400);
      if(!['approved','rejected'].includes(data.status)||!/^[0-9a-f-]{36}$/i.test(String(data.id||'')))return json({error:'Invalid review.'},400);
      const submission=await env.DB.prepare("SELECT * FROM record_submissions WHERE id=? AND status='pending'").bind(data.id).first();
      if(!submission)return json({error:'Submission already reviewed.'},409);
@@ -352,7 +353,7 @@ async function handle(request, env) {
      }
      const statements=[];
      if(updatedLevel)statements.push(env.DB.prepare("INSERT INTO level_overrides(list_type,level_path,level_json,updated_by) VALUES(?,?,?,?) ON CONFLICT(list_type,level_path) DO UPDATE SET level_json=excluded.level_json,updated_by=excluded.updated_by,updated_at=CURRENT_TIMESTAMP").bind(submission.list_type,submission.level_path,JSON.stringify(updatedLevel),user.id));
-     statements.push(env.DB.prepare("UPDATE record_submissions SET status=?,reviewer_id=?,reviewed_at=CURRENT_TIMESTAMP WHERE id=? AND status='pending'").bind(data.status,user.id,data.id));
+     statements.push(env.DB.prepare("UPDATE record_submissions SET status=?,review_feedback=?,reviewer_id=?,reviewed_at=CURRENT_TIMESTAMP WHERE id=? AND status='pending'").bind(data.status,feedback,user.id,data.id));
      statements.push(env.DB.prepare('INSERT INTO admin_audit(id,actor_id,action,target) VALUES(?,?,?,?)').bind(crypto.randomUUID(),user.id,'record_'+data.status,data.id));
      statements.push(env.DB.prepare('INSERT INTO notifications(id,user_id,kind,message,link) VALUES(?,?,?,?,?)').bind(crypto.randomUUID(),submission.user_id,'record','Your '+submission.level_path.replaceAll('_',' ')+' record was '+data.status+'.','/#/submit-record'));
      await env.DB.batch(statements);
@@ -463,6 +464,33 @@ async function handle(request, env) {
      try{await logLevelChange(env,user.id,listType,levelPath,'level_edit',before,level,backup);}catch(e){console.error('History write failed',e);}
      return json({ok:true,githubBackup:backup});
    }
+   if(path==='/api/admin/levels/bulk'&&request.method==='POST'){
+    if(!canEdit)return json({error:'Not permitted.'},403);
+    const data=await body(request),type=String(data.listType||''),entries=data.levels;
+    if(!['normal','platformer'].includes(type)||!Array.isArray(entries)||entries.length<1||entries.length>30)return json({error:'Select 1–30 levels.'},400);
+    const res=await env.ASSETS.fetch(new Request(new URL('/data/'+(type==='normal'?'_list.json':'_platformer.json'),request.url)));
+    if(!res.ok)return json({error:'Level list unavailable.'},503);
+    const allowed=new Set(await res.json()),seen=new Set(),items=[];
+    for(const entry of entries){
+     const p=String(entry?.path||''),l=entry?.level;
+     if(!/^[A-Za-z0-9_-]{1,120}$/.test(p)||!allowed.has(p)||seen.has(p))return json({error:'Invalid or duplicate level: '+p},400);
+     seen.add(p);
+     if(!l||typeof l!=='object'||Array.isArray(l)||!Number.isSafeInteger(l.id)||typeof l.name!=='string'||!l.name.trim()||l.name.length>150||typeof l.author!=='string'||!Array.isArray(l.creators)||!Array.isArray(l.records)||l.records.length>500||typeof l.verifier!=='string'||!l.records.every(r=>r&&typeof r.user==='string'&&r.user.length<=64&&Number.isFinite(r.percent)&&r.percent>=0&&r.percent<=100))return json({error:'Invalid JSON for '+p},400);
+     const serialized=JSON.stringify(l);if(serialized.length>120000)return json({error:'JSON too large for '+p},413);
+     items.push({path:p,level:l,serialized});
+    }
+    await env.DB.batch(items.flatMap(x=>[
+     env.DB.prepare("INSERT INTO level_overrides(list_type,level_path,level_json,updated_by) VALUES(?,?,?,?) ON CONFLICT(list_type,level_path) DO UPDATE SET level_json=excluded.level_json,updated_by=excluded.updated_by,updated_at=CURRENT_TIMESTAMP").bind(type,x.path,x.serialized,user.id),
+     env.DB.prepare('INSERT INTO admin_audit(id,actor_id,action,target) VALUES(?,?,?,?)').bind(crypto.randomUUID(),user.id,'level_bulk_edit',type+':'+x.path)
+    ]));
+    const backups=[];
+    for(const x of items){
+     let backup;try{backup=await backupLevelToGitHub(env,type,x.path,x.level);}catch(e){backup={synced:false,reason:String(e.message||e)};}
+     backups.push({path:x.path,...backup});
+     try{await logLevelChange(env,user.id,type,x.path,'level_bulk_edit',null,x.level,backup);}catch(e){console.error('History write failed',e);}
+    }
+    return json({ok:true,saved:items.length,backups});
+   }
    if (path === '/api/admin/github-backup/status' && request.method === 'GET') {
      if(!canEdit)return json({error:'Level editing not permitted.'},403);
      const rows=await env.DB.prepare("SELECT o.list_type,o.level_path,o.updated_at,h.github_synced,h.created_at AS last_attempt FROM level_overrides o LEFT JOIN ccl_level_history h ON h.id=(SELECT id FROM ccl_level_history WHERE list_type=o.list_type AND level_path=o.level_path ORDER BY created_at DESC,rowid DESC LIMIT 1) ORDER BY o.updated_at DESC LIMIT 500").all();
@@ -526,7 +554,7 @@ async function handle(request, env) {
  }
  if (path === '/api/community/submissions' && request.method === 'GET') {
    const user=await currentUser(request,env.DB);if(!user)return json({error:'Log in first.'},401);
-   const rows=await env.DB.prepare('SELECT id,leaderboard_username,list_type,level_path,percent,video_url,status,created_at FROM record_submissions WHERE user_id=? ORDER BY created_at DESC LIMIT 100').bind(user.id).all();
+   const rows=await env.DB.prepare('SELECT id,leaderboard_username,list_type,level_path,percent,video_url,status,created_at,reviewed_at,review_feedback FROM record_submissions WHERE user_id=? ORDER BY created_at DESC LIMIT 100').bind(user.id).all();
    return json({submissions:rows.results});
  }
  if (path === '/api/community/submissions' && request.method === 'POST') {

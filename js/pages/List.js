@@ -34,6 +34,7 @@ export default {
                             <option value="all">All levels</option>
                             <option value="main">Main List (1–100)</option>
                             <option value="extended">Extended List (101+)</option>
+                            <option v-if="!platformer" value="unverified">Unverified</option>
                         </select>
                         <label :for="platformer ? 'platformer-rating' : 'challenge-rating'">Rating</label>
                         <select :id="platformer ? 'platformer-rating' : 'challenge-rating'" v-model="ratingFilter" class="filter-select">
@@ -62,22 +63,23 @@ export default {
                         </select>
                         <button type="button" class="filter-reset" v-if="searchQuery || sectionFilter !== 'all' || ratingFilter !== 'all' || enjoymentFilter !== 'all' || enjoymentSort !== 'rank'" @click="resetFilters">Clear filters</button>
                     </div>
-                    <p class="search-count">{{ filteredLevels.length }} of {{ list.length }} levels</p>
+                    <p class="search-count">{{ filteredLevels.length }} of {{ list.length + (platformer ? 0 : impossibleLevels.length) }} levels</p>
                 </div>
                 <p v-if="list.length && !filteredLevels.length" class="search-empty">No levels match these filters.</p>
                 <table class="list" v-if="list">
                     <tr class="section-header">
                         <td colspan="2" class="type-label-lg">{{ platformer ? "Platformer List" : "Main List" }}</td>
                     </tr>
-                    <template v-for="item in filteredLevels" :key="item.index">
+                    <template v-for="item in filteredLevels" :key="item.impossible ? 'unverified-' + item.index : item.index">
+                        <tr v-if="item.impossible && (!filteredLevels.some(x => x.impossible && x.index < item.index))" class="section-header"><td colspan="2" class="type-label-lg">Unverified</td></tr>
                         <tr>
                         <td class="rank">
-                            <p class="type-label-lg">#{{ item.index + 1 }}</p>
+                            <p class="type-label-lg">#{{ item.impossible ? item.level.impossibleRank : item.index + 1 }}</p>
                         </td>
-                        <td class="level"   :class="{ 'active': selected == item.index, 'error': !item.level, 'completed-by-user': isCompletedByUser(item.level) }">
-                            <button @click="selected = item.index" :style="item.level ? { backgroundColor: ratingColor(item.level), color: ratingTextColor(item.level) } : {}">
+                        <td class="level"   :class="{ 'active': selected == item.index && selectedImpossible === !!item.impossible, 'error': !item.level, 'completed-by-user': isCompletedByUser(item.level) }">
+                            <button @click="selectLevel(item)" :style="item.level ? { backgroundColor: ratingColor(item.level), color: ratingTextColor(item.level) } : {}">
                                 <span class="type-label-lg">{{ item.level?.name || \`Error (\${item.err}.json)\` }}</span>
-                            <small v-if="enjoymentByPath[levelPaths[item.index]]" class="list-enjoyment-label">★ {{enjoymentByPath[levelPaths[item.index]].average}}/10 ({{enjoymentByPath[levelPaths[item.index]].ratings}})</small>
+                            <small v-if="!item.impossible && enjoymentByPath[levelPaths[item.index]]" class="list-enjoyment-label">★ {{enjoymentByPath[levelPaths[item.index]].average}}/10 ({{enjoymentByPath[levelPaths[item.index]].ratings}})</small>
                             </button>
                         </td>
                         </tr>
@@ -86,28 +88,25 @@ export default {
                         </tr>
                     </template>
                 </table>
-                <section v-if="!platformer && !searchQuery.trim() && sectionFilter === 'all' && ratingFilter === 'all' && enjoymentFilter === 'all'" class="ccl-unverified-section">
+                <section v-if="!platformer && !showUnverified && sectionFilter !== 'unverified'" class="ccl-unverified-section">
                     <div class="ccl-unverified-eyebrow">SECTION 03</div>
                     <h2>Unverified</h2>
-                    <p>Impossible CCL levels</p>
-                    <button type="button" class="ccl-unverified-toggle" @click="showUnverified = !showUnverified" :aria-expanded="showUnverified">{{ showUnverified ? '← Back to verified levels' : 'Browse impossible levels →' }}</button>
+                    <p>{{ impossibleLevels.length ? impossibleLevels.length + ' Impossible CCL levels' : 'Impossible CCL levels' }}</p>
+                    <button type="button" class="ccl-unverified-toggle" @click="openUnverified" :disabled="impossibleLoading">{{ impossibleLoading ? 'Loading levels…' : 'Show unverified levels ↓' }}</button>
+                    <p v-if="impossibleError" class="error">{{ impossibleError }}</p>
                 </section>
             </div>
             <div class="level-container">
-                <div v-if="showUnverified && !platformer" class="ccl-unverified-view">
-                    <div class="ccl-unverified-view-head"><h2>Unverified · Impossible CCL</h2><button type="button" @click="showUnverified = false">Back to CCL</button></div>
-                    <iframe src="https://cclimpossible.ccllcc.workers.dev/?embed=1#/" title="Impossible CCL levels" class="ccl-unverified-frame" loading="lazy"></iframe>
-                </div>
-                <div class="level" v-if="level && !showUnverified">
+                <div class="level" v-if="level">
                     <h1>{{ level.name }}</h1>
-                    <button type="button" class="hub-fav-button" @click="toggleLevelFavorite" :aria-pressed="favorite" :aria-label="favorite ? 'Remove favorite' : 'Save favorite'">{{ favorite ? "★ Saved to Favorites" : "☆ Save to Favorites" }}</button>
+                    <button v-if="!selectedImpossible" type="button" class="hub-fav-button" @click="toggleLevelFavorite" :aria-pressed="favorite" :aria-label="favorite ? 'Remove favorite' : 'Save favorite'">{{ favorite ? "★ Saved to Favorites" : "☆ Save to Favorites" }}</button>
                     <LevelAuthors :author="level.author" :creators="level.creators" :verifier="level.verifier"></LevelAuthors>
                     <iframe v-if="level.verification" class="video" id="videoframe" :src="video" frameborder="0"></iframe>
                     <p v-else class="type-label-md">Verification video not provided yet.</p>
                     <ul class="stats">
                         <li>
                             <div class="type-title-sm">Points when completed</div>
-                            <p>{{ score(selected + 1, 100, level.percentToQualify) }}</p>
+                            <p>{{ selectedImpossible ? "Unverified · no points" : score(selected + 1, 100, level.percentToQualify) }}</p>
                         </li>
                         <li>
                             <div class="type-title-sm">ID</div>
@@ -115,11 +114,12 @@ export default {
                         </li>
                         <li>
                             <div class="type-title-sm">Enjoyment</div>
-                            <p>{{ enjoymentByPath[levelPaths[selected]] ? enjoymentByPath[levelPaths[selected]].average + '/10 (' + enjoymentByPath[levelPaths[selected]].ratings + ' ratings)' : (level.Enjoyment || 'N/A') }}</p>
+                            <p>{{ !selectedImpossible && enjoymentByPath[levelPaths[selected]] ? enjoymentByPath[levelPaths[selected]].average + '/10 (' + enjoymentByPath[levelPaths[selected]].ratings + ' ratings)' : (level.Enjoyment || 'N/A') }}</p>
                         </li>
                     </ul>
                     <h2>Records</h2>
-                    <p v-if="selected + 1 <= 75"><strong>{{ level.percentToQualify }}%</strong> or better to qualify</p>
+                    <p v-if="selectedImpossible">Unverified level</p>
+                    <p v-else-if="selected + 1 <= 75"><strong>{{ level.percentToQualify }}%</strong> or better to qualify</p>
                     <p v-else-if="selected + 1 <= 100"><strong>100%</strong> or better to qualify</p>
                     <p v-else><strong>100%</strong> or better to qualify</p>
                     <table class="records">
@@ -139,7 +139,7 @@ export default {
                         </tr>
                     </table>
                 </div>
-                <div v-else-if="!showUnverified" class="level" style="height: 100%; justify-content: center; align-items: center;">
+                <div v-else class="level" style="height: 100%; justify-content: center; align-items: center;">
                     <p>(ノಠ益ಠ)ノ彡┻━┻</p>
                 </div>
             </div>
@@ -256,6 +256,10 @@ export default {
     data: () => ({
         list: [],
         showUnverified: false,
+        impossibleLevels: [],
+        impossibleLoading: false,
+        impossibleError: "",
+        selectedImpossible: false,
         searchQuery: "",
         favorite: false,
         sectionFilter: "all",
@@ -274,28 +278,31 @@ export default {
     computed: {
         filteredLevels() {
             const query = this.searchQuery.trim().toLocaleLowerCase();
-            const filtered = (this.list || []).map(([level, err], index) => ({ level, err, index })).filter(({ level, err, index }) => {
-                if (this.sectionFilter === "main" && index >= 100) return false;
-                if (this.sectionFilter === "extended" && index < 100) return false;
-                if (this.ratingFilter !== "all" && getLevelRating(level, this.platformer) !== this.ratingFilter) return false;
-                const enjoyment = this.enjoymentByPath[this.levelPaths[index]];
-                if (this.enjoymentFilter === "rated" && !enjoyment) return false;
-                if (this.enjoymentFilter === "unrated" && enjoyment) return false;
-                if (!["all", "rated", "unrated"].includes(this.enjoymentFilter) && (!enjoyment || Number(enjoyment.average) < Number(this.enjoymentFilter))) return false;
-                return !query || [level?.name, level?.author, ...(level?.creators || []), level?.id, err].some(value => String(value ?? "").toLocaleLowerCase().includes(query));
+            const verified = (this.list || []).map(([level, err], index) => ({ level, err, index, impossible:false }));
+            const unverified = this.platformer || !this.showUnverified ? [] : this.impossibleLevels.map((level,index)=>({level,err:null,index,impossible:true}));
+            const filtered = [...verified,...unverified].filter(({level,err,index,impossible})=>{
+                if (this.sectionFilter === 'main' && (impossible || index >= 100)) return false;
+                if (this.sectionFilter === 'extended' && (impossible || index < 100)) return false;
+                if (this.sectionFilter === 'unverified' && !impossible) return false;
+                if (this.ratingFilter !== 'all' && getLevelRating(level,this.platformer) !== this.ratingFilter) return false;
+                const enjoyment = impossible ? null : this.enjoymentByPath[this.levelPaths[index]];
+                if (this.enjoymentFilter === 'rated' && !enjoyment) return false;
+                if (this.enjoymentFilter === 'unrated' && enjoyment) return false;
+                if (!['all','rated','unrated'].includes(this.enjoymentFilter) && (!enjoyment || Number(enjoyment.average) < Number(this.enjoymentFilter))) return false;
+                return !query || [level?.name,level?.author,...(level?.creators||[]),level?.id,err].some(value=>String(value??'').toLocaleLowerCase().includes(query));
             });
-            if (this.enjoymentSort !== "rank") filtered.sort((a,b) => {
-                const x=this.enjoymentByPath[this.levelPaths[a.index]]?.average;
-                const y=this.enjoymentByPath[this.levelPaths[b.index]]?.average;
-                if(x==null && y==null)return a.index-b.index;
+            if(this.enjoymentSort !== 'rank')filtered.sort((a,b)=>{
+                const x=a.impossible?null:this.enjoymentByPath[this.levelPaths[a.index]]?.average;
+                const y=b.impossible?null:this.enjoymentByPath[this.levelPaths[b.index]]?.average;
+                if(x==null&&y==null)return Number(a.impossible)-Number(b.impossible)||a.index-b.index;
                 if(x==null)return 1;
                 if(y==null)return -1;
-                return (this.enjoymentSort === "highest" ? Number(y)-Number(x) : Number(x)-Number(y)) || a.index-b.index;
+                return (this.enjoymentSort==='highest'?Number(y)-Number(x):Number(x)-Number(y))||a.index-b.index;
             });
             return filtered;
         },
         level() {
-            return this.list[this.selected]?.[0] || null;
+            return this.selectedImpossible ? this.impossibleLevels[this.selected] || null : this.list[this.selected]?.[0] || null;
         },
         video() {
             if (!this.level) return "";
@@ -311,7 +318,7 @@ export default {
         },
     },
     watch: {
-        selected() { this.syncFavorite(); this.showUnverified = false; }
+        selected() { this.syncFavorite(); }
     },
     async mounted() {
         // Hide loading spinner
@@ -357,6 +364,21 @@ export default {
         this.syncFavorite();
     },
     methods: {
+        async openUnverified() {
+            if(!this.impossibleLevels.length) {
+                this.impossibleLoading=true;this.impossibleError='';
+                try {
+                    const response=await fetch('/api/impossible-levels',{cache:'no-store'});
+                    const data=await response.json();
+                    if(!response.ok)throw new Error(data.error||'Could not load unverified levels.');
+                    this.impossibleLevels=data.levels||[];
+                }catch(e){this.impossibleError=e.message;this.impossibleLoading=false;return;}
+                this.impossibleLoading=false;
+            }
+            this.showUnverified=true;
+            this.$nextTick(()=>{const el=document.querySelector('.page-list .list-container');if(el)el.scrollTop=el.scrollHeight;});
+        },
+        selectLevel(item){this.selectedImpossible=!!item.impossible;this.selected=item.index;this.syncFavorite();},
         isCompletedByUser(level) {
             const username = this.store.profileUsername;
             if (!username || !level) return false;
@@ -364,8 +386,8 @@ export default {
             return (level.verifier || '').toLocaleLowerCase() === normalized ||
                 (level.records || []).some(record => (record.user || '').toLocaleLowerCase() === normalized && Number(record.percent) === 100);
         },
-        syncFavorite() { this.favorite = isFavorite(this.level?.id, this.platformer); },
-        toggleLevelFavorite() { toggleFavorite(this.level, this.platformer); this.syncFavorite(); },
+        syncFavorite() { this.favorite = !this.selectedImpossible && isFavorite(this.level?.id, this.platformer); },
+        toggleLevelFavorite() { if(this.selectedImpossible)return; toggleFavorite(this.level, this.platformer); this.syncFavorite(); },
         embed,
         score,
         resetFilters() { this.searchQuery = ""; this.sectionFilter = "all"; this.ratingFilter = "all"; this.enjoymentFilter = "all"; this.enjoymentSort = "rank"; },

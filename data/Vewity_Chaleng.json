@@ -1,12 +1,20 @@
 {
-    "id": 149264834,
-    "name": "Vewity chaleng",
-    "author": "Indridzz",
-    "creators": ["Indridzz"],
-    "verifier": "Indridzz",
-    "verification": "https://youtu.be/jZKpPCIP5rc?si=m5YmGrE5UDqI-q9V",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-    ]
+  "id": 149264834,
+  "name": "Vewity chaleng",
+  "author": "Indridzz",
+  "creators": [
+    "Indridzz"
+  ],
+  "verifier": "Indridzz",
+  "verification": "https://youtu.be/jZKpPCIP5rc?si=m5YmGrE5UDqI-q9V",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "CyrryGD",
+      "percent": 100,
+      "link": "https://youtu.be/apaR1S2Gesk?si=lCpCRmlgUMMLrOpe",
+      "enjoyment": 7
+    }
+  ]
 }

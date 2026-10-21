@@ -1,24 +1,27 @@
 {
-    "id": 134252580,
-    "name": "DarkMatter",
-    "author": "chickadeeinc",
-    "creators": ["chickadeeinc"],
-    "verifier": "logango",
-    "verification": "https://youtu.be/_Ax_w49kMlc?si=GNd479AZmDpt00CY",
-    "percentToQualify": "66",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/p0V8jW3sICo?si=7fgo8bdVJewJ53bG",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Noname1610",
-            "link": "https://youtu.be/IMRK8nBqqH8?si=u2KC6l71ttSxBpjM",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 134252580,
+  "name": "DarkMatter",
+  "author": "chickadeeinc",
+  "creators": [
+    "chickadeeinc"
+  ],
+  "verifier": "logango",
+  "verification": "https://youtu.be/_Ax_w49kMlc?si=GNd479AZmDpt00CY",
+  "percentToQualify": "66",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/p0V8jW3sICo?si=7fgo8bdVJewJ53bG",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 7
+    },
+    {
+      "user": "Noname1610",
+      "link": "https://youtu.be/IMRK8nBqqH8?si=u2KC6l71ttSxBpjM",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

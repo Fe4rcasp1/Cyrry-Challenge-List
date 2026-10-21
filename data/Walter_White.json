@@ -1,36 +1,39 @@
 {
-    "id": 129607694,
-    "name": "Walter White",
-    "author": "skeetles",
-    "creators": ["skeetles"],
-    "verifier": "skeetles",
-    "verification": "",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/D8ce8GWItaE?si=IoSOn1cuR7lFplX8",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Loopelino",
-            "link": "https://youtu.be/DcD6R9pXzhc",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Dextrh",
-            "link": "https://medal.tv/games/geometry-dash/clips/no4CZiUGumx6WAjh-?invite=cr-MSxiQVIsMjAyMTYzNDkw",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Fe4rCasp",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 129607694,
+  "name": "Walter White",
+  "author": "skeetles",
+  "creators": [
+    "skeetles"
+  ],
+  "verifier": "skeetles",
+  "verification": "",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/D8ce8GWItaE?si=IoSOn1cuR7lFplX8",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 9
+    },
+    {
+      "user": "Loopelino",
+      "link": "https://youtu.be/DcD6R9pXzhc",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Dextrh",
+      "link": "https://medal.tv/games/geometry-dash/clips/no4CZiUGumx6WAjh-?invite=cr-MSxiQVIsMjAyMTYzNDkw",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Fe4rCasp",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

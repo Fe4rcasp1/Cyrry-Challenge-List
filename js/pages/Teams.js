@@ -4,7 +4,7 @@ async function api(path,method='GET',data){
  const result=await res.json();if(!res.ok)throw Error(result.error||'Request failed');return result;
 }
 export default {
- data:()=>({teams:[],members:[],selected:null,name:'',tag:'',description:'',busy:false,error:'',notice:'',rankings:[],me:null}),
+ data:()=>({teams:[],members:[],selected:null,name:'',tag:'',description:'',busy:false,error:'',notice:'',rankings:[],me:null,inviteCode:'',issuedCode:'',inviteExpiry:''}),
  template:`
  <main class="ccl-hub">
   <section class="hub-head"><h1>Teams & Clans</h1><p>Create a clan, join another team, and compete together on CCL.</p></section>
@@ -13,12 +13,19 @@ export default {
     <strong>#{{i+1}} [{{team.tag}}] {{team.name}} · {{team.points.toLocaleString()}} points</strong>
     <span>{{team.members}} members · Owner: {{team.owner}}</span>
     <small>{{team.description}}</small>
-    <div class="admin-actions"><button class="admin-btn" @click="selectTeam(team)">View members</button><button v-if="me && !myTeam" class="admin-btn" :disabled="busy" @click="join(team)">Join team</button></div>
+    <div class="admin-actions"><button class="admin-btn" @click="selectTeam(team)">View members</button><button v-if="me && !myTeam" class="admin-btn" :disabled="busy" @click="selectTeam(team)">Request invite code</button></div>
    </div>
    <p v-if="!teams.length">No teams created yet.</p>
   </section>
   <section v-if="selected" class="hub-card"><h2>[{{selected.tag}}] {{selected.name}} members</h2>
    <div v-for="member in members" :key="member.username" class="hub-change"><router-link :to="'/player/'+encodeURIComponent(member.username)">{{member.username}}</router-link><span v-if="member.owner">Owner</span></div>
+  </section>
+  <section v-if="selected && me && !myTeam" class="hub-card">
+   <h2>Join [{{selected.tag}}] {{selected.name}}</h2>
+   <p class="hub-muted">This clan is invite-only. Ask {{selected.owner}} for a one-time code. Each code works once and expires after 7 days.</p>
+   <label for="clan-invite-code">Private invitation code</label>
+   <input id="clan-invite-code" class="hub-search" v-model.trim="inviteCode" autocomplete="off" spellcheck="false" placeholder="CCL-..." maxlength="36">
+   <button class="hub-fav-button" :disabled="busy || !inviteCode" @click="join(selected)">Join with code</button>
   </section>
   <section v-if="me && !myTeam" class="hub-card"><h2>Create a team</h2>
    <div class="admin-editor-controls"><div class="admin-field"><label>Team name</label><input v-model="name" maxlength="36" placeholder="3–36 characters"></div>
@@ -27,6 +34,12 @@ export default {
    <button class="admin-btn admin-btn-primary" :disabled="busy" @click="create">Create team</button>
   </section>
   <section v-if="myTeam" class="hub-card"><h2>Your team: {{myTeam.name}}</h2>
+   <div v-if="myTeam.owner===me.username" class="hub-card">
+    <h3>Private clan invitations</h3><p class="hub-muted">Only you can generate invite codes. Each code is valid for one new member and expires after 7 days.</p>
+    <button class="hub-fav-button" :disabled="busy" @click="generateInvite">Generate one-time invite code</button>
+    <button class="admin-btn" :disabled="busy" @click="revokeInvites">Revoke unused codes</button>
+    <div v-if="issuedCode" class="hub-change"><strong>Copy this code and send it privately:</strong><code style="overflow-wrap:anywhere">{{issuedCode}}</code><span>Expires: {{inviteExpiry}}</span><button class="admin-btn" @click="copyInvite">Copy code</button></div>
+   </div>
    <button class="admin-btn" :disabled="busy" @click="myTeam.owner===me.username?disband():leave()">{{myTeam.owner===me.username?'Disband team':'Leave team'}}</button>
   </section>
   <p v-if="!me" class="hub-muted">Log in to create or join a team.</p>
@@ -53,7 +66,10 @@ export default {
   async selectTeam(team){this.selected=team;try{this.members=(await api('/api/teams/members?id='+team.id)).members;}catch(e){this.error=e.message;}},
   async perform(path,data){this.busy=true;this.error='';this.notice='';try{await api(path,'POST',data);await this.refresh();this.notice='Team updated.';}catch(e){this.error=e.message;}finally{this.busy=false;}},
   async create(){await this.perform('/api/teams/create',{name:this.name,tag:this.tag,description:this.description});},
-  async join(team){await this.perform('/api/teams/join',{id:team.id});},
+  async join(team){if(!this.inviteCode)return;await this.perform('/api/teams/join',{id:team.id,code:this.inviteCode});if(!this.error)this.inviteCode='';},
+  async generateInvite(){this.busy=true;this.error='';this.issuedCode='';try{const r=await api('/api/teams/invites/create','POST',{});this.issuedCode=r.code;this.inviteExpiry=r.expires_at;}catch(e){this.error=e.message;}finally{this.busy=false;}},
+  async revokeInvites(){if(!confirm('Revoke all unused clan invitation codes?'))return;await this.perform('/api/teams/invites/revoke',{});this.issuedCode='';},
+  async copyInvite(){try{await navigator.clipboard.writeText(this.issuedCode);this.notice='Code copied.';}catch(e){this.error='Copy failed. Select the code manually.';}},
   async leave(){if(confirm('Leave your team?'))await this.perform('/api/teams/leave',{});},
   async disband(){if(confirm('Permanently disband your team?'))await this.perform('/api/teams/disband',{});}
  }

@@ -1,24 +1,32 @@
 {
-    "id": 84308315,
-    "name": "wierd darkness",
-    "author": "chickadeeinc",
-    "creators": ["chickadeeinc"],
-    "verifier": "chickadeeinc",
-    "verification": "",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "monolyth1",
-            "link": "https://youtu.be/w0AYytphjmY?si=qkzXy3jHm-A-Dyyw",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Fe4rCasp",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 84308315,
+  "name": "wierd darkness",
+  "author": "chickadeeinc",
+  "creators": [
+    "chickadeeinc"
+  ],
+  "verifier": "chickadeeinc",
+  "verification": "",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "monolyth1",
+      "link": "https://youtu.be/w0AYytphjmY?si=qkzXy3jHm-A-Dyyw",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Fe4rCasp",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "CyrryGD",
+      "percent": 100,
+      "link": "https://youtu.be/apaR1S2Gesk?si=lCpCRmlgUMMLrOpe",
+      "enjoyment": 6
+    }
+  ]
 }

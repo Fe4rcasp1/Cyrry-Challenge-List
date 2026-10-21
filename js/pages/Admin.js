@@ -13,7 +13,7 @@ async function api(path, method = 'GET', payload) {
 export default {
     data: () => ({
         role: '', tab: 'claims', claims: [], users: [], levelFiles: [], audit: [], submissions: [], weeklyEntries: [], enjoymentRecords: [], enjoymentList:'normal', enjoymentLevel:'', enjoymentFiles:[], enjoymentUsername:'', enjoymentValue:5,
-        listType: 'normal', levelPath: '', levelText: '', originalLevelText: '',
+        listType: 'normal', levelPath: '', levelText: '', originalLevelText: '', backupStatus:null, backupLoading:false,
         filter: '', userFilter: '', weeklyWeek: '', weeklyTitle: '', weeklyDescription: '', loading: true, busy: false, error: '', notice: ''
     }),
     computed: {
@@ -136,7 +136,22 @@ export default {
           <div class="admin-section-head"><div><h2>Level editor</h2>
             <p class="hub-muted">Edit level data and automatically back up changes to GitHub when configured.</p></div>
             <span class="admin-subtle-pill">{{levelFiles.length}} levels</span></div>
-          <div class="admin-actions" style="margin-bottom:1rem"><button type="button" class="admin-btn admin-btn-secondary" :disabled="busy" @click="backupAllLevels">Back up all saved level edits to GitHub</button></div>
+          <div class="hub-card" style="margin-bottom:1rem">
+            <h3>GitHub Backup Center</h3>
+            <p class="hub-muted">Check the latest backup status for your saved D1 level edits. Backups require a GITHUB_TOKEN runtime secret.</p>
+            <div class="admin-actions">
+              <button type="button" class="admin-btn" :disabled="backupLoading" @click="loadBackupStatus">Check backup status</button>
+              <button type="button" class="admin-btn admin-btn-secondary" :disabled="busy" @click="backupAllLevels">Back up all saved level edits to GitHub</button>
+            </div>
+            <p v-if="backupLoading">Checking backup status…</p>
+            <template v-if="backupStatus">
+              <p><strong>{{backupStatus.total}}</strong> saved level overrides · {{backupStatus.levels.filter(x=>x.github_synced).length}} latest changes confirmed backed up</p>
+              <p v-if="!backupStatus.configured" class="error">GITHUB_TOKEN is not configured as a Worker runtime secret.</p>
+              <div v-for="level in backupStatus.levels.filter(x=>!x.github_synced).slice(0,30)" :key="level.list_type+level.level_path" class="hub-change">
+                <strong>{{level.list_type}} / {{level.level_path}}</strong><span>Backup not confirmed · Last edit: {{level.updated_at}}</span>
+              </div>
+            </template>
+          </div>
           <div class="admin-editor-controls">
             <div class="admin-field"><label for="admin-list-type">List</label>
               <select id="admin-list-type" v-model="listType" :disabled="busy" @change="changeList">
@@ -260,11 +275,16 @@ export default {
             if(!backup)return message;
             return message+(backup.synced?' GitHub backup completed.':' GitHub backup pending: '+(backup.reason||'Unknown error')+' Use the backup button after fixing the issue.');
         },
+        async loadBackupStatus(){
+            this.backupLoading=true;this.error='';
+            try{this.backupStatus=await api('/api/admin/github-backup/status');}
+            catch(e){this.error=e.message;}finally{this.backupLoading=false;}
+        },
         async backupAllLevels() {
             if(!confirm('Back up all saved level overrides to GitHub? This updates the corresponding repository JSON files.'))return;
             await this.run(async()=>{
                 const result=await api('/api/admin/github-backup','POST',{});
-                this.notice=result.synced+' of '+result.total+' level files backed up to GitHub.'+(result.failed?.length?' '+result.failed.length+' failed: '+result.failed.slice(0,3).map(x=>x.path+' ('+x.reason+')').join('; '):'');
+                this.notice=result.synced+' of '+result.total+' level files backed up to GitHub.'+(result.failed?.length?' '+result.failed.length+' failed: '+result.failed.slice(0,3).map(x=>x.path+' ('+x.reason+')').join('; '):'');await this.loadBackupStatus();
             });
         },
         async saveLevel() {

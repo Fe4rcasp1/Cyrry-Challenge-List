@@ -1,11 +1,20 @@
 {
-    "id": 148249423,
-    "name": "Final Love",
-    "author": "Void852",
-    "creators": ["Void852"],
-    "verifier": "Void852",
-    "verification": "https://youtu.be/W2ZviCH_FFw?si=0wzGItzSTQP7GWaY",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": []
+  "id": 148249423,
+  "name": "Final Love",
+  "author": "Void852",
+  "creators": [
+    "Void852"
+  ],
+  "verifier": "Void852",
+  "verification": "https://youtu.be/W2ZviCH_FFw?si=0wzGItzSTQP7GWaY",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "CyrryGD",
+      "percent": 100,
+      "link": "https://youtu.be/apaR1S2Gesk?si=Rf427-0mkKP3RTq0",
+      "enjoyment": 7
+    }
+  ]
 }

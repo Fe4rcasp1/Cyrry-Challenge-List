@@ -1,18 +1,22 @@
 {
-    "id": 139530468,
-    "name": "Violencet",
-    "author": "kyqliaGD",
-    "creators": ["kyqliaGD","OtherWorldDrago"],
-    "verifier": "OtherWorldDrago",
-    "verification": "https://youtu.be/oLGQqYu02KY?si=m7kaywcMzSUQxJps",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/BdvlHGlsZh8?si=8mLlTQ1oUX0y76cL",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 139530468,
+  "name": "Violencet",
+  "author": "kyqliaGD",
+  "creators": [
+    "kyqliaGD",
+    "OtherWorldDrago"
+  ],
+  "verifier": "OtherWorldDrago",
+  "verification": "https://youtu.be/oLGQqYu02KY?si=m7kaywcMzSUQxJps",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/BdvlHGlsZh8?si=8mLlTQ1oUX0y76cL",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 2
+    }
+  ]
 }

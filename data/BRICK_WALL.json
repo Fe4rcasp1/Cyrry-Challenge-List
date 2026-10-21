@@ -1,24 +1,28 @@
 {
-    "id": 127369307,
-    "name": "BRICK WALL",
-    "author": "Jayayah",
-    "creators": ["Jayayah"],
-    "verifier": "Jayayah",
-    "verification": "https://youtu.be/uZ9C4jCeVLE?si=8RPvoQNGgfss7uA4",
-    "percentToQualify": "72",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/AYSxUsPxFfY?si=DUVUkuY9-xErcrJs",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Dewbbz",
-            "link": "https://youtu.be/qMergiMM8wg?si=A5t8LqNaE2Nr1M28",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 127369307,
+  "name": "BRICK WALL",
+  "author": "Jayayah",
+  "creators": [
+    "Jayayah"
+  ],
+  "verifier": "Jayayah",
+  "verification": "https://youtu.be/uZ9C4jCeVLE?si=8RPvoQNGgfss7uA4",
+  "percentToQualify": "72",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/AYSxUsPxFfY?si=DUVUkuY9-xErcrJs",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 8
+    },
+    {
+      "user": "Dewbbz",
+      "link": "https://youtu.be/qMergiMM8wg?si=A5t8LqNaE2Nr1M28",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 9
+    }
+  ]
 }

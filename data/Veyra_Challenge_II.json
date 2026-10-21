@@ -1,30 +1,33 @@
 {
-    "id": 138350322,
-    "name": "Veyra Challenge II",
-    "author": "Leagal",
-    "creators": ["Leagal"],
-    "verifier": "Leagal",
-    "verification": "https://youtu.be/_XTShmxKWPw?si=4uYL-emD2gvNK-Tj",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "NotHereGD",
-            "link": "https://youtu.be/cADlYN1MzGs?si=PlCc9WF8JDqKmdiI",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Loopelino",
-            "link": "https://youtu.be/9BV7G2fLR_Y?si=Z3yitAoTFn8EMPF0",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "chickadeeinc",
-            "link": "https://drive.google.com/file/d/1TN364pF_3US7rhFLE90rtlh4I0qaqIiQ/view?usp=sharing",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 138350322,
+  "name": "Veyra Challenge II",
+  "author": "Leagal",
+  "creators": [
+    "Leagal"
+  ],
+  "verifier": "Leagal",
+  "verification": "https://youtu.be/_XTShmxKWPw?si=4uYL-emD2gvNK-Tj",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "NotHereGD",
+      "link": "https://youtu.be/cADlYN1MzGs?si=PlCc9WF8JDqKmdiI",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 0
+    },
+    {
+      "user": "Loopelino",
+      "link": "https://youtu.be/9BV7G2fLR_Y?si=Z3yitAoTFn8EMPF0",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "chickadeeinc",
+      "link": "https://drive.google.com/file/d/1TN364pF_3US7rhFLE90rtlh4I0qaqIiQ/view?usp=sharing",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

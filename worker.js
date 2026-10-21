@@ -28,8 +28,9 @@ async function handle(request, env) {
    // Source data directly from the Impossible CCL repository. Worker-to-Worker
    // requests to the separate Cloudflare hostname can be blocked (error 1042).
    const base = 'https://raw.githubusercontent.com/Fe4rcasp1/CCLimpossible/main/data/';
+   const platformer = url.searchParams.get('list') === 'platformer';
    try {
-     const indexResponse = await fetch(base + '_list.json', { headers: { 'Accept': 'application/json' } });
+     const indexResponse = await fetch(base + (platformer ? '_platformer.json' : '_list.json'), { headers: { 'Accept': 'application/json' } });
      if (!indexResponse.ok) throw new Error('Impossible index returned HTTP ' + indexResponse.status);
      const paths = await indexResponse.json();
      if (!Array.isArray(paths)) throw new Error('Invalid impossible list index');

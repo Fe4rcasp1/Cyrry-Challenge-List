@@ -34,7 +34,7 @@ export default {
                             <option value="all">All levels</option>
                             <option value="main">Main List (1–100)</option>
                             <option value="extended">Extended List (101+)</option>
-                            <option v-if="!platformer" value="unverified">Unverified</option>
+                            <option value="unverified">Unverified</option>
                         </select>
                         <label :for="platformer ? 'platformer-rating' : 'challenge-rating'">Rating</label>
                         <select :id="platformer ? 'platformer-rating' : 'challenge-rating'" v-model="ratingFilter" class="filter-select">
@@ -63,7 +63,7 @@ export default {
                         </select>
                         <button type="button" class="filter-reset" v-if="searchQuery || sectionFilter !== 'all' || ratingFilter !== 'all' || enjoymentFilter !== 'all' || enjoymentSort !== 'rank'" @click="resetFilters">Clear filters</button>
                     </div>
-                    <p class="search-count">{{ filteredLevels.length }} of {{ list.length + (platformer ? 0 : impossibleLevels.length) }} levels</p>
+                    <p class="search-count">{{ filteredLevels.length }} of {{ list.length + impossibleLevels.length }} levels</p>
                 </div>
                 <p v-if="list.length && !filteredLevels.length" class="search-empty">No levels match these filters.</p>
                 <table class="list" v-if="list">
@@ -88,10 +88,10 @@ export default {
                         </tr>
                     </template>
                 </table>
-                <section v-if="!platformer && !showUnverified && sectionFilter !== 'unverified'" class="ccl-unverified-section">
+                <section v-if="!showUnverified && sectionFilter !== 'unverified'" class="ccl-unverified-section">
                     <div class="ccl-unverified-eyebrow">SECTION 03</div>
                     <h2>Unverified</h2>
-                    <p>{{ impossibleLevels.length ? impossibleLevels.length + ' Impossible CCL levels' : 'Impossible CCL levels' }}</p>
+                    <p>{{ impossibleLevels.length ? impossibleLevels.length + (platformer ? ' Impossible Platformer levels' : ' Impossible CCL levels') : (platformer ? 'Impossible Platformer levels' : 'Impossible CCL levels') }}</p>
                     <button type="button" class="ccl-unverified-toggle" @click="openUnverified" :disabled="impossibleLoading">{{ impossibleLoading ? 'Loading levels…' : 'Show unverified levels ↓' }}</button>
                     <p v-if="impossibleError" class="error">{{ impossibleError }}</p>
                 </section>
@@ -279,7 +279,7 @@ export default {
         filteredLevels() {
             const query = this.searchQuery.trim().toLocaleLowerCase();
             const verified = (this.list || []).map(([level, err], index) => ({ level, err, index, impossible:false }));
-            const unverified = this.platformer || !this.showUnverified ? [] : this.impossibleLevels.map((level,index)=>({level,err:null,index,impossible:true}));
+            const unverified = !this.showUnverified ? [] : this.impossibleLevels.map((level,index)=>({level,err:null,index,impossible:true}));
             const filtered = [...verified,...unverified].filter(({level,err,index,impossible})=>{
                 if (this.sectionFilter === 'main' && (impossible || index >= 100)) return false;
                 if (this.sectionFilter === 'extended' && (impossible || index < 100)) return false;
@@ -368,7 +368,7 @@ export default {
             if(!this.impossibleLevels.length) {
                 this.impossibleLoading=true;this.impossibleError='';
                 try {
-                    const response=await fetch('/api/impossible-levels',{cache:'no-store'});
+                    const response=await fetch('/api/impossible-levels' + (this.platformer ? '?list=platformer' : ''),{cache:'no-store'});
                     const data=await response.json();
                     if(!response.ok)throw new Error(data.error||'Could not load unverified levels.');
                     this.impossibleLevels=data.levels||[];

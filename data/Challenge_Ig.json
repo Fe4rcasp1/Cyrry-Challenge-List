@@ -1,30 +1,33 @@
 {
-    "id": 111033175,
-    "name": "challenge ig",
-    "author": "BoiledPepsi",
-    "creators": ["BoiledPepsi"],
-    "verifier": "BoiledPepsi",
-    "verification": "",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [       
-        {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/0gf3svwD-mo?si=PTlnRrI2k9Qydd2Y",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Loopelino",
-            "link": "https://youtu.be/_4hL-5HGKWU?si=Qha-tj7BYaXh_NHF",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Dextrh",
-            "link": "https://medal.tv/games/geometry-dash/clips/no7AISQyByFnN0L6Q?invite=cr-MSwxcngsMjAyMTYzNDkw",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 111033175,
+  "name": "challenge ig",
+  "author": "BoiledPepsi",
+  "creators": [
+    "BoiledPepsi"
+  ],
+  "verifier": "BoiledPepsi",
+  "verification": "",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/0gf3svwD-mo?si=PTlnRrI2k9Qydd2Y",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 9
+    },
+    {
+      "user": "Loopelino",
+      "link": "https://youtu.be/_4hL-5HGKWU?si=Qha-tj7BYaXh_NHF",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Dextrh",
+      "link": "https://medal.tv/games/geometry-dash/clips/no7AISQyByFnN0L6Q?invite=cr-MSwxcngsMjAyMTYzNDkw",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

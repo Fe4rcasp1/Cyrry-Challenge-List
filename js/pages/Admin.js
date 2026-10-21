@@ -134,8 +134,9 @@ export default {
         </section>
         <section v-if="tab==='levels' && canEdit" class="hub-card admin-panel">
           <div class="admin-section-head"><div><h2>Level editor</h2>
-            <p class="hub-muted">Edit existing level data without changing GitHub source files.</p></div>
+            <p class="hub-muted">Edit level data and automatically back up changes to GitHub when configured.</p></div>
             <span class="admin-subtle-pill">{{levelFiles.length}} levels</span></div>
+          <div class="admin-actions" style="margin-bottom:1rem"><button type="button" class="admin-btn admin-btn-secondary" :disabled="busy" @click="backupAllLevels">Back up all saved level edits to GitHub</button></div>
           <div class="admin-editor-controls">
             <div class="admin-field"><label for="admin-list-type">List</label>
               <select id="admin-list-type" v-model="listType" :disabled="busy" @change="changeList">
@@ -159,7 +160,7 @@ export default {
               <button class="admin-btn admin-btn-primary" :disabled="busy || !hasUnsavedChanges || !!jsonError" @click="saveLevel">Save changes</button>
               <button class="admin-btn admin-btn-secondary" :disabled="busy || !hasUnsavedChanges" @click="resetLevel">Discard changes</button>
             </div>
-            <p class="hub-muted">Saved changes appear on the public list after refresh. Original GitHub JSON is untouched.</p>
+            <p class="hub-muted">Saved changes appear on the public list after refresh. GitHub backup status is shown after saving.</p>
           </div>
           <div v-else class="admin-empty"><strong>Select a level to begin</strong><p>Choose a list and level above to load its data.</p></div>
         </section>
@@ -255,12 +256,23 @@ export default {
             });
         },
         resetLevel() { if (confirm('Discard unsaved changes?')) this.levelText = this.originalLevelText; },
+        backupNotice(message,backup) {
+            if(!backup)return message;
+            return message+(backup.synced?' GitHub backup completed.':' GitHub backup pending: '+(backup.reason||'Unknown error')+' Use the backup button after fixing the issue.');
+        },
+        async backupAllLevels() {
+            if(!confirm('Back up all saved level overrides to GitHub? This updates the corresponding repository JSON files.'))return;
+            await this.run(async()=>{
+                const result=await api('/api/admin/github-backup','POST',{});
+                this.notice=result.synced+' of '+result.total+' level files backed up to GitHub.'+(result.failed?.length?' '+result.failed.length+' failed: '+result.failed.slice(0,3).map(x=>x.path+' ('+x.reason+')').join('; '):'');
+            });
+        },
         async saveLevel() {
             if (this.jsonError || !this.hasUnsavedChanges || !confirm('Save changes to ' + this.levelPath + '?')) return;
             await this.run(async () => {
-                await api('/api/admin/levels', 'POST', { listType: this.listType, path: this.levelPath, level: JSON.parse(this.levelText) });
+                const result=await api('/api/admin/levels', 'POST', { listType: this.listType, path: this.levelPath, level: JSON.parse(this.levelText) });
                 this.originalLevelText = this.levelText;
-                this.notice = 'Level changes saved successfully.';
+                this.notice = this.backupNotice('Level changes saved to D1.',result.githubBackup);
             });
         },
         async loadEnjoymentFiles() {
@@ -279,16 +291,16 @@ export default {
         async saveEnjoyment() {
             if(!Number.isInteger(this.enjoymentValue)||this.enjoymentValue<0||this.enjoymentValue>10){this.error='Enjoyment must be a whole number between 0 and 10.';return;}
             await this.run(async()=>{
-                await api('/api/admin/enjoyment','POST',{listType:this.enjoymentList,levelPath:this.enjoymentLevel,username:this.enjoymentUsername,enjoyment:this.enjoymentValue});
+                const saved=await api('/api/admin/enjoyment','POST',{listType:this.enjoymentList,levelPath:this.enjoymentLevel,username:this.enjoymentUsername,enjoyment:this.enjoymentValue});
                 const result=await api('/api/admin/enjoyment?list='+encodeURIComponent(this.enjoymentList)+'&level='+encodeURIComponent(this.enjoymentLevel));
                 this.enjoymentRecords=result.records||[];
-                this.notice='Enjoyment rating saved for '+this.enjoymentUsername+'.';
+                this.notice=this.backupNotice('Enjoyment rating saved for '+this.enjoymentUsername+'.',saved.githubBackup);
             });
         },
         async loadSubmissions() { await this.run(async()=>{this.submissions=(await api('/api/admin/submissions')).submissions||[]}) },
         async reviewRecord(item,status) {
             if(!confirm(status+' record for '+item.leaderboard_username+'?'))return;
-            await this.run(async()=>{await api('/api/admin/submissions/review','POST',{id:item.id,status});this.submissions=this.submissions.filter(s=>s.id!==item.id);this.notice='Record '+status+'. Approved records are applied to the public list.'});
+            await this.run(async()=>{const result=await api('/api/admin/submissions/review','POST',{id:item.id,status});this.submissions=this.submissions.filter(s=>s.id!==item.id);this.notice=this.backupNotice('Record '+status+'. Approved records are applied to the public list.',result.githubBackup)});
         },
         async loadWeeklyEntries() { await this.run(async()=>{this.weeklyEntries=(await api('/api/admin/weekly/entries')).entries||[]}) },
         async reviewWeekly(item,status) {

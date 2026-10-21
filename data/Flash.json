@@ -1,66 +1,69 @@
 {
-    "id": 81374034,
-    "name": "Flash",
-    "author": "NotHereGD",
-    "creators": ["NotHereGD"],
-    "verifier": "NotHereGD",
-    "verification": "YTLink",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "Void852",
-            "link": "https://youtu.be/T5lhPmhnTsY?si=uSaPAQ5vHFF08588",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/X8ouaccXKsQ?si=ZpZRF51uq9AYGtB0",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "chickadeeinc",
-            "link": "https://youtu.be/w6bBJhavios?si=8uzFnwHIuSwFxPir",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Loopelino",
-            "link": "https://youtu.be/2mhGZAzFFjc?si=rEs8GLOXhQNx0rDz",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Dextrh",
-            "link": "https://medal.tv/games/geometry-dash/clips/noyOMOcbBBm8ZcJGy?invite=cr-MSxxOU4sMjAyMTYzNDkw",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "anticroom",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "monolyth1",
-            "link": "https://youtu.be/w0AYytphjmY?si=qkzXy3jHm-A-Dyyw",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Fe4rCasp",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "jellifest",
-            "link": "https://youtu.be/C6Ea5cBIviU?si=mmDA3tbIgW2O3r_T",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 81374034,
+  "name": "Flash",
+  "author": "NotHereGD",
+  "creators": [
+    "NotHereGD"
+  ],
+  "verifier": "NotHereGD",
+  "verification": "YTLink",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "Void852",
+      "link": "https://youtu.be/T5lhPmhnTsY?si=uSaPAQ5vHFF08588",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/X8ouaccXKsQ?si=ZpZRF51uq9AYGtB0",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 8
+    },
+    {
+      "user": "chickadeeinc",
+      "link": "https://youtu.be/w6bBJhavios?si=8uzFnwHIuSwFxPir",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Loopelino",
+      "link": "https://youtu.be/2mhGZAzFFjc?si=rEs8GLOXhQNx0rDz",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Dextrh",
+      "link": "https://medal.tv/games/geometry-dash/clips/noyOMOcbBBm8ZcJGy?invite=cr-MSxxOU4sMjAyMTYzNDkw",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "anticroom",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "monolyth1",
+      "link": "https://youtu.be/w0AYytphjmY?si=qkzXy3jHm-A-Dyyw",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Fe4rCasp",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "jellifest",
+      "link": "https://youtu.be/C6Ea5cBIviU?si=mmDA3tbIgW2O3r_T",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

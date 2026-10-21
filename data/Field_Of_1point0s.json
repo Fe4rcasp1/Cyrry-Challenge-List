@@ -1,18 +1,26 @@
 {
-    "id": 147870528,
-    "name": "field of 1point0s",
-    "author": "DrSalt117",
-    "creators": ["DrSalt117"],
-    "verifier": "DrSalt117",
-    "verification": "https://youtube.com/watch?v=Pl_c9yWluC8&is=CLMnipL2h8eNzWNr",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "Fe4rCasp",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 147870528,
+  "name": "field of 1point0s",
+  "author": "DrSalt117",
+  "creators": [
+    "DrSalt117"
+  ],
+  "verifier": "DrSalt117",
+  "verification": "https://youtube.com/watch?v=Pl_c9yWluC8&is=CLMnipL2h8eNzWNr",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "Fe4rCasp",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "CyrryGD",
+      "percent": 100,
+      "link": "https://youtu.be/apaR1S2Gesk?si=5W8te1AjfCGsPpsg",
+      "enjoyment": 4
+    }
+  ]
 }

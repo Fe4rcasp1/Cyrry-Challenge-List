@@ -1,11 +1,20 @@
 {
-    "id": 148109454,
-    "name": "cyrrys BAD poo",
-    "author": "Dextrh",
-    "creators": ["Dextrh"],
-    "verifier": "Dextrh",
-    "verification": "",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": []
+  "id": 148109454,
+  "name": "cyrrys BAD poo",
+  "author": "Dextrh",
+  "creators": [
+    "Dextrh"
+  ],
+  "verifier": "Dextrh",
+  "verification": "",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "CyrryGD",
+      "percent": 100,
+      "link": "https://youtu.be/apaR1S2Gesk?si=SbwUTpMmpeSHmrnF",
+      "enjoyment": 2
+    }
+  ]
 }

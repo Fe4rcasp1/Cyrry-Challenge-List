@@ -1,24 +1,27 @@
 {
-    "id": 141919563,
-    "name": "rust blades",
-    "author": "53eighfulkaihf",
-    "creators": ["53eighfulkaihf"],
-    "verifier": "53eighfulkaihf",
-    "verification": "https://www.youtube.com/watch?v=W1nhLx881uU",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/hwyE3DY9Vfg?si=hfDbqYcQeyyP9Ptu",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Loopelino",
-            "link": "https://youtu.be/hepi-Rn9_fk?si=f4-Y9jrrLwZDRidy",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 141919563,
+  "name": "rust blades",
+  "author": "53eighfulkaihf",
+  "creators": [
+    "53eighfulkaihf"
+  ],
+  "verifier": "53eighfulkaihf",
+  "verification": "https://www.youtube.com/watch?v=W1nhLx881uU",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/hwyE3DY9Vfg?si=hfDbqYcQeyyP9Ptu",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 7
+    },
+    {
+      "user": "Loopelino",
+      "link": "https://youtu.be/hepi-Rn9_fk?si=f4-Y9jrrLwZDRidy",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

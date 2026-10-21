@@ -79,7 +79,7 @@ export default {
                         <td class="level"   :class="{ 'active': selected == item.index && selectedImpossible === !!item.impossible, 'error': !item.level, 'completed-by-user': isCompletedByUser(item.level) }">
                             <button @click="selectLevel(item)" :style="item.level ? { backgroundColor: ratingColor(item.level), color: ratingTextColor(item.level) } : {}">
                                 <span class="type-label-lg">{{ item.level?.name || \`Error (\${item.err}.json)\` }}</span>
-                            <small v-if="!item.impossible && enjoymentByPath[levelPaths[item.index]]" class="list-enjoyment-label">★ {{enjoymentByPath[levelPaths[item.index]].average}}/10 ({{enjoymentByPath[levelPaths[item.index]].ratings}})</small>
+                            <small v-if="!item.impossible && item.level?.records?.length > 0 && enjoymentByPath[levelPaths[item.index]]" class="list-enjoyment-label">★ {{enjoymentByPath[levelPaths[item.index]].average}}/10 ({{enjoymentByPath[levelPaths[item.index]].ratings}})</small>
                             </button>
                         </td>
                         </tr>
@@ -114,7 +114,7 @@ export default {
                         </li>
                         <li>
                             <div class="type-title-sm">Enjoyment</div>
-                            <p>{{ !selectedImpossible && enjoymentByPath[levelPaths[selected]] ? enjoymentByPath[levelPaths[selected]].average + '/10 (' + enjoymentByPath[levelPaths[selected]].ratings + ' ratings)' : (level.Enjoyment || 'N/A') }}</p>
+                            <p>{{ !level.records?.length ? 'N/A' : (!selectedImpossible && enjoymentByPath[levelPaths[selected]] ? enjoymentByPath[levelPaths[selected]].average + '/10 (' + enjoymentByPath[levelPaths[selected]].ratings + ' ratings)' : (level.Enjoyment || 'N/A')) }}</p>
                         </li>
                     </ul>
                     <h2>Records</h2>
@@ -285,15 +285,15 @@ export default {
                 if (this.sectionFilter === 'extended' && (impossible || index < 100)) return false;
                 if (this.sectionFilter === 'unverified' && !impossible) return false;
                 if (this.ratingFilter !== 'all' && getLevelRating(level,this.platformer) !== this.ratingFilter) return false;
-                const enjoyment = impossible ? null : this.enjoymentByPath[this.levelPaths[index]];
+                const enjoyment = impossible || !level?.records?.length ? null : this.enjoymentByPath[this.levelPaths[index]];
                 if (this.enjoymentFilter === 'rated' && !enjoyment) return false;
                 if (this.enjoymentFilter === 'unrated' && enjoyment) return false;
                 if (!['all','rated','unrated'].includes(this.enjoymentFilter) && (!enjoyment || Number(enjoyment.average) < Number(this.enjoymentFilter))) return false;
                 return !query || [level?.name,level?.author,...(level?.creators||[]),level?.id,err].some(value=>String(value??'').toLocaleLowerCase().includes(query));
             });
             if(this.enjoymentSort !== 'rank')filtered.sort((a,b)=>{
-                const x=a.impossible?null:this.enjoymentByPath[this.levelPaths[a.index]]?.average;
-                const y=b.impossible?null:this.enjoymentByPath[this.levelPaths[b.index]]?.average;
+                const x=a.impossible||!a.level?.records?.length?null:this.enjoymentByPath[this.levelPaths[a.index]]?.average;
+                const y=b.impossible||!b.level?.records?.length?null:this.enjoymentByPath[this.levelPaths[b.index]]?.average;
                 if(x==null&&y==null)return Number(a.impossible)-Number(b.impossible)||a.index-b.index;
                 if(x==null)return 1;
                 if(y==null)return -1;

@@ -1,66 +1,69 @@
 {
-    "id": 137430074,
-    "name": "Noclipistic v2",
-    "author": "Geomaster846",
-    "creators": ["Geomaster846"],
-    "verifier": "Geomaster846",
-    "verification": "https://youtu.be/B5XSk18_oVE",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/7e64knqXmvE?si=bzeXc0-gd3HBSFUU",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "NotHereGD",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Masketified",
-            "link": "https://medal.tv/games/geometry-dash/clips/mrNzl0MHV3BvU7iW7?invite=cr-MSwwU2osNDkxNTc5MTg2&v=4",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "tzmbuzz1234",
-            "link": "https://drive.google.com/file/d/1uTK5YIs-I4Qs28NTiEI2fkkBhf8TnOVG/view?usp=sharing",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Korbir",
-            "link": "https://youtu.be/QbR_0gpQnZk?si=Y4UiwxCMsvqkZ3au",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Fe4rCasp",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Loopelino",
-            "link": "https://drive.google.com/file/d/15lDoqNb8KkSXXG7V7dgS7Q5UqL3c3u4F/view?usp=sharing",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Indridzz",
-            "link": "https://youtu.be/7Ubm4xJcgrs?si=CczvDtT1F_hK8Esb",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Dextrh",
-            "link": "https://medal.tv/games/geometry-dash/clips/no57KNkDoJcCOD5lE?invite=cr-MSxmMVIsMjAyMTYzNDkw",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 137430074,
+  "name": "Noclipistic v2",
+  "author": "Geomaster846",
+  "creators": [
+    "Geomaster846"
+  ],
+  "verifier": "Geomaster846",
+  "verification": "https://youtu.be/B5XSk18_oVE",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/7e64knqXmvE?si=bzeXc0-gd3HBSFUU",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 1
+    },
+    {
+      "user": "NotHereGD",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Masketified",
+      "link": "https://medal.tv/games/geometry-dash/clips/mrNzl0MHV3BvU7iW7?invite=cr-MSwwU2osNDkxNTc5MTg2&v=4",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "tzmbuzz1234",
+      "link": "https://drive.google.com/file/d/1uTK5YIs-I4Qs28NTiEI2fkkBhf8TnOVG/view?usp=sharing",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Korbir",
+      "link": "https://youtu.be/QbR_0gpQnZk?si=Y4UiwxCMsvqkZ3au",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Fe4rCasp",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Loopelino",
+      "link": "https://drive.google.com/file/d/15lDoqNb8KkSXXG7V7dgS7Q5UqL3c3u4F/view?usp=sharing",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Indridzz",
+      "link": "https://youtu.be/7Ubm4xJcgrs?si=CczvDtT1F_hK8Esb",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Dextrh",
+      "link": "https://medal.tv/games/geometry-dash/clips/no57KNkDoJcCOD5lE?invite=cr-MSxmMVIsMjAyMTYzNDkw",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

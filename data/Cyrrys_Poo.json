@@ -1,42 +1,45 @@
 {
-    "id": 140301128,
-    "name": "cyrrys poo",
-    "author": "tzmbuzz1234",
-    "creators": ["tzmbuzz1234"],
-    "verifier": "tzmbuzz1234",
-    "verification": "https://youtu.be/I53mvrfgqV8?si=jXtHzqhEiiXE4sHz",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "Korbir",
-            "link": "https://youtu.be/H1xtZnic2T0?si=aeFU1q6_jM9cmcAl",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/YFO15VAiOcg?si=4GGlmyEb5J9VA8nb",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Fe4rCasp",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Loopelino",
-            "link": "https://drive.google.com/file/d/15lDoqNb8KkSXXG7V7dgS7Q5UqL3c3u4F/view?usp=sharing",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Dextrh",
-            "link": "https://medal.tv/games/geometry-dash/clips/no5f65VfPB6popjyJ?invite=cr-MSxHSTcsMjAyMTYzNDkw",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 140301128,
+  "name": "cyrrys poo",
+  "author": "tzmbuzz1234",
+  "creators": [
+    "tzmbuzz1234"
+  ],
+  "verifier": "tzmbuzz1234",
+  "verification": "https://youtu.be/I53mvrfgqV8?si=jXtHzqhEiiXE4sHz",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "Korbir",
+      "link": "https://youtu.be/H1xtZnic2T0?si=aeFU1q6_jM9cmcAl",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/YFO15VAiOcg?si=4GGlmyEb5J9VA8nb",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 8
+    },
+    {
+      "user": "Fe4rCasp",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Loopelino",
+      "link": "https://drive.google.com/file/d/15lDoqNb8KkSXXG7V7dgS7Q5UqL3c3u4F/view?usp=sharing",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Dextrh",
+      "link": "https://medal.tv/games/geometry-dash/clips/no5f65VfPB6popjyJ?invite=cr-MSxHSTcsMjAyMTYzNDkw",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

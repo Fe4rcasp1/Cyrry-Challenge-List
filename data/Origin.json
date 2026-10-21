@@ -1,30 +1,33 @@
 {
-    "id": 143158290,
-    "name": "Origin",
-    "author": "astroraiden",
-    "creators": ["astroraiden"],
-    "verifier": "astroraiden",
-    "verification": "",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/ueLrvukLAsw?si=89nJaNa2SMDVRnfZ",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Loopelino",
-            "link": "https://youtu.be/jssC56y3y7A?si=jU4zrO4_-63cH9mQ",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Dextrh",
-            "link": "https://medal.tv/games/geometry-dash/clips/nopOaed0BrHpPAUC8?invite=cr-MSwwelIsMjAyMTYzNDkw",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 143158290,
+  "name": "Origin",
+  "author": "astroraiden",
+  "creators": [
+    "astroraiden"
+  ],
+  "verifier": "astroraiden",
+  "verification": "",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/ueLrvukLAsw?si=89nJaNa2SMDVRnfZ",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 8
+    },
+    {
+      "user": "Loopelino",
+      "link": "https://youtu.be/jssC56y3y7A?si=jU4zrO4_-63cH9mQ",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Dextrh",
+      "link": "https://medal.tv/games/geometry-dash/clips/nopOaed0BrHpPAUC8?invite=cr-MSwwelIsMjAyMTYzNDkw",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

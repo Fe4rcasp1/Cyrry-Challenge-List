@@ -1,11 +1,20 @@
 {
-    "id": 147015894,
-    "name": "Blackout",
-    "author": "NxXD",
-    "creators": ["NxXD"],
-    "verifier": "NxXD",
-    "verification": "https://youtu.be/3OwzPITN9iA?si=mK07wT5H15VVZ5Vz",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": []
+  "id": 147015894,
+  "name": "Blackout",
+  "author": "NxXD",
+  "creators": [
+    "NxXD"
+  ],
+  "verifier": "NxXD",
+  "verification": "https://youtu.be/3OwzPITN9iA?si=mK07wT5H15VVZ5Vz",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "CyrryGD",
+      "percent": 100,
+      "link": "https://youtu.be/apaR1S2Gesk?si=h0pibbUBswIdFjzV",
+      "enjoyment": 7
+    }
+  ]
 }

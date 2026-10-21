@@ -16,14 +16,6 @@ export default {
                     Shameless copy of the Extreme Demon Roulette by <a href="https://matcool.github.io/extreme-demon-roulette/" target="_blank">matcool</a>.
                 </p>
                 <form class="options">
-                    <label for="roulette-source">Level pool</label>
-                    <select id="roulette-source" v-model="listSource" style="padding: 0.65rem; border-radius: 0.5rem; max-width: 100%; background: var(--color-background-hover); color: inherit;">
-                        <option value="normal">Normal List</option>
-                        <option value="platformer">Platformer List</option>
-                        <option value="both">Both Lists</option>
-                    </select>
-                    <p class="type-label-md" style="color: #aaa">Choose which levels can appear in your roulette.</p>
-                    <template v-if="listSource !== 'platformer'">
                     <div class="check">
                         <input type="checkbox" id="main" value="Main List" v-model="useMainList">
                         <label for="main">Main List</label>
@@ -32,7 +24,6 @@ export default {
                         <input type="checkbox" id="extended" value="Extended List" v-model="useExtendedList">
                         <label for="extended">Extended List</label>
                     </div>
-                    </template>
                     <Btn @click.native.prevent="onStart">{{ levels.length === 0 ? 'Start' : 'Restart'}}</Btn>
                 </form>
                 <p class="type-label-md" style="color: #aaa">
@@ -55,7 +46,7 @@ export default {
                                 <img :src="getThumbnailFromId(getYoutubeIdFromUrl(level.video))" alt="">
                             </a>
                             <div class="meta">
-                                <p>{{ level.source ? level.source + " · " : "" }}#{{ level.rank }}</p>
+                                <p>#{{ level.rank }}</p>
                                 <h2>{{ level.name }}</h2>
                                 <p style="color: #00b54b; font-weight: 700">{{ progression[i] }}%</p>
                             </div>
@@ -66,7 +57,7 @@ export default {
                                 <img :src="getThumbnailFromId(getYoutubeIdFromUrl(currentLevel.video))" alt="">
                             </a>
                             <div class="meta">
-                                <p>{{ currentLevel.source ? currentLevel.source + " · " : "" }}#{{ currentLevel.rank }}</p>
+                                <p>#{{ currentLevel.rank }}</p>
                                 <h2>{{ currentLevel.name }}</h2>
                                 <p>{{ currentLevel.id }}</p>
                             </div>
@@ -115,7 +106,6 @@ export default {
         percentage: undefined,
         givenUp: false,
         showRemaining: false,
-        listSource: "normal",
         useMainList: true,
         useExtendedList: true,
         toasts: [],
@@ -173,7 +163,7 @@ export default {
                 return;
             }
 
-            if (this.listSource !== "platformer" && !this.useMainList && !this.useExtendedList) {
+            if (!this.useMainList && !this.useExtendedList) {
                 return;
             }
 
@@ -181,24 +171,14 @@ export default {
 
             const list = [];
             try {
-                if (this.listSource === 'normal' || this.listSource === 'both') {
-                    const normal = await fetchList();
-                    if (!normal || normal.some(([_, err]) => err)) throw new Error('Normal List failed to load');
-                    const mapped = normal.map(([lvl], i) => ({
-                        rank: i + 1, id: lvl.id, name: lvl.name,
-                        video: lvl.verification, source: 'Normal List'
-                    }));
-                    if (this.useMainList) list.push(...mapped.slice(0, 100));
-                    if (this.useExtendedList) list.push(...mapped.slice(100));
-                }
-                if (this.listSource === 'platformer' || this.listSource === 'both') {
-                    const platformer = await fetchList('_platformer.json');
-                    if (!platformer || platformer.some(([_, err]) => err)) throw new Error('Platformer List failed to load');
-                    list.push(...platformer.map(([lvl], i) => ({
-                        rank: i + 1, id: lvl.id, name: lvl.name,
-                        video: lvl.verification, source: 'Platformer List'
-                    })));
-                }
+                const normal = await fetchList();
+                if (!normal || normal.some(([_, err]) => err)) throw new Error('Normal List failed to load');
+                const mapped = normal.map(([lvl], i) => ({
+                    rank: i + 1, id: lvl.id, name: lvl.name,
+                    video: lvl.verification
+                }));
+                if (this.useMainList) list.push(...mapped.slice(0, 100));
+                if (this.useExtendedList) list.push(...mapped.slice(100));
             } catch (error) {
                 this.loading = false;
                 this.showToast(error.message);

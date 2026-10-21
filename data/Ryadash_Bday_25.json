@@ -1,42 +1,45 @@
 {
-    "id": 125599152,
-    "name": "Ryadash Bday 25",
-    "author": "Leagal",
-    "creators": ["Leagal"],
-    "verifier": "Leagal",
-    "verification": "https://youtu.be/_XTShmxKWPw?si=QtclHzhaOu8henwb",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/_y5gsAS9oaA?si=y6e0YFVOVLsJWFec",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "NotHereGD",
-            "link": "https://youtu.be/cADlYN1MzGs?si=IiDyWERn7Dl-cieN",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Loopelino",
-            "link": "https://youtu.be/9BV7G2fLR_Y?si=Z3yitAoTFn8EMPF0",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Void852",
-            "link": "https://medal.tv/games/geometry-dash/clips/noV8EN9TcUeBSO2CH?invite=cr-MSxtTXUsNTgyMjMyNjcz",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Dextrh",
-            "link": "https://medal.tv/games/geometry-dash/clips/no6NipqjjSN_0sM15?invite=cr-MSxuRGMsMjAyMTYzNDkw",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 125599152,
+  "name": "Ryadash Bday 25",
+  "author": "Leagal",
+  "creators": [
+    "Leagal"
+  ],
+  "verifier": "Leagal",
+  "verification": "https://youtu.be/_XTShmxKWPw?si=QtclHzhaOu8henwb",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/_y5gsAS9oaA?si=y6e0YFVOVLsJWFec",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 10
+    },
+    {
+      "user": "NotHereGD",
+      "link": "https://youtu.be/cADlYN1MzGs?si=IiDyWERn7Dl-cieN",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Loopelino",
+      "link": "https://youtu.be/9BV7G2fLR_Y?si=Z3yitAoTFn8EMPF0",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Void852",
+      "link": "https://medal.tv/games/geometry-dash/clips/noV8EN9TcUeBSO2CH?invite=cr-MSxtTXUsNTgyMjMyNjcz",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Dextrh",
+      "link": "https://medal.tv/games/geometry-dash/clips/no6NipqjjSN_0sM15?invite=cr-MSxuRGMsMjAyMTYzNDkw",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

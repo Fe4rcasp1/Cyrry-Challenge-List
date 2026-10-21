@@ -389,7 +389,7 @@ export default {
             this.showUnverified=true;
             this.$nextTick(()=>{const el=document.querySelector('.page-list .list-container');if(el)el.scrollTop=el.scrollHeight;});
         },
-        selectLevel(item){this.selectedImpossible=!!item.impossible;this.selected=item.index;this.syncFavorite();},
+        selectLevel(item){this.selectedImpossible=!!item.impossible;this.selected=item.index;this.levelHistory=[];this.historyLoaded=false;this.historyError='';this.syncFavorite();},
         isCompletedByUser(level) {
             const username = this.store.profileUsername;
             if (!username || !level) return false;

@@ -1,36 +1,39 @@
 {
-    "id": 147832563,
-    "name": "robot spam lol",
-    "author": "monolyth1",
-    "creators": ["monolyth1"],
-    "verifier": "monolyth1",
-    "verification": "https://youtu.be/ZIfn4s0eCBk",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/X8ouaccXKsQ?si=ZpZRF51uq9AYGtB0",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Void852",
-            "link": "https://medal.tv/games/geometry-dash/clips/npnePRaWVkgIkbaLn?invite=cr-MSxWTzUsNTgyMjMyNjcz",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Loopelino",
-            "link": "https://youtu.be/bQD6v2Y3K6o?si=fJNaP5y96UIK-G4u",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Dextrh",
-            "link": "https://medal.tv/games/geometry-dash/clips/nqa4O29gKjUNCcfq3?invite=cr-MSxabkMsMjAyMTYzNDkw",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 147832563,
+  "name": "robot spam lol",
+  "author": "monolyth1",
+  "creators": [
+    "monolyth1"
+  ],
+  "verifier": "monolyth1",
+  "verification": "https://youtu.be/ZIfn4s0eCBk",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/X8ouaccXKsQ?si=ZpZRF51uq9AYGtB0",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 4
+    },
+    {
+      "user": "Void852",
+      "link": "https://medal.tv/games/geometry-dash/clips/npnePRaWVkgIkbaLn?invite=cr-MSxWTzUsNTgyMjMyNjcz",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Loopelino",
+      "link": "https://youtu.be/bQD6v2Y3K6o?si=fJNaP5y96UIK-G4u",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Dextrh",
+      "link": "https://medal.tv/games/geometry-dash/clips/nqa4O29gKjUNCcfq3?invite=cr-MSxabkMsMjAyMTYzNDkw",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

@@ -134,12 +134,33 @@ async function handle(request, env) {
   }catch(e){return json({error:'Team name or tag already exists.'},409);}
   return json({ok:true,id});
  }
+ // Owner-generated, single-use invitation codes (expires after 7 days).
+ if(path==='/api/teams/invites/create'&&request.method==='POST'){
+  const user=await currentUser(request,env.DB);if(!user)return json({error:'Log in first.'},401);
+  const team=await env.DB.prepare('SELECT id FROM ccl_teams WHERE owner_id=?').bind(user.id).first();
+  if(!team)return json({error:'Only a clan owner can create invite codes.'},403);
+  const code='CCL-'+random(16).toUpperCase();
+  const expires=new Date(Date.now()+7*86400000).toISOString();
+  await env.DB.prepare('INSERT INTO ccl_team_invites(id,team_id,code_hash,created_by,expires_at) VALUES(?,?,?,?,?)').bind(crypto.randomUUID(),team.id,await sha256(code),user.id,expires).run();
+  return json({code,expires_at:expires});
+ }
+ if(path==='/api/teams/invites/revoke'&&request.method==='POST'){
+  const user=await currentUser(request,env.DB);if(!user)return json({error:'Log in first.'},401);
+  await env.DB.prepare('DELETE FROM ccl_team_invites WHERE team_id IN (SELECT id FROM ccl_teams WHERE owner_id=?) AND used_by IS NULL').bind(user.id).run();
+  return json({ok:true});
+ }
  if(path==='/api/teams/join'&&request.method==='POST'){
   const user=await currentUser(request,env.DB);if(!user)return json({error:'Log in first.'},401);
-  const data=await body(request),id=String(data.id||'');if(!/^[0-9a-f-]{36}$/i.test(id))return json({error:'Invalid team.'},400);
-  const team=await env.DB.prepare('SELECT id FROM ccl_teams WHERE id=?').bind(id).first();if(!team)return json({error:'Team not found.'},404);
+  const data=await body(request),id=String(data.id||''),code=String(data.code||'').trim().toUpperCase();
+  if(!/^[0-9a-f-]{36}$/i.test(id)||!/^CCL-[A-F0-9]{32}$/.test(code))return json({error:'Enter a valid owner-provided invite code.'},400);
+  const existing=await env.DB.prepare('SELECT user_id FROM ccl_team_members WHERE user_id=?').bind(user.id).first();
+  if(existing)return json({error:'Leave your current clan first.'},409);
+  const codeHash=await sha256(code);
+  // UPDATE ... RETURNING atomically claims the invitation so two players cannot use it.
+  const invite=await env.DB.prepare("UPDATE ccl_team_invites SET used_by=?,used_at=CURRENT_TIMESTAMP WHERE team_id=? AND code_hash=? AND used_by IS NULL AND expires_at>? RETURNING id").bind(user.id,id,codeHash,new Date().toISOString()).first();
+  if(!invite)return json({error:'Invite code is invalid, expired, revoked, or already used.'},403);
   try{await env.DB.prepare('INSERT INTO ccl_team_members(team_id,user_id) VALUES(?,?)').bind(id,user.id).run();}
-  catch{return json({error:'You already belong to a team.'},409);}
+  catch(e){await env.DB.prepare('UPDATE ccl_team_invites SET used_by=NULL,used_at=NULL WHERE id=? AND used_by=?').bind(invite.id,user.id).run();return json({error:'Could not join clan. You may already be a member.'},409);}
   return json({ok:true});
  }
  if(path==='/api/teams/leave'&&request.method==='POST'){

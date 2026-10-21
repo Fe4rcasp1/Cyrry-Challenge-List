@@ -113,6 +113,10 @@ async function handle(request, env) {
   const rows=await env.DB.prepare("SELECT t.id,t.name,t.tag,t.description,t.created_at,u.username AS owner,(SELECT COUNT(*) FROM ccl_team_members m WHERE m.team_id=t.id) AS members FROM ccl_teams t JOIN users u ON u.id=t.owner_id ORDER BY members DESC,t.name LIMIT 100").all();
   return json({teams:rows.results});
  }
+ if(path==='/api/teams/scores'&&request.method==='GET'){
+  const rows=await env.DB.prepare("SELECT m.team_id,c.leaderboard_username FROM ccl_team_members m JOIN claims c ON c.user_id=m.user_id AND c.status='approved'").all();
+  return json({members:rows.results});
+ }
  if(path==='/api/teams/members'&&request.method==='GET'){
   const id=String(url.searchParams.get('id')||'');if(!/^[0-9a-f-]{36}$/i.test(id))return json({error:'Invalid team.'},400);
   const rows=await env.DB.prepare("SELECT u.username,m.user_id,t.owner_id FROM ccl_team_members m JOIN users u ON u.id=m.user_id JOIN ccl_teams t ON t.id=m.team_id WHERE m.team_id=? ORDER BY m.joined_at LIMIT 100").bind(id).all();

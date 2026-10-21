@@ -557,6 +557,31 @@ async function handle(request, env) {
    const rows=await env.DB.prepare('SELECT id,leaderboard_username,list_type,level_path,percent,video_url,status,created_at,reviewed_at,review_feedback FROM record_submissions WHERE user_id=? ORDER BY created_at DESC LIMIT 100').bind(user.id).all();
    return json({submissions:rows.results});
  }
+ if(path==='/api/community/submissions/bulk'&&request.method==='POST'){
+  const user=await currentUser(request,env.DB);if(!user)return json({error:'Log in first.'},401);
+  const claim=await env.DB.prepare("SELECT leaderboard_username FROM claims WHERE user_id=? AND status='approved' LIMIT 1").bind(user.id).first();
+  if(!claim)return json({error:'Approved player profile claim required.'},403);
+  const data=await body(request),records=data.records;
+  if(!Array.isArray(records)||records.length<1||records.length>20)return json({error:'Submit 1–20 records.'},400);
+  const seen=new Set(),validated=[],lists={};
+  for(let i=0;i<records.length;i++){
+   const x=records[i]||{},type=String(x.listType||''),level=String(x.levelPath||''),video=String(x.videoUrl||'').trim(),percent=Number(x.percent),enjoyment=Number(x.enjoyment),discord=String(x.discordName||'').trim(),username=String(x.username||'').trim();
+   const label='Record '+(i+1)+': ';
+   if(!['normal','platformer'].includes(type)||!/^[A-Za-z0-9_-]{1,120}$/.test(level))return json({error:label+'Invalid list or level.'},400);
+   if(seen.has(type+':'+level))return json({error:label+'Duplicate level.'},400);seen.add(type+':'+level);
+   if(!Number.isInteger(percent)||percent<1||percent>100)return json({error:label+'Percentage must be 1–100.'},400);
+   if(!safeUrl(video)||video.length>500)return json({error:label+'Valid HTTPS proof link required.'},400);
+   if(!Number.isInteger(enjoyment)||enjoyment<0||enjoyment>10)return json({error:label+'Enjoyment must be 0–10.'},400);
+   if(username.toLowerCase()!==claim.leaderboard_username.toLowerCase())return json({error:label+'Username does not match your profile.'},400);
+   if(discord.length<2||discord.length>64||[...discord].some(c=>c.charCodeAt(0)<32||c.charCodeAt(0)===127))return json({error:label+'Invalid Discord username.'},400);
+   if(!lists[type]){const response=await env.ASSETS.fetch(new Request(new URL('/data/'+(type==='normal'?'_list.json':'_platformer.json'),request.url)));if(!response.ok)return json({error:'List unavailable.'},503);lists[type]=new Set(await response.json());}
+   if(!lists[type].has(level))return json({error:label+'Level not on selected list.'},404);
+   validated.push({type,level,video,percent,enjoyment,discord,username});
+  }
+  for(const x of validated){const existing=await env.DB.prepare("SELECT id FROM record_submissions WHERE user_id=? AND list_type=? AND level_path=? AND status='pending'").bind(user.id,x.type,x.level).first();if(existing)return json({error:'Already pending: '+x.level},409);}
+  await env.DB.batch(validated.map(x=>env.DB.prepare('INSERT INTO record_submissions(id,user_id,leaderboard_username,list_type,level_path,percent,video_url,note,discord_name,enjoyment) VALUES(?,?,?,?,?,?,?,?,?,?)').bind(crypto.randomUUID(),user.id,x.username,x.type,x.level,x.percent,x.video,'',x.discord,x.enjoyment)));
+  return json({ok:true,submitted:validated.length},201);
+ }
  if (path === '/api/community/submissions' && request.method === 'POST') {
    const user=await currentUser(request,env.DB);if(!user)return json({error:'Log in first.'},401);
    const claim=await env.DB.prepare("SELECT leaderboard_username FROM claims WHERE user_id=? AND status='approved' LIMIT 1").bind(user.id).first();

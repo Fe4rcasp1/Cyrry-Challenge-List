@@ -1,54 +1,57 @@
 {
-    "id": 78109328,
-    "name": "pillars of pink",
-    "author": "chickadeeinc",
-    "creators": ["chickadeeinc"],
-    "verifier": "chickadeeinc",
-    "verification": "",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "jamxz11",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "skeetles",
-            "link": "https://youtu.be/dmVEAA2LcL8",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/B6yc9GEo4bI?si=MvoITRJMo-PFwYJu",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Geomaster846",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Maulr",
-            "link": "https://youtu.be/XsXyg7yFnZc",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Korbir",
-            "link": "https://youtu.be/XjdV4FvtyHQ?si=FFSI8X0w1fuWqFAG",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Fe4rCasp",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 78109328,
+  "name": "pillars of pink",
+  "author": "chickadeeinc",
+  "creators": [
+    "chickadeeinc"
+  ],
+  "verifier": "chickadeeinc",
+  "verification": "",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "jamxz11",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "skeetles",
+      "link": "https://youtu.be/dmVEAA2LcL8",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/B6yc9GEo4bI?si=MvoITRJMo-PFwYJu",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 6
+    },
+    {
+      "user": "Geomaster846",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Maulr",
+      "link": "https://youtu.be/XsXyg7yFnZc",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Korbir",
+      "link": "https://youtu.be/XjdV4FvtyHQ?si=FFSI8X0w1fuWqFAG",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Fe4rCasp",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

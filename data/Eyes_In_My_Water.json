@@ -1,84 +1,87 @@
 {
-    "id": 137286095,
-    "name": "eyes in my water",
-    "author": "ZinkZys",
-    "creators": ["ZinkZys"],
-    "verifier": "ZinkZys",
-    "verification": "",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "jamxz11",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/qaBlenzDFiI?si=_FnHTjYjeNShv4yD",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "tzmbuzz1234",
-            "link": "https://youtu.be/4pwB5XNGoCQ?si=eapok2W6NC4CkDwR",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Korbir",
-            "link": "https://youtu.be/H1xtZnic2T0?si=aeFU1q6_jM9cmcAl",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Fe4rCasp",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "BoiledPepsi",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Masketified",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "MrKingFloppa",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Loopelino",
-            "link": "https://drive.google.com/file/d/1ztBWuwqGbBijVvlt_7Qh5KjItzbpxjFM/view?usp=sharing",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "chickadeeinc",
-            "link": "https://youtu.be/yeBF6F6d7WI?si=D4TI9uhxO7VW_Gw5",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Dextrh",
-            "link": "https://medal.tv/games/geometry-dash/clips/no3tiazxefjkCknMF?invite=cr-MSxLdzIsMjAyMTYzNDkw",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "monolyth1",
-            "link": "https://youtu.be/w0AYytphjmY?si=qkzXy3jHm-A-Dyyw",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 137286095,
+  "name": "eyes in my water",
+  "author": "ZinkZys",
+  "creators": [
+    "ZinkZys"
+  ],
+  "verifier": "ZinkZys",
+  "verification": "",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "jamxz11",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/qaBlenzDFiI?si=_FnHTjYjeNShv4yD",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 7
+    },
+    {
+      "user": "tzmbuzz1234",
+      "link": "https://youtu.be/4pwB5XNGoCQ?si=eapok2W6NC4CkDwR",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Korbir",
+      "link": "https://youtu.be/H1xtZnic2T0?si=aeFU1q6_jM9cmcAl",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Fe4rCasp",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "BoiledPepsi",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Masketified",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "MrKingFloppa",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Loopelino",
+      "link": "https://drive.google.com/file/d/1ztBWuwqGbBijVvlt_7Qh5KjItzbpxjFM/view?usp=sharing",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "chickadeeinc",
+      "link": "https://youtu.be/yeBF6F6d7WI?si=D4TI9uhxO7VW_Gw5",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Dextrh",
+      "link": "https://medal.tv/games/geometry-dash/clips/no3tiazxefjkCknMF?invite=cr-MSxLdzIsMjAyMTYzNDkw",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "monolyth1",
+      "link": "https://youtu.be/w0AYytphjmY?si=qkzXy3jHm-A-Dyyw",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

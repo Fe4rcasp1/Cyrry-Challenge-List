@@ -1,96 +1,99 @@
 {
-    "id": 120617167,
-    "name": "Cads Quite A Sight",
-    "author": "CyrryGD",
-    "creators": ["CyrryGD"],
-    "verifier": "CyrryGD",
-    "verification": "https://youtu.be/12rGYcW5Vzs?si=zvgWQ_ruzWCdQR9X",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "Daszo",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Masketified",
-            "link": "https://medal.tv/games/geometry-dash/clips/moSqmD8KDdb7iq9NU?invite=cr-MSxmWm4sNDkxNTc5MTg2",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Noname1610",
-            "link": "https://drive.google.com/file/d/1P9vP42HqV7mLaAleAEarF35UtxRlKYlh/view?usp=sharing",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "lo3xa",
-            "link": "https://youtu.be/YuP_FzfQ7iM?si=BUx3lgjxs1gjiuYT",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "DrSalt117",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Korbir",
-            "link": "https://youtu.be/QbR_0gpQnZk?si=Y4UiwxCMsvqkZ3au",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "katanata",
-            "link": "https://drive.google.com/file/d/1A1WMl6Yk0C9DnMd0UFVwswMaaSm7iFbC/view?usp=sharing",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Fe4rCasp",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "ZinkZys",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "jamxz11",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "kyqliaGD",
-            "link": "https://medal.tv/games/geometry-dash/clips/nbf0AnPAZhSmwJaga?invite=cr-MSxNMnMsNDQ2ODg1Mjc0",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Loopelino",
-            "link": "https://drive.google.com/file/d/1ztBWuwqGbBijVvlt_7Qh5KjItzbpxjFM/view?usp=sharing",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Void852",
-            "link": "https://youtu.be/T5lhPmhnTsY?si=uSaPAQ5vHFF08588",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Dextrh",
-            "link": "https://medal.tv/games/geometry-dash/clips/no4eeedj7w807P0qy?invite=cr-MSxHZHAsMjAyMTYzNDkw",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 120617167,
+  "name": "Cads Quite A Sight",
+  "author": "CyrryGD",
+  "creators": [
+    "CyrryGD"
+  ],
+  "verifier": "CyrryGD",
+  "verification": "https://youtu.be/12rGYcW5Vzs?si=zvgWQ_ruzWCdQR9X",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "Daszo",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Masketified",
+      "link": "https://medal.tv/games/geometry-dash/clips/moSqmD8KDdb7iq9NU?invite=cr-MSxmWm4sNDkxNTc5MTg2",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Noname1610",
+      "link": "https://drive.google.com/file/d/1P9vP42HqV7mLaAleAEarF35UtxRlKYlh/view?usp=sharing",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "lo3xa",
+      "link": "https://youtu.be/YuP_FzfQ7iM?si=BUx3lgjxs1gjiuYT",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "DrSalt117",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Korbir",
+      "link": "https://youtu.be/QbR_0gpQnZk?si=Y4UiwxCMsvqkZ3au",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "katanata",
+      "link": "https://drive.google.com/file/d/1A1WMl6Yk0C9DnMd0UFVwswMaaSm7iFbC/view?usp=sharing",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Fe4rCasp",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "ZinkZys",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "jamxz11",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "kyqliaGD",
+      "link": "https://medal.tv/games/geometry-dash/clips/nbf0AnPAZhSmwJaga?invite=cr-MSxNMnMsNDQ2ODg1Mjc0",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Loopelino",
+      "link": "https://drive.google.com/file/d/1ztBWuwqGbBijVvlt_7Qh5KjItzbpxjFM/view?usp=sharing",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Void852",
+      "link": "https://youtu.be/T5lhPmhnTsY?si=uSaPAQ5vHFF08588",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 7
+    },
+    {
+      "user": "Dextrh",
+      "link": "https://medal.tv/games/geometry-dash/clips/no4eeedj7w807P0qy?invite=cr-MSxHZHAsMjAyMTYzNDkw",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

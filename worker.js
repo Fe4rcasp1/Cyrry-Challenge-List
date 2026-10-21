@@ -21,6 +21,32 @@ async function currentUser(request, db) {
  return record || null;
 }
 async function body(request) { try { return await request.json(); } catch { return {}; } }
+// GitHub backup: keep the token only in the Cloudflare Worker secret GITHUB_TOKEN.
+// D1 remains the live source; a failed backup is reported and can be retried.
+function githubBase64(text) {
+ const bytes = new TextEncoder().encode(text);
+ let binary = '';
+ for (let i=0;i<bytes.length;i+=8192) binary += String.fromCharCode(...bytes.subarray(i,i+8192));
+ return btoa(binary);
+}
+async function backupLevelToGitHub(env, listType, levelPath, level) {
+ if (!env.GITHUB_TOKEN) return {synced:false,reason:'GITHUB_TOKEN is not configured in Cloudflare Worker secrets.'};
+ if (!['normal','platformer'].includes(listType)||!/^[A-Za-z0-9_-]{1,120}$/.test(levelPath)) return {synced:false,reason:'Invalid backup path.'};
+ const endpoint='https://api.github.com/repos/Fe4rcasp1/Cyrry-Challenge-List/contents/data/'+encodeURIComponent(levelPath)+'.json';
+ const headers={'Authorization':'Bearer '+env.GITHUB_TOKEN,'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28','User-Agent':'CCL-Cloudflare-Backup','Content-Type':'application/json'};
+ const content=githubBase64(JSON.stringify(level,null,2)+'\n');
+ for(let attempt=0;attempt<3;attempt++){
+   try {
+     const current=await fetch(endpoint,{headers});
+     if(!current.ok)return {synced:false,reason:'GitHub file lookup failed (HTTP '+current.status+').'};
+     const file=await current.json();
+     const result=await fetch(endpoint,{method:'PUT',headers,body:JSON.stringify({message:'Back up '+listType+' CCL level '+levelPath+' from admin dashboard',content,sha:file.sha})});
+     if(result.ok)return {synced:true};
+     if(![409,422].includes(result.status)||attempt===2)return {synced:false,reason:'GitHub commit failed (HTTP '+result.status+').'};
+   }catch(e){if(attempt===2)return {synced:false,reason:'GitHub request failed: '+e.message};}
+ }
+ return {synced:false,reason:'GitHub backup could not be completed.'};
+}
 async function handle(request, env) {
  const url = new URL(request.url), path = url.pathname;
  if (!path.startsWith('/api/')) return env.ASSETS.fetch(request);

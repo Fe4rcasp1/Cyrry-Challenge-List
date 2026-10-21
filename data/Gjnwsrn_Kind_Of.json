@@ -1,72 +1,75 @@
 {
-    "id": 115217120,
-    "name": "gjnwsrn kind of",
-    "author": "ZinkZys",
-    "creators": ["ZinkZys"],
-    "verifier": "ZinkZys",
-    "verification": "",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/Olewy2V66q4?si=SwL0IlSCH9YKQuMr",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Korbir",
-            "link": "https://youtu.be/qevrHhtycC4?si=FIdawQyU4F-6wdAg",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "astroraiden",
-            "link": "https://medal.tv/games/geometry-dash/clips/mY2DFCyE5827ue0uh?invite=cr-MSxianMsNDQ4OTM4Nzg5",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "MrKingFloppa",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Fe4rCasp",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Loopelino",
-            "link": "https://youtu.be/2Dk2qjhXHBM?si=6orYDJK6ldxGLXjw",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Void852",
-            "link": "https://youtu.be/T5lhPmhnTsY?si=uSaPAQ5vHFF08588",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Masketified",
-            "link": "https://medal.tv/games/geometry-dash/clips/nmycVH3ttYVTsT5ox?invite=cr-MSxPdjcsNjcxMjg1MDQ5",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Dextrh",
-            "link": "https://medal.tv/games/geometry-dash/clips/no3Q1dnuc7PxuGlJg?invite=cr-MSx4dEwsMjAyMTYzNDkw",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "monolyth1",
-            "link": "https://youtu.be/w0AYytphjmY?si=qkzXy3jHm-A-Dyyw",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 115217120,
+  "name": "gjnwsrn kind of",
+  "author": "ZinkZys",
+  "creators": [
+    "ZinkZys"
+  ],
+  "verifier": "ZinkZys",
+  "verification": "",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/Olewy2V66q4?si=SwL0IlSCH9YKQuMr",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 6
+    },
+    {
+      "user": "Korbir",
+      "link": "https://youtu.be/qevrHhtycC4?si=FIdawQyU4F-6wdAg",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "astroraiden",
+      "link": "https://medal.tv/games/geometry-dash/clips/mY2DFCyE5827ue0uh?invite=cr-MSxianMsNDQ4OTM4Nzg5",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "MrKingFloppa",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Fe4rCasp",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Loopelino",
+      "link": "https://youtu.be/2Dk2qjhXHBM?si=6orYDJK6ldxGLXjw",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Void852",
+      "link": "https://youtu.be/T5lhPmhnTsY?si=uSaPAQ5vHFF08588",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Masketified",
+      "link": "https://medal.tv/games/geometry-dash/clips/nmycVH3ttYVTsT5ox?invite=cr-MSxPdjcsNjcxMjg1MDQ5",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Dextrh",
+      "link": "https://medal.tv/games/geometry-dash/clips/no3Q1dnuc7PxuGlJg?invite=cr-MSx4dEwsMjAyMTYzNDkw",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "monolyth1",
+      "link": "https://youtu.be/w0AYytphjmY?si=qkzXy3jHm-A-Dyyw",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

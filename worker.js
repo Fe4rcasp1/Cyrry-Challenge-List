@@ -24,6 +24,28 @@ async function body(request) { try { return await request.json(); } catch { retu
 async function handle(request, env) {
  const url = new URL(request.url), path = url.pathname;
  if (!path.startsWith('/api/')) return env.ASSETS.fetch(request);
+ if (path === '/api/impossible-levels' && request.method === 'GET') {
+   const base = 'https://cclimpossible.ccllcc.workers.dev';
+   try {
+     const indexResponse = await fetch(base + '/data/_list.json');
+     if (!indexResponse.ok) throw new Error('Impossible list index unavailable');
+     const paths = await indexResponse.json();
+     if (!Array.isArray(paths)) throw new Error('Invalid impossible list index');
+     const safePaths = paths.filter(p => typeof p === 'string' && /^[A-Za-z0-9_-]{1,120}$/.test(p)).slice(0,500);
+     const levels = await Promise.all(safePaths.map(async (levelPath, index) => {
+       try {
+         const response = await fetch(base + '/data/' + encodeURIComponent(levelPath) + '.json');
+         if (!response.ok) return null;
+         const level = await response.json();
+         return { ...level, path: levelPath, impossibleRank: index + 1, records: Array.isArray(level.records) ? level.records : [] };
+       } catch { return null; }
+     }));
+     return json({ levels: levels.filter(Boolean) });
+   } catch (error) {
+     console.error('Impossible list load failed:', error);
+     return json({ error: 'Unable to load unverified levels right now.' }, 502);
+   }
+ }
  if (!env.DB) return json({ error: 'Account database is not configured.' }, 503);
  if (path === '/api/health' && request.method === 'GET') {
    const tables = {};

@@ -1,36 +1,39 @@
 {
-    "id": 124292041,
-    "name": "Breezy challenge",
-    "author": "Leagal",
-    "creators": ["Leagal"],
-    "verifier": "Leagal",
-    "verification": "https://youtu.be/XXtkbvJpcRA?si=BEjyxBQdd93-TScj",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "Indridzz",
-            "link": "https://youtu.be/7Ubm4xJcgrs?si=CczvDtT1F_hK8Esb",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/D8ce8GWItaE?si=IoSOn1cuR7lFplX8",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Loopelino",
-            "link": "https://youtu.be/tiUwItQqnMQ",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Dextrh",
-            "link": "https://medal.tv/games/geometry-dash/clips/no7WXgYoYurcjwB3g?invite=cr-MSwwQ3UsMjAyMTYzNDkw",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 124292041,
+  "name": "Breezy challenge",
+  "author": "Leagal",
+  "creators": [
+    "Leagal"
+  ],
+  "verifier": "Leagal",
+  "verification": "https://youtu.be/XXtkbvJpcRA?si=BEjyxBQdd93-TScj",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "Indridzz",
+      "link": "https://youtu.be/7Ubm4xJcgrs?si=CczvDtT1F_hK8Esb",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/D8ce8GWItaE?si=IoSOn1cuR7lFplX8",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 10
+    },
+    {
+      "user": "Loopelino",
+      "link": "https://youtu.be/tiUwItQqnMQ",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Dextrh",
+      "link": "https://medal.tv/games/geometry-dash/clips/no7WXgYoYurcjwB3g?invite=cr-MSwwQ3UsMjAyMTYzNDkw",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

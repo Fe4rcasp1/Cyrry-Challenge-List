@@ -1,11 +1,20 @@
 {
-    "id": 145888591,
-    "name": "Madlad Challenge III",
-    "author": "Jayayah",
-    "creators": ["Jayayah"],
-    "verifier": "Jayayah",
-    "verification": "https://youtu.be/ieChZAUx2Qc?si=giMaiptXTb1NDWD8",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": []
+  "id": 145888591,
+  "name": "Madlad Challenge III",
+  "author": "Jayayah",
+  "creators": [
+    "Jayayah"
+  ],
+  "verifier": "Jayayah",
+  "verification": "https://youtu.be/ieChZAUx2Qc?si=giMaiptXTb1NDWD8",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "CyrryGD",
+      "percent": 100,
+      "link": "https://youtu.be/apaR1S2Gesk?si=K3LZbUArQS29B2fN",
+      "enjoyment": 10
+    }
+  ]
 }

@@ -25,25 +25,34 @@ async function handle(request, env) {
  const url = new URL(request.url), path = url.pathname;
  if (!path.startsWith('/api/')) return env.ASSETS.fetch(request);
  if (path === '/api/impossible-levels' && request.method === 'GET') {
-   const base = 'https://cclimpossible.ccllcc.workers.dev';
+   // Source data directly from the Impossible CCL repository. Worker-to-Worker
+   // requests to the separate Cloudflare hostname can be blocked (error 1042).
+   const base = 'https://raw.githubusercontent.com/Fe4rcasp1/CCLimpossible/main/data/';
    try {
-     const indexResponse = await fetch(base + '/data/_list.json');
-     if (!indexResponse.ok) throw new Error('Impossible list index unavailable');
+     const indexResponse = await fetch(base + '_list.json', { headers: { 'Accept': 'application/json' } });
+     if (!indexResponse.ok) throw new Error('Impossible index returned HTTP ' + indexResponse.status);
      const paths = await indexResponse.json();
      if (!Array.isArray(paths)) throw new Error('Invalid impossible list index');
      const safePaths = paths.filter(p => typeof p === 'string' && /^[A-Za-z0-9_-]{1,120}$/.test(p)).slice(0,500);
-     const levels = await Promise.all(safePaths.map(async (levelPath, index) => {
-       try {
-         const response = await fetch(base + '/data/' + encodeURIComponent(levelPath) + '.json');
-         if (!response.ok) return null;
-         const level = await response.json();
-         return { ...level, path: levelPath, impossibleRank: index + 1, records: Array.isArray(level.records) ? level.records : [] };
-       } catch { return null; }
+     const levels = new Array(safePaths.length).fill(null);
+     // Limit concurrent GitHub requests to avoid overloading the origin.
+     let cursor = 0;
+     await Promise.all(Array.from({length: Math.min(8, safePaths.length)}, async () => {
+       while (cursor < safePaths.length) {
+         const index = cursor++;
+         const levelPath = safePaths[index];
+         try {
+           const response = await fetch(base + encodeURIComponent(levelPath) + '.json', { headers: { 'Accept': 'application/json' } });
+           if (!response.ok) continue;
+           const level = await response.json();
+           levels[index] = { ...level, path: levelPath, impossibleRank: index + 1, records: Array.isArray(level.records) ? level.records : [] };
+         } catch (error) { console.warn('Impossible level failed:', levelPath, error); }
+       }
      }));
      return json({ levels: levels.filter(Boolean) });
    } catch (error) {
      console.error('Impossible list load failed:', error);
-     return json({ error: 'Unable to load unverified levels right now.' }, 502);
+     return json({ error: 'Unable to load unverified levels: ' + error.message }, 502);
    }
  }
  if (!env.DB) return json({ error: 'Account database is not configured.' }, 503);

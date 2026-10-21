@@ -1,30 +1,33 @@
 {
-    "id": 131378956,
-    "name": "XCluBDeathZ",
-    "author": "chickadeeinc",
-    "creators": ["chickadeeinc"],
-    "verifier": "chickadeeinc",
-    "verification": "https://youtu.be/uVZ3OL5JNso?si=NoegG18lE24zTbX7",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/nc6CpVXuOMU?si=NiVsk7I3eI__xEQR",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Geomaster846",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Void852",
-            "link": "https://medal.tv/games/geometry-dash/clips/nsGjTXdqIpp_a_XJ-?invite=cr-MSxFUjksNzc3MjQwNDAw",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 131378956,
+  "name": "XCluBDeathZ",
+  "author": "chickadeeinc",
+  "creators": [
+    "chickadeeinc"
+  ],
+  "verifier": "chickadeeinc",
+  "verification": "https://youtu.be/uVZ3OL5JNso?si=NoegG18lE24zTbX7",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/nc6CpVXuOMU?si=NiVsk7I3eI__xEQR",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 8
+    },
+    {
+      "user": "Geomaster846",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Void852",
+      "link": "https://medal.tv/games/geometry-dash/clips/nsGjTXdqIpp_a_XJ-?invite=cr-MSxFUjksNzc3MjQwNDAw",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

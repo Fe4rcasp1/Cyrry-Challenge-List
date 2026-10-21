@@ -1,36 +1,39 @@
 {
-    "id": 116046716,
-    "name": "nullscapes challenge",
-    "author": "ZinkZys",
-    "creators": ["ZinkZys"],
-    "verifier": "NotHereGD",
-    "verification": "https://youtu.be/N3Pn1zu9vAA?si=Kk_IijYuukOfEaLE",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/TRcyt570_04?si=_rZzaRzpA7kcru3C",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "ufb32",
-            "link": "https://medal.tv/games/geometry-dash/clips/no87zsE9gkSqwIQhS?invite=cr-MSxXdnQsNDkzMzMwNDgz",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Dextrh",
-            "link": "https://medal.tv/games/geometry-dash/clips/npbYGcSLH05UI3Woh?invite=cr-MSwyT0csMjAyMTYzNDkw",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Wyattdws10",
-            "link": "https://medal.tv/games/geometry-dash/clips/nt4fEqKIJUbNRK8hy?invite=cr-MSxEUWwsNzc3MjQwNDAw",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 116046716,
+  "name": "nullscapes challenge",
+  "author": "ZinkZys",
+  "creators": [
+    "ZinkZys"
+  ],
+  "verifier": "NotHereGD",
+  "verification": "https://youtu.be/N3Pn1zu9vAA?si=Kk_IijYuukOfEaLE",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/TRcyt570_04?si=_rZzaRzpA7kcru3C",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 7
+    },
+    {
+      "user": "ufb32",
+      "link": "https://medal.tv/games/geometry-dash/clips/no87zsE9gkSqwIQhS?invite=cr-MSxXdnQsNDkzMzMwNDgz",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Dextrh",
+      "link": "https://medal.tv/games/geometry-dash/clips/npbYGcSLH05UI3Woh?invite=cr-MSwyT0csMjAyMTYzNDkw",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Wyattdws10",
+      "link": "https://medal.tv/games/geometry-dash/clips/nt4fEqKIJUbNRK8hy?invite=cr-MSxEUWwsNzc3MjQwNDAw",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

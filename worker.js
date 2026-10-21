@@ -98,6 +98,55 @@ async function handle(request, env) {
  }
  if (request.method === 'POST' && request.headers.get('origin') && new URL(request.headers.get('origin')).origin !== url.origin) return json({ error: 'Invalid origin.' }, 403);
  if (request.method === 'POST' && !String(request.headers.get('content-type')).includes('application/json')) return json({ error: 'Expected JSON.' }, 415);
+
+ // Public teams and authenticated membership operations.
+ if(path==='/api/teams'&&request.method==='GET'){
+  const rows=await env.DB.prepare("SELECT t.id,t.name,t.tag,t.description,t.created_at,u.username AS owner,(SELECT COUNT(*) FROM ccl_team_members m WHERE m.team_id=t.id) AS members FROM ccl_teams t JOIN users u ON u.id=t.owner_id ORDER BY members DESC,t.name LIMIT 100").all();
+  return json({teams:rows.results});
+ }
+ if(path==='/api/teams/members'&&request.method==='GET'){
+  const id=String(url.searchParams.get('id')||'');if(!/^[0-9a-f-]{36}$/i.test(id))return json({error:'Invalid team.'},400);
+  const rows=await env.DB.prepare("SELECT u.username,m.user_id,t.owner_id FROM ccl_team_members m JOIN users u ON u.id=m.user_id JOIN ccl_teams t ON t.id=m.team_id WHERE m.team_id=? ORDER BY m.joined_at LIMIT 100").bind(id).all();
+  return json({members:rows.results.map(x=>({username:x.username,owner:x.user_id===x.owner_id}))});
+ }
+ if(path==='/api/teams/create'&&request.method==='POST'){
+  const user=await currentUser(request,env.DB);if(!user)return json({error:'Log in first.'},401);
+  const data=await body(request),name=String(data.name||'').trim(),tag=String(data.tag||'').trim().toUpperCase(),description=String(data.description||'').trim();
+  if(!/^[A-Za-z0-9 _-]{3,36}$/.test(name)||!/^[A-Z0-9]{2,6}$/.test(tag)||description.length>250)return json({error:'Invalid team name, tag or description.'},400);
+  const existing=await env.DB.prepare('SELECT user_id FROM ccl_team_members WHERE user_id=?').bind(user.id).first();
+  if(existing)return json({error:'Leave your current team first.'},409);
+  const id=crypto.randomUUID();
+  try{await env.DB.prepare('INSERT INTO ccl_teams(id,name,tag,description,owner_id) VALUES(?,?,?,?,?)').bind(id,name,tag,description,user.id).run();
+   await env.DB.prepare('INSERT INTO ccl_team_members(team_id,user_id) VALUES(?,?)').bind(id,user.id).run();
+  }catch(e){return json({error:'Team name or tag already exists.'},409);}
+  return json({ok:true,id});
+ }
+ if(path==='/api/teams/join'&&request.method==='POST'){
+  const user=await currentUser(request,env.DB);if(!user)return json({error:'Log in first.'},401);
+  const data=await body(request),id=String(data.id||'');if(!/^[0-9a-f-]{36}$/i.test(id))return json({error:'Invalid team.'},400);
+  const team=await env.DB.prepare('SELECT id FROM ccl_teams WHERE id=?').bind(id).first();if(!team)return json({error:'Team not found.'},404);
+  try{await env.DB.prepare('INSERT INTO ccl_team_members(team_id,user_id) VALUES(?,?)').bind(id,user.id).run();}
+  catch{return json({error:'You already belong to a team.'},409);}
+  return json({ok:true});
+ }
+ if(path==='/api/teams/leave'&&request.method==='POST'){
+  const user=await currentUser(request,env.DB);if(!user)return json({error:'Log in first.'},401);
+  const member=await env.DB.prepare('SELECT t.id,t.owner_id FROM ccl_team_members m JOIN ccl_teams t ON t.id=m.team_id WHERE m.user_id=?').bind(user.id).first();
+  if(!member)return json({error:'You are not in a team.'},404);
+  if(member.owner_id===user.id)return json({error:'Team owners must disband their team.'},409);
+  await env.DB.prepare('DELETE FROM ccl_team_members WHERE user_id=?').bind(user.id).run();return json({ok:true});
+ }
+ if(path==='/api/teams/disband'&&request.method==='POST'){
+  const user=await currentUser(request,env.DB);if(!user)return json({error:'Log in first.'},401);
+  const team=await env.DB.prepare('SELECT id FROM ccl_teams WHERE owner_id=?').bind(user.id).first();if(!team)return json({error:'You do not own a team.'},403);
+  await env.DB.batch([env.DB.prepare('DELETE FROM ccl_team_members WHERE team_id=?').bind(team.id),env.DB.prepare('DELETE FROM ccl_teams WHERE id=?').bind(team.id)]);return json({ok:true});
+ }
+ if(path==='/api/levels/history'&&request.method==='GET'){
+  const type=String(url.searchParams.get('list')||''),level=String(url.searchParams.get('path')||'');
+  if(!['normal','platformer'].includes(type)||!/^[A-Za-z0-9_-]{1,120}$/.test(level))return json({error:'Invalid level.'},400);
+  const rows=await env.DB.prepare("SELECT h.id,h.action,h.summary,h.github_synced,h.created_at,u.username AS editor FROM ccl_level_history h LEFT JOIN users u ON u.id=h.actor_id WHERE h.list_type=? AND h.level_path=? ORDER BY h.created_at DESC LIMIT 100").bind(type,level).all();
+  return json({history:rows.results});
+ }
  if (path === '/api/notifications' && request.method === 'GET') {
    const user=await currentUser(request,env.DB);if(!user)return json({error:'Log in first.'},401);
    const rows=await env.DB.prepare("SELECT id,kind,message,link,is_read,created_at FROM notifications WHERE user_id=? ORDER BY created_at DESC LIMIT 80").bind(user.id).all();

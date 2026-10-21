@@ -712,3 +712,6 @@ header .logo h2::after {
 }
 .page-list .list .level button .type-label-lg { display:block; }
 .page-list .list .level button .list-enjoyment-label { display:flex; }
+
+/* Compact enjoyment score inside level tiles. */
+.page-list .list .level button .list-enjoyment-label { font-size:.59rem; padding:.1rem .32rem; margin-top:.22rem; line-height:1.15; border-radius:5px; font-weight:600; }

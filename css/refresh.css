@@ -732,3 +732,28 @@ header .logo h2::after {
  .page-leaderboard .player .table td.rank { width:3rem; }
  .page-leaderboard .player .table td.score { width:3.7rem; }
 }
+
+
+/* Third CCL section: Unverified / Impossible levels. */
+.page-list .ccl-unverified-section {
+  margin:1.1rem 0 1.8rem; padding:1.1rem;
+  border:1px solid var(--ui-border); border-radius:15px;
+  background:linear-gradient(135deg,var(--ui-card),var(--color-background-hover));
+}
+.page-list .ccl-unverified-eyebrow { color:var(--ccl-accent); font-size:.67rem; font-weight:700; letter-spacing:.13em; margin-bottom:.5rem; }
+.page-list .ccl-unverified-section h2 { font-size:1.1rem; line-height:1.35; margin:0 0 .25rem; color:var(--color-on-background); }
+.page-list .ccl-unverified-section p { font-size:.77rem; line-height:1.5; color:var(--ui-muted); margin:0 0 .9rem; }
+.page-list .ccl-unverified-toggle,.page-list .ccl-unverified-view-head button {
+  border:1px solid var(--ui-border); border-radius:9px; padding:.65rem .8rem;
+  background:var(--color-primary); color:#fff; font:inherit; font-size:.76rem;
+  cursor:pointer;
+}
+.page-list .ccl-unverified-view {
+  display:flex; flex-direction:column; gap:.8rem; width:100%;
+  min-height:600px; height:100%; padding:.8rem; box-sizing:border-box;
+  border:1px solid var(--ui-border); border-radius:15px; background:var(--ui-card);
+}
+.page-list .ccl-unverified-view-head { display:flex; align-items:center; justify-content:space-between; gap:.75rem; flex-wrap:wrap; }
+.page-list .ccl-unverified-view-head h2 { font-size:1rem; margin:0; }
+.page-list .ccl-unverified-frame { width:100%; flex:1; min-height:650px; border:0; border-radius:10px; background:var(--color-background); }
+@media(max-width:680px){.page-list .ccl-unverified-view{min-height:650px}.page-list .ccl-unverified-frame{min-height:620px}}

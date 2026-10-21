@@ -1,24 +1,27 @@
 {
-    "id": 132630032,
-    "name": "Netsu Ijou",
-    "author": "Leagal",
-    "creators": ["Leagal"],
-    "verifier": "Leagal",
-    "verification": "https://youtu.be/JzIqbYa_85o?si=iebKS4AsQ6j6k6SM",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/D8ce8GWItaE?si=IoSOn1cuR7lFplX8",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Loopelino",
-            "link": "https://youtu.be/3yr5YsVCQFA?si=oR4SoigiHdfVwwdi",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 132630032,
+  "name": "Netsu Ijou",
+  "author": "Leagal",
+  "creators": [
+    "Leagal"
+  ],
+  "verifier": "Leagal",
+  "verification": "https://youtu.be/JzIqbYa_85o?si=iebKS4AsQ6j6k6SM",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/D8ce8GWItaE?si=IoSOn1cuR7lFplX8",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 9
+    },
+    {
+      "user": "Loopelino",
+      "link": "https://youtu.be/3yr5YsVCQFA?si=oR4SoigiHdfVwwdi",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

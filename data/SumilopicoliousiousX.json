@@ -1,30 +1,33 @@
 {
-    "id": 137414912,
-    "name": "SumilopicoliousiousX",
-    "author": "ZinkZys",
-    "creators": ["ZinkZys"],
-    "verifier": "ZinkZys",
-    "verification": "https://youtu.be/C5bnJdZHon8?si=AyWqKtBrrRe1hC0c",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/BdpswwTa6Fk?si=KfiuzcvsdcE4k7",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Loopelino",
-            "link": "https://youtu.be/hepi-Rn9_fk?si=f4-Y9jrrLwZDRidy",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Dextrh",
-            "link": "https://youtu.be/K4K5MyzxJ8w?si=sIhhQkIjOgL7oM6W",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 137414912,
+  "name": "SumilopicoliousiousX",
+  "author": "ZinkZys",
+  "creators": [
+    "ZinkZys"
+  ],
+  "verifier": "ZinkZys",
+  "verification": "https://youtu.be/C5bnJdZHon8?si=AyWqKtBrrRe1hC0c",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/BdpswwTa6Fk?si=KfiuzcvsdcE4k7",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 4
+    },
+    {
+      "user": "Loopelino",
+      "link": "https://youtu.be/hepi-Rn9_fk?si=f4-Y9jrrLwZDRidy",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Dextrh",
+      "link": "https://youtu.be/K4K5MyzxJ8w?si=sIhhQkIjOgL7oM6W",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

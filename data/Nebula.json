@@ -1,42 +1,45 @@
 {
-    "id": 128023183,
-    "name": "Nebula",
-    "author": "chickadeeinc",
-    "creators": ["chickadeeinc"],
-    "verifier": "chickadeeinc",
-    "verification": "https://youtu.be/rcG0019amrY?si=uP0X0j1umD7-lsSX",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "Jayayah",
-            "link": "https://youtu.be/hENJ5p6BWOU?si=5RYCWwtIi797jPaS",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Maulr",
-            "link": "https://drive.google.com/file/d/1w6lz5Ijgn1csyE4lv8GmzLq5fjqcdUZp/view?usp=sharing",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/0Gkj0mfAyFE?si=mLcHez13eQWkmFEE",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Noname1610",
-            "link": "https://youtu.be/giuyDDF-GW0?si=Y3SSWOxINkqIlLex",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "NotHereGD",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 128023183,
+  "name": "Nebula",
+  "author": "chickadeeinc",
+  "creators": [
+    "chickadeeinc"
+  ],
+  "verifier": "chickadeeinc",
+  "verification": "https://youtu.be/rcG0019amrY?si=uP0X0j1umD7-lsSX",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "Jayayah",
+      "link": "https://youtu.be/hENJ5p6BWOU?si=5RYCWwtIi797jPaS",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 2
+    },
+    {
+      "user": "Maulr",
+      "link": "https://drive.google.com/file/d/1w6lz5Ijgn1csyE4lv8GmzLq5fjqcdUZp/view?usp=sharing",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/0Gkj0mfAyFE?si=mLcHez13eQWkmFEE",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Noname1610",
+      "link": "https://youtu.be/giuyDDF-GW0?si=Y3SSWOxINkqIlLex",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "NotHereGD",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

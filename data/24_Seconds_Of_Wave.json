@@ -2,47 +2,50 @@
   "id": 130188512,
   "name": "24 seconds of wave",
   "author": "monolyth1",
-  "creators": ["monolyth1"],
+  "creators": [
+    "monolyth1"
+  ],
   "verifier": "monolyth1",
   "verification": "N/A",
   "percentToQualify": "100",
   "enjoyment": "N/A",
   "records": [
-        {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/EZyvi6JQst8?si=02PH35tHGXuRH8EV",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Loopelino",
-            "link": "https://youtu.be/v3ltyrqI6S4",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "ufb32",
-            "link": "https://medal.tv/games/geometry-dash/clips/no89G28C1htFr6tAE?invite=cr-MSxXZXQsNDkzMzMwNDgz",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Void852",
-            "link": "https://youtu.be/T5lhPmhnTsY?si=uSaPAQ5vHFF08588",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Dextrh",
-            "link": "https://medal.tv/games/geometry-dash/clips/no3IltFtKU5y0lAuU?invite=cr-MSxLQjYsMjAyMTYzNDkw",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Fe4rCasp",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/EZyvi6JQst8?si=02PH35tHGXuRH8EV",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 7
+    },
+    {
+      "user": "Loopelino",
+      "link": "https://youtu.be/v3ltyrqI6S4",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "ufb32",
+      "link": "https://medal.tv/games/geometry-dash/clips/no89G28C1htFr6tAE?invite=cr-MSxXZXQsNDkzMzMwNDgz",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Void852",
+      "link": "https://youtu.be/T5lhPmhnTsY?si=uSaPAQ5vHFF08588",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Dextrh",
+      "link": "https://medal.tv/games/geometry-dash/clips/no3IltFtKU5y0lAuU?invite=cr-MSxLQjYsMjAyMTYzNDkw",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Fe4rCasp",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

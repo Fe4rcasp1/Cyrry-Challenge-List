@@ -1,18 +1,21 @@
 {
-    "id": 129547550,
-    "name": "Monree neever cleear",
-    "author": "Leagal",
-    "creators": ["Leagal"],
-    "verifier": "Leagal",
-    "verification": "https://youtu.be/_XTShmxKWPw?si=iOWwIHs-yhU3rzqK",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "EmeraldGamer57",
-            "link": "https://drive.google.com/file/d/1GCILJv3OniCWVX6mW0SaTJPg466ssTmm/view?usp=sharing",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 129547550,
+  "name": "Monree neever cleear",
+  "author": "Leagal",
+  "creators": [
+    "Leagal"
+  ],
+  "verifier": "Leagal",
+  "verification": "https://youtu.be/_XTShmxKWPw?si=iOWwIHs-yhU3rzqK",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "EmeraldGamer57",
+      "link": "https://drive.google.com/file/d/1GCILJv3OniCWVX6mW0SaTJPg466ssTmm/view?usp=sharing",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 6
+    }
+  ]
 }

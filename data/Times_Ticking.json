@@ -1,24 +1,27 @@
 {
-    "id": 147660849,
-    "name": "Times Ticking",
-    "author": "Void852",
-    "creators": ["Void852"],
-    "verifier": "Void852",
-    "verification": "https://youtu.be/0YboXi82ZBg?si=zTnJOtge_x3bxRrG",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/X8ouaccXKsQ?si=ZpZRF51uq9AYGtB0",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Dextrh",
-            "link": "https://medal.tv/games/geometry-dash/clips/nt5tknzjsSVbuwAVa?invite=cr-MSx3MGQsNzc3MjQwNDAw",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 147660849,
+  "name": "Times Ticking",
+  "author": "Void852",
+  "creators": [
+    "Void852"
+  ],
+  "verifier": "Void852",
+  "verification": "https://youtu.be/0YboXi82ZBg?si=zTnJOtge_x3bxRrG",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/X8ouaccXKsQ?si=ZpZRF51uq9AYGtB0",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 7
+    },
+    {
+      "user": "Dextrh",
+      "link": "https://medal.tv/games/geometry-dash/clips/nt5tknzjsSVbuwAVa?invite=cr-MSx3MGQsNzc3MjQwNDAw",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

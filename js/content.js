@@ -50,8 +50,9 @@ export async function fetchEditors() {
     }
 }
 
-export async function fetchLeaderboard() {
-    const list = await fetchList();
+export async function fetchLeaderboard(listFile = "_list.json") {
+    const list = await fetchList(listFile);
+    if (!list) return [[], ["Failed to load the level list."]];
 
     const scoreMap = {};
     const errs = [];

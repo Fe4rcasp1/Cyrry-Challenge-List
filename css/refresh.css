@@ -715,3 +715,20 @@ header .logo h2::after {
 
 /* Compact enjoyment score inside level tiles. */
 .page-list .list .level button .list-enjoyment-label { font-size:.59rem; padding:.1rem .32rem; margin-top:.22rem; line-height:1.15; border-radius:5px; font-weight:600; }
+
+
+/* Creator points: compact, aligned level/rating rows. */
+.page-leaderboard .player .table { width:100%; table-layout:auto; border-collapse:separate; border-spacing:0; }
+.page-leaderboard .player .table tr { height:auto; }
+.page-leaderboard .player .table td { vertical-align:middle; padding:.65rem .55rem; border-bottom:1px solid var(--ui-border); }
+.page-leaderboard .player .table td.rank { width:3.75rem; white-space:nowrap; text-align:left; }
+.page-leaderboard .player .table td.score { width:4.7rem; white-space:nowrap; text-align:right; }
+.page-leaderboard .player .table td.level { min-width:0; width:100%; }
+.page-leaderboard .creator-level-line { display:flex; flex-direction:row; align-items:center; justify-content:flex-start; flex-wrap:wrap; gap:.35rem .65rem; min-width:0; }
+.page-leaderboard .creator-level-line .type-label-lg { display:inline; flex:0 1 auto; min-width:0; overflow-wrap:anywhere; line-height:1.4; }
+.page-leaderboard .creator-level-line .creator-rating { display:inline-flex; flex:0 0 auto; margin:0; padding:.18rem .43rem; font-size:.65rem; border-radius:.35rem; line-height:1.3; }
+@media(max-width:680px) {
+ .page-leaderboard .player .table td { padding:.55rem .3rem; }
+ .page-leaderboard .player .table td.rank { width:3rem; }
+ .page-leaderboard .player .table td.score { width:3.7rem; }
+}

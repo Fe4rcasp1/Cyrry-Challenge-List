@@ -2,53 +2,56 @@
   "id": 121548889,
   "name": "HTT",
   "author": "chickadeeinc",
-  "creators": ["chickadeeinc"],
+  "creators": [
+    "chickadeeinc"
+  ],
   "verifier": "chickadeeinc",
   "verification": "N/A",
   "percentToQualify": "100",
   "enjoyment": "N/A",
   "records": [
-        {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/JIfmcif2Ovk?si=qa21oNtN2Uk0MPlA",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "jamxz11",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "skeetles",
-            "link": "https://youtu.be/dmVEAA2LcL8",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Korbir",
-            "link": "https://youtu.be/NreRONrn8ds?si=_tbVvyGIT9jl9Cxb",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "OtherWorldDrago",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Geomaster846",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Princeyboi",
-            "link": "https://drive.google.com/file/d/1ETcSdl7PantUqraPjjE5UouDdKj1vfZ_/view?usp=sharing",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/JIfmcif2Ovk?si=qa21oNtN2Uk0MPlA",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 6
+    },
+    {
+      "user": "jamxz11",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "skeetles",
+      "link": "https://youtu.be/dmVEAA2LcL8",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Korbir",
+      "link": "https://youtu.be/NreRONrn8ds?si=_tbVvyGIT9jl9Cxb",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "OtherWorldDrago",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Geomaster846",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Princeyboi",
+      "link": "https://drive.google.com/file/d/1ETcSdl7PantUqraPjjE5UouDdKj1vfZ_/view?usp=sharing",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

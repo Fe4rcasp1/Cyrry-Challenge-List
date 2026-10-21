@@ -1,11 +1,20 @@
 {
-    "id": 127546794,
-    "name": "Luno Challenge II",
-    "author": "Leagal",
-    "creators": ["Leagal"],
-    "verifier": "Leagal",
-    "verification": "https://youtu.be/_XTShmxKWPw?si=oZIv9FSI5Po69czj",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": []
+  "id": 127546794,
+  "name": "Luno Challenge II",
+  "author": "Leagal",
+  "creators": [
+    "Leagal"
+  ],
+  "verifier": "Leagal",
+  "verification": "https://youtu.be/_XTShmxKWPw?si=oZIv9FSI5Po69czj",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "CyrryGD",
+      "percent": 100,
+      "link": "https://youtu.be/apaR1S2Gesk?si=DW0qwx4JeCweA5lB",
+      "enjoyment": 7
+    }
+  ]
 }

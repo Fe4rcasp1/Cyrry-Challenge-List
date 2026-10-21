@@ -3,7 +3,7 @@ import { getLevelRating } from '../ratings.js';
 import { store } from '../main.js';
 const badge = (id, title, desc, earned) => ({ id, title, desc, earned });
 export default {
-    data: () => ({ loading: true, player: null, creator: null, rank: null, staffRole: null, achievementFilter: 'all', customProfile: null, history: [], advancedStats:null, recentRecords:[], error: '' }),
+    data: () => ({ loading: true, player: null, creator: null, rank: null, staffRole: null, clan: null, achievementFilter: 'all', customProfile: null, history: [], advancedStats:null, recentRecords:[], error: '' }),
     template: `
       <main class="ccl-hub">
         <section class="hub-head profile-custom-head" :style="customProfile ? {borderColor:customProfile.accent} : {}">
@@ -16,7 +16,8 @@ export default {
               </router-link>
             </div>
             <img v-if="customProfile?.avatar_url" class="profile-avatar" :src="customProfile.avatar_url" alt="Player avatar" referrerpolicy="no-referrer" />
-            <h1>{{ displayName }}</h1>
+            <h1><router-link v-if="clan" to="/teams" class="profile-clan-tag" :title="'Clan: '+clan.name">[{{clan.tag}}]</router-link> {{ displayName }}</h1>
+            <router-link v-if="clan" to="/teams" class="profile-clan-name">⚔️ {{clan.name}} · Clan member</router-link>
             <div v-if="profileRoles.length" class="profile-role-list"><span v-for="role in profileRoles" :key="role.label" class="profile-role-badge" :class="role.className">{{role.icon}} {{role.label}}</span></div>
             <p>Player profile · based on public CCL records</p>
             <p v-if="customProfile?.bio" class="profile-bio">{{customProfile.bio}}</p><div class="profile-showcase"><span v-if="customProfile?.favorite_level">♥ Favorite: {{customProfile.favorite_level}}</span><span v-if="customProfile?.showcase_level">★ Showcase: {{customProfile.showcase_level}}</span><span v-if="customProfile?.featured_badge">🏆 Featured: {{customProfile.featured_badge}}</span></div>
@@ -118,12 +119,14 @@ export default {
             this.creator = creators.find(x => x.user.toLowerCase() === username) || null;
             if (!this.player && !this.creator) this.error = 'No public CCL player or creator records found for this username.';
             try {
-                const [profileResponse,historyResponse,statsResponse]=await Promise.all([
+                const [profileResponse,historyResponse,statsResponse,clanResponse]=await Promise.all([
                     fetch('/api/community/profile?username='+encodeURIComponent(this.displayName),{cache:'no-store'}),
                     fetch('/api/community/history?username='+encodeURIComponent(this.displayName),{cache:'no-store'}),
-                    fetch('/api/community/player-stats?username='+encodeURIComponent(this.displayName),{cache:'no-store'})
+                    fetch('/api/community/player-stats?username='+encodeURIComponent(this.displayName),{cache:'no-store'}),
+                    fetch('/api/teams/profile?username='+encodeURIComponent(this.displayName),{cache:'no-store'})
                 ]);
                 if(profileResponse.ok)this.customProfile=(await profileResponse.json()).profile;
+                if(clanResponse.ok)this.clan=(await clanResponse.json()).clan;
                 if(historyResponse.ok)this.history=(await historyResponse.json()).history||[];
                 if(statsResponse.ok){const d=await statsResponse.json();this.advancedStats=d.stats;this.recentRecords=d.recent||[];}
             }catch(e){console.warn('Community profile details unavailable',e)}

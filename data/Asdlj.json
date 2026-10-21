@@ -1,42 +1,45 @@
 {
-    "id": 120920767,
-    "name": "asdlj",
-    "author": "ZinkZys",
-    "creators": ["ZinkZys"],
-    "verifier": "ZinkZys",
-    "verification": "",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/lVx0ZnAXftQ?si=4OhLltEwsubLmi9i",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Korbir",
-            "link": "https://youtu.be/qevrHhtycC4?si=FIdawQyU4F-6wdAg",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Fe4rCasp",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Loopelino",
-            "link": "https://youtu.be/2Dk2qjhXHBM?si=6orYDJK6ldxGLXjw",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Dextrh",
-            "link": "https://medal.tv/games/geometry-dash/clips/no4imPABbc_0B1_BP?invite=cr-MSxkOU8sMjAyMTYzNDkw",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 120920767,
+  "name": "asdlj",
+  "author": "ZinkZys",
+  "creators": [
+    "ZinkZys"
+  ],
+  "verifier": "ZinkZys",
+  "verification": "",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/lVx0ZnAXftQ?si=4OhLltEwsubLmi9i",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 4
+    },
+    {
+      "user": "Korbir",
+      "link": "https://youtu.be/qevrHhtycC4?si=FIdawQyU4F-6wdAg",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Fe4rCasp",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Loopelino",
+      "link": "https://youtu.be/2Dk2qjhXHBM?si=6orYDJK6ldxGLXjw",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Dextrh",
+      "link": "https://medal.tv/games/geometry-dash/clips/no4imPABbc_0B1_BP?invite=cr-MSxkOU8sMjAyMTYzNDkw",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

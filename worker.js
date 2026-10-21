@@ -47,6 +47,15 @@ async function backupLevelToGitHub(env, listType, levelPath, level) {
  }
  return {synced:false,reason:'GitHub backup could not be completed.'};
 }
+async function logLevelChange(env,actor,type,path,action,before,after,backup){
+ const fields=[];
+ if(before?.name!==after?.name)fields.push('name');
+ if(before?.verifier!==after?.verifier)fields.push('verifier');
+ if(JSON.stringify(before?.records)!==JSON.stringify(after?.records))fields.push('records');
+ for(const key of ['author','creators','verification','percentToQualify','rating','Enjoyment'])if(JSON.stringify(before?.[key])!==JSON.stringify(after?.[key]))fields.push(key);
+ const summary=action+': '+(fields.join(', ')||'level data');
+ await env.DB.prepare('INSERT INTO ccl_level_history(id,list_type,level_path,action,actor_id,summary,before_json,after_json,github_synced) VALUES(?,?,?,?,?,?,?,?,?)').bind(crypto.randomUUID(),type,path,action,actor,summary,before?JSON.stringify(before):null,JSON.stringify(after),backup?.synced?1:0).run();
+}
 async function handle(request, env) {
  const url = new URL(request.url), path = url.pathname;
  if (!path.startsWith('/api/')) return env.ASSETS.fetch(request);
@@ -317,6 +326,7 @@ async function handle(request, env) {
      statements.push(env.DB.prepare('INSERT INTO notifications(id,user_id,kind,message,link) VALUES(?,?,?,?,?)').bind(crypto.randomUUID(),submission.user_id,'record','Your '+submission.level_path.replaceAll('_',' ')+' record was '+data.status+'.','/#/submit-record'));
      await env.DB.batch(statements);
      const backup=updatedLevel ? await backupLevelToGitHub(env,submission.list_type,submission.level_path,updatedLevel) : null;
+     if(updatedLevel)try{await logLevelChange(env,user.id,submission.list_type,submission.level_path,'record_approved',null,updatedLevel,backup);}catch(e){console.error('History write failed',e);}
      return json({ok:true,githubBackup:backup,note:updatedLevel?'Approved record applied to public list.':'Submission rejected.'});
    }
    if (path === '/api/admin/weekly' && request.method === 'POST') {
@@ -398,6 +408,7 @@ async function handle(request, env) {
        env.DB.prepare('INSERT INTO admin_audit(id,actor_id,action,target) VALUES(?,?,?,?)').bind(crypto.randomUUID(),user.id,'enjoyment_edit',listType+':'+levelPath+':'+record.user)
      ]);
      const backup=await backupLevelToGitHub(env,listType,levelPath,level);
+     try{await logLevelChange(env,user.id,listType,levelPath,'enjoyment_edit',null,level,backup);}catch(e){console.error('History write failed',e);}
      return json({ok:true,githubBackup:backup});
    }
    if (path === '/api/admin/levels' && request.method === 'POST') {
@@ -412,9 +423,13 @@ async function handle(request, env) {
      const filename=listType==='normal'?'_list.json':'_platformer.json';
      const listResponse=await env.ASSETS.fetch(new Request(new URL('/data/'+filename,request.url)));
      if (!listResponse.ok || !(await listResponse.json()).includes(levelPath)) return json({error:'Level does not exist in this list.'},404);
+     const previous=await env.DB.prepare('SELECT level_json FROM level_overrides WHERE list_type=? AND level_path=?').bind(listType,levelPath).first();
+     let before=previous?JSON.parse(previous.level_json):null;
+     if(!before){const original=await env.ASSETS.fetch(new Request(new URL('/data/'+encodeURIComponent(levelPath)+'.json',request.url)));if(original.ok)before=await original.json();}
      await env.DB.prepare("INSERT INTO level_overrides(list_type,level_path,level_json,updated_by) VALUES(?,?,?,?) ON CONFLICT(list_type,level_path) DO UPDATE SET level_json=excluded.level_json,updated_by=excluded.updated_by,updated_at=CURRENT_TIMESTAMP").bind(listType,levelPath,serialized,user.id).run();
      await env.DB.prepare('INSERT INTO admin_audit(id,actor_id,action,target) VALUES(?,?,?,?)').bind(crypto.randomUUID(),user.id,'level_edit',listType+':'+levelPath).run();
      const backup=await backupLevelToGitHub(env,listType,levelPath,level);
+     try{await logLevelChange(env,user.id,listType,levelPath,'level_edit',before,level,backup);}catch(e){console.error('History write failed',e);}
      return json({ok:true,githubBackup:backup});
    }
    if (path === '/api/admin/github-backup' && request.method === 'POST') {

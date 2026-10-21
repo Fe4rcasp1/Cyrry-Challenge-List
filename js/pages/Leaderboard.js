@@ -11,6 +11,8 @@ export default {
         leaderboard: [],
         pointsLeaderboard: [],
         creatorLeaderboard: [],
+        platformerLeaderboard: [],
+        platformerErrors: [],
         metric: "points", snapshotBusy:false, snapshotMessage:"",
         leaderboardType: "points",
         pointsErrors: [],
@@ -29,14 +31,15 @@ export default {
                 <div class="leaderboard-switcher" role="group" aria-label="Leaderboard type">
                     <button type="button" :class="{ active: leaderboardType === 'points' }" @click="switchLeaderboard('points')">Points Leaderboard</button>
                     <button type="button" :class="{ active: leaderboardType === 'creators' }" @click="switchLeaderboard('creators')">Creator Points</button>
+                    <button type="button" :class="{ active: leaderboardType === 'platformer' }" @click="switchLeaderboard('platformer')">Platformer Leaderboard</button>
                 </div>
-                <div class="leaderboard-metrics" v-if="leaderboardType==='points'">
+                <div class="leaderboard-metrics" v-if="leaderboardType!=='creators'">
                   <label>Rank by <select v-model="metric" @change="applyMetric">
                     <option value="points">Total points</option><option value="completed">Completions</option>
                     <option value="verified">Verifications</option><option value="progressed">Progress records</option>
                     <option value="hardest">Hardest clear</option><option value="top10">Top 10 clears</option>
                   </select></label>
-                  <button v-if="isStaff" :disabled="snapshotBusy" @click="saveSnapshot">Save ranking snapshot</button>
+                  <button v-if="isStaff && leaderboardType === 'points'" :disabled="snapshotBusy" @click="saveSnapshot">Save ranking snapshot</button>
                 </div><p v-if="snapshotMessage" class="search-count">{{snapshotMessage}}</p>
                 <div class="error-container">
                     <p class="error" v-if="err.length > 0">
@@ -141,11 +144,13 @@ export default {
         },
     },
     async mounted() {
-        const [[points, pointsErrors], [creators, creatorErrors]] = await Promise.all([
-            fetchLeaderboard(), fetchCreatorLeaderboard(),
+        const [[points, pointsErrors], [creators, creatorErrors], [platformer, platformerErrors]] = await Promise.all([
+            fetchLeaderboard(), fetchCreatorLeaderboard(), fetchLeaderboard("_platformer.json"),
         ]);
         this.pointsLeaderboard = points;
         this.creatorLeaderboard = creators;
+        this.platformerLeaderboard = platformer;
+        this.platformerErrors = platformerErrors;
         this.pointsErrors = pointsErrors;
         this.creatorErrors = creatorErrors;
         this.leaderboard = points;
@@ -174,11 +179,11 @@ export default {
                 if(this.metric==='hardest')return clears.length?-Math.min(...clears.map(x=>x.rank)):-Infinity;
                 return e.total;
             };
-            this.leaderboard=[...this.pointsLeaderboard].sort((a,b)=>value(b)-value(a)||b.total-a.total||a.user.localeCompare(b.user));
+            this.leaderboard=[...(this.leaderboardType === "platformer" ? this.platformerLeaderboard : this.pointsLeaderboard)].sort((a,b)=>value(b)-value(a)||b.total-a.total||a.user.localeCompare(b.user));
             this.selected=0;
         },
         async saveSnapshot(){
-            if(this.metric!=='points'){this.snapshotMessage='Switch to Total points first.';return;}
+            if(this.metric!=='points' || this.leaderboardType!=='points'){this.snapshotMessage='Switch to the regular Points Leaderboard and Total points first.';return;}
             this.snapshotBusy=true;this.snapshotMessage='';
             try{
                 const res=await fetch('/api/admin/rankings/snapshot',{method:'POST',credentials:'same-origin',headers:{'content-type':'application/json'},body:JSON.stringify({entries:this.pointsLeaderboard.slice(0,1000).map((p,i)=>({user:p.user,points:p.total,rank:i+1}))})});
@@ -190,9 +195,9 @@ export default {
         switchLeaderboard(type) {
             if (this.leaderboardType === type) return;
             this.leaderboardType = type;
-            this.leaderboard = type === "creators" ? this.creatorLeaderboard : this.pointsLeaderboard;
-            if(type==="points")this.applyMetric();
-            this.err = type === "creators" ? this.creatorErrors : this.pointsErrors;
+            this.leaderboard = type === "creators" ? this.creatorLeaderboard : type === "platformer" ? this.platformerLeaderboard : this.pointsLeaderboard;
+            if(type!=="creators")this.applyMetric();
+            this.err = type === "creators" ? this.creatorErrors : type === "platformer" ? this.platformerErrors : this.pointsErrors;
             this.selected = 0;
             this.searchQuery = "";
         },

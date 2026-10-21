@@ -113,6 +113,12 @@ async function handle(request, env) {
   const rows=await env.DB.prepare("SELECT t.id,t.name,t.tag,t.description,t.created_at,u.username AS owner,(SELECT COUNT(*) FROM ccl_team_members m WHERE m.team_id=t.id) AS members FROM ccl_teams t JOIN users u ON u.id=t.owner_id ORDER BY members DESC,t.name LIMIT 100").all();
   return json({teams:rows.results});
  }
+ if(path==='/api/teams/profile'&&request.method==='GET'){
+  const username=String(url.searchParams.get('username')||'').trim();
+  if(!/^[A-Za-z0-9_-]{1,32}$/.test(username))return json({clan:null});
+  const clan=await env.DB.prepare("SELECT t.id,t.name,t.tag,t.description FROM ccl_teams t JOIN ccl_team_members m ON m.team_id=t.id JOIN users u ON u.id=m.user_id WHERE u.username=? COLLATE NOCASE OR EXISTS (SELECT 1 FROM claims c WHERE c.user_id=u.id AND c.status='approved' AND c.leaderboard_username=? COLLATE NOCASE) LIMIT 1").bind(username,username).first();
+  return json({clan:clan||null});
+ }
  if(path==='/api/teams/scores'&&request.method==='GET'){
   const rows=await env.DB.prepare("SELECT m.team_id,c.leaderboard_username FROM ccl_team_members m JOIN claims c ON c.user_id=m.user_id AND c.status='approved'").all();
   return json({members:rows.results});

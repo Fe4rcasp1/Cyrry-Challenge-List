@@ -1,30 +1,33 @@
 {
-    "id": 110199217,
-    "name": "spooky challenge",
-    "author": "soopidk",
-    "creators": ["soopidk"],
-    "verifier": "soopidk",
-    "verification": "",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/jILvnVR2oDA?si=V11nq1v8XniWY-GY",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Loopelino",
-            "link": "https://youtu.be/3yr5YsVCQFA?si=oR4SoigiHdfVwwdi",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Dextrh",
-            "link": "https://medal.tv/games/geometry-dash/clips/no8smvesGI_tzrCvf?invite=cr-MSxhV0csMjAyMTYzNDkw",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 110199217,
+  "name": "spooky challenge",
+  "author": "soopidk",
+  "creators": [
+    "soopidk"
+  ],
+  "verifier": "soopidk",
+  "verification": "",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/jILvnVR2oDA?si=V11nq1v8XniWY-GY",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 6
+    },
+    {
+      "user": "Loopelino",
+      "link": "https://youtu.be/3yr5YsVCQFA?si=oR4SoigiHdfVwwdi",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Dextrh",
+      "link": "https://medal.tv/games/geometry-dash/clips/no8smvesGI_tzrCvf?invite=cr-MSxhV0csMjAyMTYzNDkw",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

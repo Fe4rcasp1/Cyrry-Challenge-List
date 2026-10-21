@@ -77,8 +77,8 @@ export default {
                         <td class="level"   :class="{ 'active': selected == item.index, 'error': !item.level, 'completed-by-user': isCompletedByUser(item.level) }">
                             <button @click="selected = item.index" :style="item.level ? { backgroundColor: ratingColor(item.level), color: ratingTextColor(item.level) } : {}">
                                 <span class="type-label-lg">{{ item.level?.name || \`Error (\${item.err}.json)\` }}</span>
-                            </button>
                             <small v-if="enjoymentByPath[levelPaths[item.index]]" class="list-enjoyment-label">★ {{enjoymentByPath[levelPaths[item.index]].average}}/10 ({{enjoymentByPath[levelPaths[item.index]].ratings}})</small>
+                            </button>
                         </td>
                         </tr>
                         <tr v-if="!searchQuery.trim() && sectionFilter === 'all' && ratingFilter === 'all' && enjoymentFilter === 'all' && enjoymentSort === 'rank' && !platformer && item.index === 99 && (item.index + 1) < list.length" class="section-header">

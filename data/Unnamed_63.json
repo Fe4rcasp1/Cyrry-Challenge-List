@@ -1,36 +1,39 @@
 {
-    "id": 113407323,
-    "name": "Unnamed 63",
-    "author": "monolyth1",
-    "creators": ["monolyth1"],
-    "verifier": "monolyth1",
-    "verification": "",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "Loopelino",
-            "link": "https://youtu.be/OQZhk2MJe0c",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Masketified",
-            "link": "https://medal.tv/games/geometry-dash/clips/nmyfP5xFD1_RTTLXW?invite=cr-MSxnSXMsNjcxMjg1MDQ5",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Dextrh",
-            "link": "https://medal.tv/games/geometry-dash/clips/no3Z9MIRlLYuFCol0?invite=cr-MSxJTGgsMjAyMTYzNDkw",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Fe4rCasp",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 113407323,
+  "name": "Unnamed 63",
+  "author": "monolyth1",
+  "creators": [
+    "monolyth1"
+  ],
+  "verifier": "monolyth1",
+  "verification": "",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "Loopelino",
+      "link": "https://youtu.be/OQZhk2MJe0c",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Masketified",
+      "link": "https://medal.tv/games/geometry-dash/clips/nmyfP5xFD1_RTTLXW?invite=cr-MSxnSXMsNjcxMjg1MDQ5",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Dextrh",
+      "link": "https://medal.tv/games/geometry-dash/clips/no3Z9MIRlLYuFCol0?invite=cr-MSxJTGgsMjAyMTYzNDkw",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Fe4rCasp",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 4
+    }
+  ]
 }

@@ -1,90 +1,94 @@
 {
-    "id": 100797497,
-    "name": "Fresh columbiana",
-    "author": "CyrryGD",
-    "creators": ["CyrryGD","truongwf"],
-    "verifier": "CyrryGD",
-    "verification": "https://youtu.be/12rGYcW5Vzs?si=zvgWQ_ruzWCdQR9X",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "Masketified",
-            "link": "https://medal.tv/games/geometry-dash/clips/moSrZGkXDPMD_ndOP?invite=cr-MSxxUVAsNDkxNTc5MTg2",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "OtherWorldDrago",
-            "link": "https://medal.tv/games/geometry-dash/clips/mpe9LtCpBG8C_6nuU?invite=cr-MSw3VFYsNTQ5OTcxMTgx&v=30",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Geomaster846",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "jamxz11",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Noname1610",
-            "link": "https://drive.google.com/file/d/1NYnmyaCeHo72KaI2QY0Y7rOUUd1nvuHO/view?usp=sharing",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "lo3xa",
-            "link": "https://youtu.be/YuP_FzfQ7iM?si=BUx3lgjxs1gjiuYT",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Korbir",
-            "link": "https://youtu.be/zdhVAJu3vAs?si=Lo1G-gXGGDuJRWWM",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "katanata",
-            "link": "https://drive.google.com/file/d/1A1WMl6Yk0C9DnMd0UFVwswMaaSm7iFbC/view?usp=sharing",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Fe4rCasp",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "astroraiden",
-            "link": "https://medal.tv/games/geometry-dash/clips/mY2H74Ugaw532Zo04?invite=cr-MSxsOHIsNDQ4OTM4Nzg5",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Wyattdws10",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Loopelino",
-            "link": "https://youtu.be/2Dk2qjhXHBM?si=6orYDJK6ldxGLXjw",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Dextrh",
-            "link": "https://medal.tv/games/geometry-dash/clips/no3VLJyCeaPmLmXJ2?invite=cr-MSxRR2YsMjAyMTYzNDkw",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 100797497,
+  "name": "Fresh columbiana",
+  "author": "CyrryGD",
+  "creators": [
+    "CyrryGD",
+    "truongwf"
+  ],
+  "verifier": "CyrryGD",
+  "verification": "https://youtu.be/12rGYcW5Vzs?si=zvgWQ_ruzWCdQR9X",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "Masketified",
+      "link": "https://medal.tv/games/geometry-dash/clips/moSrZGkXDPMD_ndOP?invite=cr-MSxxUVAsNDkxNTc5MTg2",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "OtherWorldDrago",
+      "link": "https://medal.tv/games/geometry-dash/clips/mpe9LtCpBG8C_6nuU?invite=cr-MSw3VFYsNTQ5OTcxMTgx&v=30",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Geomaster846",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "jamxz11",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Noname1610",
+      "link": "https://drive.google.com/file/d/1NYnmyaCeHo72KaI2QY0Y7rOUUd1nvuHO/view?usp=sharing",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "lo3xa",
+      "link": "https://youtu.be/YuP_FzfQ7iM?si=BUx3lgjxs1gjiuYT",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Korbir",
+      "link": "https://youtu.be/zdhVAJu3vAs?si=Lo1G-gXGGDuJRWWM",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "katanata",
+      "link": "https://drive.google.com/file/d/1A1WMl6Yk0C9DnMd0UFVwswMaaSm7iFbC/view?usp=sharing",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Fe4rCasp",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "astroraiden",
+      "link": "https://medal.tv/games/geometry-dash/clips/mY2H74Ugaw532Zo04?invite=cr-MSxsOHIsNDQ4OTM4Nzg5",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Wyattdws10",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 3
+    },
+    {
+      "user": "Loopelino",
+      "link": "https://youtu.be/2Dk2qjhXHBM?si=6orYDJK6ldxGLXjw",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Dextrh",
+      "link": "https://medal.tv/games/geometry-dash/clips/no3VLJyCeaPmLmXJ2?invite=cr-MSxRR2YsMjAyMTYzNDkw",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

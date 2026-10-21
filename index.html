@@ -46,6 +46,7 @@
                 <router-link class="nav__tab" to="/platformer"><span class="type-label-lg">Platformer List</span></router-link>
                 <router-link class="nav__tab" to="/community"><span class="type-label-lg">Community</span></router-link>
                 <router-link class="nav__tab" to="/leaderboard"><span class="type-label-lg">Leaderboard</span></router-link>
+                <router-link class="nav__tab" to="/teams"><span class="type-label-lg">Teams</span></router-link>
                 <router-link class="nav__tab" to="/roulette"><span class="type-label-lg">Roulette</span></router-link>
                 <router-link v-if="store.role" class="nav__tab" to="/admin"><span class="type-label-lg">Admin</span></router-link>
                 <router-link v-if="store.authReady && store.user" class="nav__tab" :to="'/player/' + encodeURIComponent(store.profileUsername || store.user.username)"><span class="type-label-lg">Profile</span></router-link>

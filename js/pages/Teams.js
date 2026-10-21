@@ -43,13 +43,12 @@ export default {
     const r=await api('/api/teams/members?id='+encodeURIComponent(team.id));
     team.memberNames=r.members.map(m=>m.username);
     team.points=0;
-    // The verified player-to-account mapping is resolved by the server's team-score endpoint.
    }));
    await this.loadScores();
   }catch(e){this.error=e.message;}
  },
  methods:{
-  async loadScores(){try{const r=await api('/api/teams/scores');for(const team of this.teams)team.points=r.scores[team.id]||0;}catch(e){console.warn('Team scores unavailable',e);}},
+  async loadScores(){try{const r=await api('/api/teams/scores');const points=new Map(this.rankings.map(x=>[x.user.toLowerCase(),x.total]));for(const team of this.teams)team.points=r.members.filter(x=>x.team_id===team.id).reduce((sum,x)=>sum+(points.get(x.leaderboard_username.toLowerCase())||0),0);}catch(e){console.warn('Team scores unavailable',e);}},
   async refresh(){const r=await api('/api/teams');this.teams=r.teams;await Promise.all(this.teams.map(async t=>{const m=await api('/api/teams/members?id='+t.id);t.memberNames=m.members.map(x=>x.username);}));await this.loadScores();},
   async selectTeam(team){this.selected=team;try{this.members=(await api('/api/teams/members?id='+team.id)).members;}catch(e){this.error=e.message;}},
   async perform(path,data){this.busy=true;this.error='';this.notice='';try{await api(path,'POST',data);await this.refresh();this.notice='Team updated.';}catch(e){this.error=e.message;}finally{this.busy=false;}},

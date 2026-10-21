@@ -1,48 +1,51 @@
 {
-    "id": 118063740,
-    "name": "Moon And Stars",
-    "author": "Fe4rCasp",
-    "creators": ["Fe4rCasp"],
-    "verifier": "CyrryGD",
-    "verification": "https://youtu.be/Y6U5Wxh2R3M?si=CIPCOh6wt-B9wPJm",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "Korbir",
-            "link": "https://youtu.be/H1xtZnic2T0?si=aeFU1q6_jM9cmcAl",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "jamxz11",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Fe4rCasp",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "chickadeeinc",
-            "link": "https://youtu.be/yeBF6F6d7WI?si=D4TI9uhxO7VW_Gw5",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Dextrh",
-            "link": "https://medal.tv/games/geometry-dash/clips/no3whf2nokmca-SIn?invite=cr-MSxSVFMsMjAyMTYzNDkw",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "monolyth1",
-            "link": "https://youtu.be/w0AYytphjmY?si=qkzXy3jHm-A-Dyyw",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 118063740,
+  "name": "Moon And Stars",
+  "author": "Fe4rCasp",
+  "creators": [
+    "Fe4rCasp"
+  ],
+  "verifier": "CyrryGD",
+  "verification": "https://youtu.be/Y6U5Wxh2R3M?si=CIPCOh6wt-B9wPJm",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "Korbir",
+      "link": "https://youtu.be/H1xtZnic2T0?si=aeFU1q6_jM9cmcAl",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "jamxz11",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Fe4rCasp",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "chickadeeinc",
+      "link": "https://youtu.be/yeBF6F6d7WI?si=D4TI9uhxO7VW_Gw5",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 1
+    },
+    {
+      "user": "Dextrh",
+      "link": "https://medal.tv/games/geometry-dash/clips/no3whf2nokmca-SIn?invite=cr-MSxSVFMsMjAyMTYzNDkw",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "monolyth1",
+      "link": "https://youtu.be/w0AYytphjmY?si=qkzXy3jHm-A-Dyyw",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

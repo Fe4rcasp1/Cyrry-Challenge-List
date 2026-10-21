@@ -1,54 +1,57 @@
 {
-    "id": 131206955,
-    "name": "YouBot",
-    "author": "jamxz11",
-    "creators": ["jamxz11"],
-    "verifier": "jamxz11",
-    "verification": "",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "CyrryGD",
-            "link": "https://youtu.be/0UoWS0CzJuw?si=W6a-2IgfRcRpGnOg",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Geomaster846",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Princeyboi",
-            "link": "https://drive.google.com/file/d/1-nD2AQCLv0RPuHnIxlTvllmTVAHRVSfd/view?usp=sharing",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Korbir",
-            "link": "https://youtu.be/3tuc9cPXXqY?si=qjRrN2eeIH3g8zpl",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Fe4rCasp",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Loopelino",
-            "link": "https://drive.google.com/file/d/15lDoqNb8KkSXXG7V7dgS7Q5UqL3c3u4F/view?usp=sharing",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Dextrh",
-            "link": "https://medal.tv/games/geometry-dash/clips/no4GaRJiDy6pc9vh9?invite=cr-MSw5cUUsMjAyMTYzNDkw",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 131206955,
+  "name": "YouBot",
+  "author": "jamxz11",
+  "creators": [
+    "jamxz11"
+  ],
+  "verifier": "jamxz11",
+  "verification": "",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/0UoWS0CzJuw?si=W6a-2IgfRcRpGnOg",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Geomaster846",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Princeyboi",
+      "link": "https://drive.google.com/file/d/1-nD2AQCLv0RPuHnIxlTvllmTVAHRVSfd/view?usp=sharing",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Korbir",
+      "link": "https://youtu.be/3tuc9cPXXqY?si=qjRrN2eeIH3g8zpl",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Fe4rCasp",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 9
+    },
+    {
+      "user": "Loopelino",
+      "link": "https://drive.google.com/file/d/15lDoqNb8KkSXXG7V7dgS7Q5UqL3c3u4F/view?usp=sharing",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Dextrh",
+      "link": "https://medal.tv/games/geometry-dash/clips/no4GaRJiDy6pc9vh9?invite=cr-MSw5cUUsMjAyMTYzNDkw",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

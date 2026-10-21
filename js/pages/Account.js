@@ -7,7 +7,7 @@ async function api(path, data) {
  return result;
 }
 export default {
- data: () => ({ mode:'login', username:'', email:'', password:'', login:'', evidence:'', claimName:'', user:null, claims:[], leaderboardNames:[], busy:false, message:'', error:'', bio:'', avatarUrl:'', bannerUrl:'', accent:'#477bc1',favoriteLevel:'',featuredBadge:'',showcaseLevel:'',backgroundUrl:'' }),
+ data: () => ({ mode:'login', username:'', email:'', password:'', confirmPassword:'', showPassword:false, login:'', evidence:'', claimName:'', user:null, claims:[], leaderboardNames:[], busy:false, message:'', error:'', bio:'', avatarUrl:'', bannerUrl:'', accent:'#477bc1',favoriteLevel:'',featuredBadge:'',showcaseLevel:'',backgroundUrl:'' }),
  template: `
  <main class="ccl-hub"><section class="hub-head"><h1>CCL Account</h1><p>Sign in to your account from any device. Leaderboard profile claims require approval.</p></section>
  <section v-if="user" class="hub-card">
@@ -35,19 +35,25 @@ export default {
   <h2>Profile claims</h2><p v-if="!claims.length">No claims submitted yet.</p>
   <div v-for="claim in claims" :key="claim.leaderboard_username" class="hub-change"><strong>{{ claim.leaderboard_username }}</strong><span>{{ claim.status }}</span></div>
  </section>
- <section v-else class="hub-card">
-  <div class="leaderboard-switcher"><button type="button" :class="{ active: mode === 'login' }" @click="mode='login';error='';message=''">Log In</button><button type="button" :class="{ active: mode === 'signup' }" @click="mode='signup';error='';message=''">Sign Up</button></div>
-  <form v-if="mode === 'signup'" @submit.prevent="signup">
-    <label>Username</label><input class="hub-search" v-model.trim="username" required minlength="3" maxlength="24" pattern="[A-Za-z0-9_-]+" autocomplete="username" />
-    <label>Email</label><input class="hub-search" type="email" v-model.trim="email" required autocomplete="email" />
-    <label>Password (12+ characters)</label><input class="hub-search" type="password" v-model="password" required minlength="12" autocomplete="new-password" />
-    <p class="hub-muted">Matching a leaderboard username does not automatically claim that profile. Claims are verified after signup.</p>
-    <button class="hub-fav-button" type="submit" :disabled="busy">Create Account</button>
+ <section v-else class="hub-card ccl-auth-card">
+  <div class="ccl-auth-heading"><span class="ccl-auth-eyebrow">CYRRY CHALLENGE LIST</span><h2>{{mode==='signup'?'Create your account':'Welcome back'}}</h2>
+  <p class="hub-muted">{{mode==='signup'?'Join the community, track your records and join private clans.':'Log in to manage your profile, records and clan.'}}</p></div>
+  <div class="leaderboard-switcher ccl-auth-switcher"><button type="button" :class="{active:mode==='login'}" @click="mode='login';error='';message='';password='';confirmPassword=''">Log In</button><button type="button" :class="{active:mode==='signup'}" @click="mode='signup';error='';message='';password='';confirmPassword=''">Sign Up</button></div>
+  <form v-if="mode==='signup'" class="ccl-auth-form" @submit.prevent="signup">
+    <div class="ccl-auth-field"><label for="signup-username">Username</label><input id="signup-username" class="hub-search" v-model.trim="username" required minlength="3" maxlength="24" pattern="[A-Za-z0-9_-]+" autocomplete="username" placeholder="Your CCL username"><small>3–24 characters · letters, numbers, _ and -</small></div>
+    <div class="ccl-auth-field"><label for="signup-email">Email address</label><input id="signup-email" class="hub-search" type="email" v-model.trim="email" required maxlength="254" autocomplete="email" placeholder="you@example.com"></div>
+    <div class="ccl-auth-field"><label for="signup-password">Password</label><input id="signup-password" class="hub-search" :type="showPassword?'text':'password'" v-model="password" required minlength="12" maxlength="256" autocomplete="new-password" placeholder="At least 12 characters"><small>Use a unique password of at least 12 characters.</small></div>
+    <div class="ccl-auth-field"><label for="signup-confirm">Confirm password</label><input id="signup-confirm" class="hub-search" :type="showPassword?'text':'password'" v-model="confirmPassword" required minlength="12" maxlength="256" autocomplete="new-password" placeholder="Enter password again"></div>
+    <label class="ccl-auth-check"><input type="checkbox" v-model="showPassword"> Show passwords</label>
+    <p v-if="confirmPassword && password!==confirmPassword" class="hub-auth-error">Passwords do not match.</p>
+    <button class="hub-fav-button ccl-auth-submit" type="submit" :disabled="busy || password!==confirmPassword">{{busy?'Creating account…':'Create Account →'}}</button>
+    <p class="hub-muted ccl-auth-note">Already on the leaderboard? Claim your profile after creating your account. Claims require staff verification.</p>
   </form>
-  <form v-else @submit.prevent="signIn">
-    <label>Username or email</label><input class="hub-search" v-model.trim="login" required autocomplete="username" />
-    <label>Password</label><input class="hub-search" type="password" v-model="password" required autocomplete="current-password" />
-    <button class="hub-fav-button" type="submit" :disabled="busy">Log In</button>
+  <form v-else class="ccl-auth-form" @submit.prevent="signIn">
+    <div class="ccl-auth-field"><label for="login-username">Username or email</label><input id="login-username" class="hub-search" v-model.trim="login" required autocomplete="username" placeholder="Username or email"></div>
+    <div class="ccl-auth-field"><label for="login-password">Password</label><input id="login-password" class="hub-search" :type="showPassword?'text':'password'" v-model="password" required autocomplete="current-password" placeholder="Your password"></div>
+    <label class="ccl-auth-check"><input type="checkbox" v-model="showPassword"> Show password</label>
+    <button class="hub-fav-button ccl-auth-submit" type="submit" :disabled="busy">{{busy?'Signing in…':'Log In →'}}</button>
   </form>
  </section><p v-if="error" class="hub-auth-error" role="alert">{{ error }}</p><p v-if="message" role="status">{{ message }}</p>
  </main>`,
@@ -69,7 +75,7 @@ export default {
     }catch(e){console.warn('Profile customization unavailable',e)}
   },
   async saveProfile(){await this.action(async()=>{await api('/api/community/profile',{bio:this.bio,avatar_url:this.avatarUrl,banner_url:this.bannerUrl,accent:this.accent,favorite_level:this.favoriteLevel,showcase_level:this.showcaseLevel,featured_badge:this.featuredBadge,background_url:this.backgroundUrl});this.message='Profile saved.'})},
-  async signup() { await this.action(async()=>{ const result=await api('/api/auth/register',{username:this.username,email:this.email,password:this.password}); this.user=result.user; await store.refreshAuth(); this.claimName=this.username; this.password=''; this.message='Account created. Claim your leaderboard profile below if applicable.'; }); },
+  async signup() { if(this.password!==this.confirmPassword){this.error='Passwords do not match.';return;} await this.action(async()=>{ const result=await api('/api/auth/register',{username:this.username,email:this.email,password:this.password}); this.user=result.user; await store.refreshAuth(); this.claimName=this.username; this.password='';this.confirmPassword=''; this.message='Account created. Claim your leaderboard profile below if applicable.'; }); },
   async signIn() { await this.action(async()=>{ const result=await api('/api/auth/login',{login:this.login,password:this.password}); this.password=''; this.user=result.user; await store.refreshAuth(); const me=await api('/api/auth/me'); this.claims=me.claims||[]; await this.loadProfile();this.message='Logged in successfully.'; }); },
   async claim() { await this.action(async()=>{ await api('/api/claims',{username:this.claimName,evidence:this.evidence}); const me=await api('/api/auth/me'); this.claims=me.claims||[]; this.evidence=''; this.message='Claim submitted for admin review.'; }); },
   async logout() { await this.action(async()=>{ await api('/api/auth/logout',{}); this.user=null; await store.refreshAuth(); this.claims=[]; this.message='Logged out.'; }); },

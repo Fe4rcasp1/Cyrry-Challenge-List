@@ -1,6 +1,6 @@
 import { store } from '../main.js';
 export default {
- data:()=>({normalLevels:[],platformerLevels:[],records:[{key:1,listType:'normal',levelPath:'',videoUrl:'',enjoyment:'',percent:100}],nextKey:2,discordName:'',busy:false,error:'',notice:'',submissions:[]}),
+ data:()=>({normalLevels:[],platformerLevels:[],records:[{key:1,listType:'normal',levelPath:'',levelSearch:'',videoUrl:'',enjoyment:'',percent:100}],nextKey:2,discordName:'',busy:false,error:'',notice:'',submissions:[]}),
  computed:{store(){return store}},
  template:`
  <main class="ccl-hub ccl-record-submit">
@@ -13,8 +13,10 @@ export default {
     <p class="hub-muted">Submitting as {{store.profileUsername}}. Add up to 20 records in one batch.</p>
     <div v-for="(record,i) in records" :key="record.key" class="ccl-batch-record">
      <div class="admin-section-head"><h3>Record {{i+1}}</h3><button v-if="records.length>1" type="button" class="admin-btn" :disabled="busy" @click="removeRecord(i)">Remove</button></div>
-     <label :for="'record-list-'+record.key">List</label><select :id="'record-list-'+record.key" v-model="record.listType" @change="record.levelPath=''"><option value="normal">Normal CCL</option><option value="platformer">Platformer CCL</option></select>
-     <label :for="'record-level-'+record.key">Level</label><select :id="'record-level-'+record.key" v-model="record.levelPath" required><option value="">Select a level</option><option v-for="level in (record.listType==='normal'?normalLevels:platformerLevels)" :key="level" :value="level">{{level.replaceAll('_',' ')}}</option></select>
+     <label :for="'record-list-'+record.key">List</label><select :id="'record-list-'+record.key" v-model="record.listType" @change="record.levelPath='';record.levelSearch=''"><option value="normal">Normal CCL</option><option value="platformer">Platformer CCL</option></select>
+     <label :for="'record-search-'+record.key">Search levels</label><input :id="'record-search-'+record.key" v-model="record.levelSearch" type="search" autocomplete="off" placeholder="Type a level name…" />
+     <label :for="'record-level-'+record.key">Level</label><select :id="'record-level-'+record.key" v-model="record.levelPath" required><option value="">Select a level</option><option v-for="level in matchingLevels(record)" :key="level" :value="level">{{level.replaceAll('_',' ')}}</option></select>
+     <p v-if="record.levelSearch && !matchingLevels(record).length" class="hub-muted">No matching levels found.</p>
      <label :for="'record-video-'+record.key">Video proof</label><input :id="'record-video-'+record.key" v-model.trim="record.videoUrl" type="url" required maxlength="500" placeholder="https://youtube.com/..." />
      <label :for="'record-enjoyment-'+record.key">Enjoyment (0–10)</label><input :id="'record-enjoyment-'+record.key" v-model.number="record.enjoyment" type="number" min="0" max="10" step="1" required />
      <label :for="'record-percent-'+record.key">Completion percentage</label><input :id="'record-percent-'+record.key" v-model.number="record.percent" type="number" min="1" max="100" required />
@@ -37,6 +39,7 @@ export default {
  async mounted(){await this.loadLevels();if(store.user)await this.loadSubmissions();},
  watch:{'store.user'(user){if(user)this.loadSubmissions()}},
  methods:{
+  matchingLevels(record){const levels=record.listType==='normal'?this.normalLevels:this.platformerLevels;const query=(record.levelSearch||'').trim().toLowerCase();return levels.filter(level=>!query||level.replaceAll('_',' ').toLowerCase().includes(query)||level.toLowerCase().includes(query)||level===record.levelPath);},
   addRecord(){if(this.records.length<20)this.records.push({key:this.nextKey++,listType:'normal',levelPath:'',videoUrl:'',enjoyment:'',percent:100});},
   removeRecord(i){if(this.records.length>1)this.records.splice(i,1);},
   async loadLevels(){try{const responses=await Promise.all(['/data/_list.json','/data/_platformer.json'].map(x=>fetch(x)));if(responses.some(r=>!r.ok))throw Error('Unable to load level lists');[this.normalLevels,this.platformerLevels]=await Promise.all(responses.map(r=>r.json()));}catch(e){this.error=e.message;}},

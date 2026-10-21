@@ -436,6 +436,11 @@ async function handle(request, env) {
      try{await logLevelChange(env,user.id,listType,levelPath,'level_edit',before,level,backup);}catch(e){console.error('History write failed',e);}
      return json({ok:true,githubBackup:backup});
    }
+   if (path === '/api/admin/github-backup/status' && request.method === 'GET') {
+     if(!canEdit)return json({error:'Level editing not permitted.'},403);
+     const rows=await env.DB.prepare("SELECT o.list_type,o.level_path,o.updated_at,h.github_synced,h.created_at AS last_attempt FROM level_overrides o LEFT JOIN ccl_level_history h ON h.id=(SELECT id FROM ccl_level_history WHERE list_type=o.list_type AND level_path=o.level_path ORDER BY created_at DESC,rowid DESC LIMIT 1) ORDER BY o.updated_at DESC LIMIT 500").all();
+     return json({configured:!!env.GITHUB_TOKEN,total:rows.results.length,levels:rows.results.map(x=>({...x,github_synced:x.github_synced===1}))});
+   }
    if (path === '/api/admin/github-backup' && request.method === 'POST') {
      if (!canEdit) return json({error:'Level editing not permitted.'},403);
      if (!env.GITHUB_TOKEN) return json({error:'Configure GITHUB_TOKEN as a Cloudflare Worker secret first.'},503);
@@ -445,6 +450,7 @@ async function handle(request, env) {
        let backup;
        try { backup=await backupLevelToGitHub(env,row.list_type,row.level_path,JSON.parse(row.level_json)); }
        catch(e){ backup={synced:false,reason:e.message}; }
+       if(backup.synced)try{await env.DB.prepare('UPDATE ccl_level_history SET github_synced=1 WHERE id=(SELECT id FROM ccl_level_history WHERE list_type=? AND level_path=? ORDER BY created_at DESC,rowid DESC LIMIT 1)').bind(row.list_type,row.level_path).run();}catch(e){console.warn('Backup status write failed',e);}
        results.push({listType:row.list_type,path:row.level_path,...backup});
      }
      return json({ok:results.every(x=>x.synced),total:results.length,synced:results.filter(x=>x.synced).length,failed:results.filter(x=>!x.synced)});

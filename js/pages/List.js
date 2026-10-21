@@ -117,6 +117,16 @@ export default {
                             <p>{{ !level.records?.length ? 'N/A' : (!selectedImpossible && enjoymentByPath[levelPaths[selected]] ? enjoymentByPath[levelPaths[selected]].average + '/10 (' + enjoymentByPath[levelPaths[selected]].ratings + ' ratings)' : (level.Enjoyment || 'N/A')) }}</p>
                         </li>
                     </ul>
+                    <section v-if="!selectedImpossible" class="hub-card" style="margin:1rem 0">
+                        <div class="admin-section-head"><h2>Level changelog</h2><button type="button" class="admin-btn" @click="loadLevelHistory">View history</button></div>
+                        <p v-if="historyLoading" class="hub-muted">Loading history…</p>
+                        <p v-if="historyError" class="error">{{historyError}}</p>
+                        <div v-for="entry in levelHistory" :key="entry.id" class="hub-change">
+                            <strong>{{entry.summary}}</strong><span>{{entry.editor||'Staff'}} · {{entry.created_at}}</span>
+                            <small>{{entry.github_synced?'GitHub backed up':'GitHub backup not confirmed'}}</small>
+                        </div>
+                        <p v-if="historyLoaded && !levelHistory.length" class="hub-muted">No recorded changes yet. History starts with new admin edits.</p>
+                    </section>
                     <h2>Records</h2>
                     <p v-if="selectedImpossible">Unverified level</p>
                     <p v-else-if="selected + 1 <= 75"><strong>{{ level.percentToQualify }}%</strong> or better to qualify</p>
@@ -267,6 +277,7 @@ export default {
         enjoymentFilter: "all",
         enjoymentSort: "rank",
         enjoymentByPath: {},
+        levelHistory: [], historyLoading:false, historyLoaded:false, historyError:"",
         levelPaths: [],
         editors: [],
         loading: true,
@@ -390,6 +401,16 @@ export default {
         toggleLevelFavorite() { if(this.selectedImpossible)return; toggleFavorite(this.level, this.platformer); this.syncFavorite(); },
         embed,
         score,
+        async loadLevelHistory(){
+            if(this.selectedImpossible || !this.levelPaths[this.selected])return;
+            this.historyLoading=true;this.historyError='';this.levelHistory=[];
+            try{
+                const type=this.platformer?'platformer':'normal';
+                const response=await fetch('/api/levels/history?list='+type+'&path='+encodeURIComponent(this.levelPaths[this.selected]),{cache:'no-store'});
+                const data=await response.json();if(!response.ok)throw Error(data.error||'Unable to load history.');
+                this.levelHistory=data.history||[];this.historyLoaded=true;
+            }catch(e){this.historyError=e.message;}finally{this.historyLoading=false;}
+        },
         resetFilters() { this.searchQuery = ""; this.sectionFilter = "all"; this.ratingFilter = "all"; this.enjoymentFilter = "all"; this.enjoymentSort = "rank"; },
         ratingColor(level) { return ({ rate: "#808080", featured: "#e4c526", epic: "#ef922d", legendary: "#a855f7", mythic: "#08bfd4" })[getLevelRating(level, this.platformer)] || "#244f88"; },
         ratingTextColor(level) { return ["featured", "epic", "mythic"].includes(getLevelRating(level, this.platformer)) ? "#171c27" : "#fff"; },

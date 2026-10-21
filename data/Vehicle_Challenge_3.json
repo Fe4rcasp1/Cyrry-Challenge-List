@@ -1,30 +1,33 @@
 {
-    "id": 128099038,
-    "name": "vehicle challenge 3",
-    "author": "p3rke79",
-    "creators": ["p3rke79"],
-    "verifier": "CyrryGD",
-    "verification": "https://youtu.be/-Q1aosbZbVc?si=Y1wM3bkbGF5lcGfk",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "Loopelino",
-            "link": "https://youtu.be/_ozQJaBshEE",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Dextrh",
-            "link": "https://medal.tv/games/geometry-dash/clips/nq9niitkMXDTANSeU?invite=cr-MSxMcFosMjAyMTYzNDkw",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "jellifest",
-            "link": "https://youtu.be/C6Ea5cBIviU?si=mmDA3tbIgW2O3r_T",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 128099038,
+  "name": "vehicle challenge 3",
+  "author": "p3rke79",
+  "creators": [
+    "p3rke79"
+  ],
+  "verifier": "CyrryGD",
+  "verification": "https://youtu.be/-Q1aosbZbVc?si=Y1wM3bkbGF5lcGfk",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "Loopelino",
+      "link": "https://youtu.be/_ozQJaBshEE",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Dextrh",
+      "link": "https://medal.tv/games/geometry-dash/clips/nq9niitkMXDTANSeU?invite=cr-MSxMcFosMjAyMTYzNDkw",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "jellifest",
+      "link": "https://youtu.be/C6Ea5cBIviU?si=mmDA3tbIgW2O3r_T",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 8
+    }
+  ]
 }

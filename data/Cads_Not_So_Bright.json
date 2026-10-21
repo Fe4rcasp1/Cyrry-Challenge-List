@@ -1,108 +1,111 @@
 {
-    "id": 121342758,
-    "name": "Cads Not So Bright",
-    "author": "CyrryGD",
-    "creators": ["CyrryGD"],
-    "verifier": "CyrryGD",
-    "verification": "https://youtu.be/12rGYcW5Vzs?si=zvgWQ_ruzWCdQR9X",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "Daszo",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Masketified",
-            "link": "https://medal.tv/games/geometry-dash/clips/moSvbf9DePgFyHkZ5?invite=cr-MSx6d20sNDkxNTc5MTg2",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "katanata",
-            "link": "https://drive.google.com/file/d/1A1WMl6Yk0C9DnMd0UFVwswMaaSm7iFbC/view?usp=sharing",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "DrSalt117",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "OtherWorldDrago",
-            "link": "https://medal.tv/games/geometry-dash/clips/mq9zuXtZncQWIHvQA?invite=cr-MSxIOVQsNTQ5OTcxMTgx&v=45]",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Noname1610",
-            "link": "https://drive.google.com/file/d/1YpvzvJRdo7h69JcrwzWpTpD2V5EbIPq7/view?usp=sharing",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "lo3xa",
-            "link": "https://youtu.be/YuP_FzfQ7iM?si=BUx3lgjxs1gjiuYT",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Korbir",
-            "link": "https://youtu.be/QbR_0gpQnZk?si=Y4UiwxCMsvqkZ3au",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Fe4rCasp",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "jamxz11",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "AnxientGD",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "tzmbuzz1234",
-            "link": "https://youtu.be/4pwB5XNGoCQ?si=eapok2W6NC4CkDwR",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "MrKingFloppa",
-            "link": "ytlink",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Loopelino",
-            "link": "https://drive.google.com/file/d/1ztBWuwqGbBijVvlt_7Qh5KjItzbpxjFM/view?usp=sharing",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Dextrh",
-            "link": "https://medal.tv/games/geometry-dash/clips/no3HmajvBAq-G7rXp?invite=cr-MSwzTm8sMjAyMTYzNDkw",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "monolyth1",
-            "link": "https://youtu.be/w0AYytphjmY?si=qkzXy3jHm-A-Dyyw",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 121342758,
+  "name": "Cads Not So Bright",
+  "author": "CyrryGD",
+  "creators": [
+    "CyrryGD"
+  ],
+  "verifier": "CyrryGD",
+  "verification": "https://youtu.be/12rGYcW5Vzs?si=zvgWQ_ruzWCdQR9X",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "Daszo",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Masketified",
+      "link": "https://medal.tv/games/geometry-dash/clips/moSvbf9DePgFyHkZ5?invite=cr-MSx6d20sNDkxNTc5MTg2",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "katanata",
+      "link": "https://drive.google.com/file/d/1A1WMl6Yk0C9DnMd0UFVwswMaaSm7iFbC/view?usp=sharing",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "DrSalt117",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 8
+    },
+    {
+      "user": "OtherWorldDrago",
+      "link": "https://medal.tv/games/geometry-dash/clips/mq9zuXtZncQWIHvQA?invite=cr-MSxIOVQsNTQ5OTcxMTgx&v=45]",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Noname1610",
+      "link": "https://drive.google.com/file/d/1YpvzvJRdo7h69JcrwzWpTpD2V5EbIPq7/view?usp=sharing",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "lo3xa",
+      "link": "https://youtu.be/YuP_FzfQ7iM?si=BUx3lgjxs1gjiuYT",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Korbir",
+      "link": "https://youtu.be/QbR_0gpQnZk?si=Y4UiwxCMsvqkZ3au",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Fe4rCasp",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "jamxz11",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "AnxientGD",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "tzmbuzz1234",
+      "link": "https://youtu.be/4pwB5XNGoCQ?si=eapok2W6NC4CkDwR",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "MrKingFloppa",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Loopelino",
+      "link": "https://drive.google.com/file/d/1ztBWuwqGbBijVvlt_7Qh5KjItzbpxjFM/view?usp=sharing",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Dextrh",
+      "link": "https://medal.tv/games/geometry-dash/clips/no3HmajvBAq-G7rXp?invite=cr-MSwzTm8sMjAyMTYzNDkw",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "monolyth1",
+      "link": "https://youtu.be/w0AYytphjmY?si=qkzXy3jHm-A-Dyyw",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

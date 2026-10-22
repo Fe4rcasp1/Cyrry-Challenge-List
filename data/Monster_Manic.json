@@ -8,5 +8,12 @@
   "verifier": "CyrryGD",
   "verification": "https://youtu.be/mKkP8WQQo34?si=Ge4OCMv8aKok5BRH",
   "percentToQualify": "100",
-  "records": []
+  "records": [
+    {
+      "user": "lo3xa",
+      "link": "https://youtu.be/5gCqhXAxXmk",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

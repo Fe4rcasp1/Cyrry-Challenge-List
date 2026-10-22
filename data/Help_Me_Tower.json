@@ -1,12 +1,12 @@
 {
-    "id": 140789824,
-    "name": "Help Me Tower",
-    "author": "Leagal",
-    "creators": [
-        "Leagal"
-    ],
-    "verifier": "Open Verification",
-    "verification": "https://www.youtube.com/watch?v=LIItbWKDTlc",
-    "percentToQualify": "100",
-    "records": []
+  "id": 140789824,
+  "name": "Help Me Tower",
+  "author": "Leagal",
+  "creators": [
+    "Leagal"
+  ],
+  "verifier": "Leagal",
+  "verification": "https://youtu.be/_XTShmxKWPw?si=c8glEH9XeaUzt--D",
+  "percentToQualify": "100",
+  "records": []
 }

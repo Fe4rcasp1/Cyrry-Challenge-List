@@ -8,5 +8,12 @@
   "verifier": "ZinkZys",
   "verification": "https://www.youtube.com/watch?v=LIItbWKDTlc",
   "percentToQualify": "100",
-  "records": []
+  "records": [
+    {
+      "user": "CyrryGD",
+      "percent": 100,
+      "link": "https://youtu.be/BdpswwTa6Fk?si=KfiuzcvsdcE4k7_C",
+      "enjoyment": 8
+    }
+  ]
 }

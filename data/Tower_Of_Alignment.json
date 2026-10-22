@@ -1,12 +1,12 @@
 {
-    "id": 105788274,
-    "name": "Tower of Alignment",
-    "author": "astroraiden",
-    "creators": [
-        "astroraiden"
-    ],
-    "verifier": "Open Verification",
-    "verification": "https://www.youtube.com/watch?v=LIItbWKDTlc",
-    "percentToQualify": "100",
-    "records": []
+  "id": 105788274,
+  "name": "Tower of Alignment",
+  "author": "astroraiden",
+  "creators": [
+    "astroraiden"
+  ],
+  "verifier": "astroraiden",
+  "verification": "https://www.youtube.com/watch?v=LIItbWKDTlc",
+  "percentToQualify": "100",
+  "records": []
 }

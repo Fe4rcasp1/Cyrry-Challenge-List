@@ -1,12 +1,12 @@
 {
-    "id": 131013371,
-    "name": "THE Ts2 tuff 4me 7",
-    "author": "ZinkZys",
-    "creators": [
-        "ZinkZys"
-    ],
-    "verifier": "Open Verification",
-    "verification": "https://www.youtube.com/watch?v=LIItbWKDTlc",
-    "percentToQualify": "100",
-    "records": []
+  "id": 131013371,
+  "name": "THE Ts2 tuff 4me 7",
+  "author": "ZinkZys",
+  "creators": [
+    "ZinkZys"
+  ],
+  "verifier": "ZinkZys",
+  "verification": "https://www.youtube.com/watch?v=LIItbWKDTlc",
+  "percentToQualify": "100",
+  "records": []
 }

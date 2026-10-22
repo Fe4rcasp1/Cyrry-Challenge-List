@@ -1,12 +1,12 @@
 {
-    "id": 140803680,
-    "name": "Hue Challenge",
-    "author": "Leagal",
-    "creators": [
-        "Leagal"
-    ],
-    "verifier": "Open Verification",
-    "verification": "https://www.youtube.com/watch?v=LIItbWKDTlc",
-    "percentToQualify": "100",
-    "records": []
+  "id": 140803680,
+  "name": "Hue Challenge",
+  "author": "Leagal",
+  "creators": [
+    "Leagal"
+  ],
+  "verifier": "Leagal",
+  "verification": "https://youtu.be/viNUsCmx8hc?si=LHJ1Vmb2aS7Q8IrT",
+  "percentToQualify": "100",
+  "records": []
 }

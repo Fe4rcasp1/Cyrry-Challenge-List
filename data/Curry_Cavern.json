@@ -1,12 +1,12 @@
 {
-    "id": 138763024,
-    "name": "curry cavern",
-    "author": "Korbir",
-    "creators": [
-        "Korbir"
-    ],
-    "verifier": "Open Verification",
-    "verification": "https://www.youtube.com/watch?v=LIItbWKDTlc",
-    "percentToQualify": "100",
-    "records": []
+  "id": 138763024,
+  "name": "curry cavern",
+  "author": "Korbir",
+  "creators": [
+    "Korbir"
+  ],
+  "verifier": "Korbir",
+  "verification": "https://youtu.be/XgkEBcNseAE?si=3Od2ceq9dG2hbcNa",
+  "percentToQualify": "100",
+  "records": []
 }

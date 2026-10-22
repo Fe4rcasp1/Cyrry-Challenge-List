@@ -8,5 +8,12 @@
   "verifier": "Leagal",
   "verification": "https://youtu.be/_XTShmxKWPw?si=9sxFmWgRYokE0ePm",
   "percentToQualify": "100",
-  "records": []
+  "records": [
+    {
+      "user": "CyrryGD",
+      "percent": 100,
+      "link": "https://youtu.be/_y5gsAS9oaA?si=y6e0YFVOVLsJWFec",
+      "enjoyment": 10
+    }
+  ]
 }

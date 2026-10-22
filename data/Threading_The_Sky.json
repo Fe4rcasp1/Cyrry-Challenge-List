@@ -8,5 +8,12 @@
   "verifier": "Leagal",
   "verification": "https://youtu.be/_XTShmxKWPw?si=BvGbXUcHuHYkgVl6",
   "percentToQualify": "100",
-  "records": []
+  "records": [
+    {
+      "user": "chickadeeinc",
+      "link": "https://youtu.be/w6bBJhavios?si=8uzFnwHIuSwFxPir",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

@@ -1,18 +1,21 @@
 {
-    "id": 127923173,
-    "name": "Disimalwtapl",
-    "author": "CyrryGD",
-    "creators": ["CyrryGD"],
-    "verifier": "CyrryGD",
-    "verification": "https://youtu.be/I8_LqwOXu64?si=dP_RlUWUii4Go2_m",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "Dextrh",
-            "link": "https://medal.tv/games/geometry-dash/clips/nqanMjSmZ6IHOHXXL?invite=cr-MSxXczUsMjAyMTYzNDkw",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 127923173,
+  "name": "Disimalwtapl",
+  "author": "CyrryGD",
+  "creators": [
+    "CyrryGD"
+  ],
+  "verifier": "CyrryGD",
+  "verification": "https://youtu.be/I8_LqwOXu64?si=dP_RlUWUii4Go2_m",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "Dextrh",
+      "link": "https://medal.tv/games/geometry-dash/clips/nqanMjSmZ6IHOHXXL?invite=cr-MSxXczUsMjAyMTYzNDkw",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 0
+    }
+  ]
 }

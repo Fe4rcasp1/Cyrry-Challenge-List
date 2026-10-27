@@ -1,24 +1,27 @@
 {
-    "id": 126002091,
-    "name": "Lesser Than Dreams",
-    "author": "CyrryGD",
-    "creators": ["CyrryGD"],
-    "verifier": "CyrryGD",
-    "verification": "https://youtu.be/12rGYcW5Vzs?si=zvgWQ_ruzWCdQR9X",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "Princeyboi",
-            "link": "https://drive.google.com/file/d/1Nyl2dy5We0LTG4pReXSMc9JvNSIjEREm/view?usp=sharing",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Loopelino",
-            "link": "https://youtu.be/hepi-Rn9_fk?si=f4-Y9jrrLwZDRidy",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 126002091,
+  "name": "Lesser Than Dreams",
+  "author": "CyrryGD",
+  "creators": [
+    "CyrryGD"
+  ],
+  "verifier": "CyrryGD",
+  "verification": "https://youtu.be/12rGYcW5Vzs?si=zvgWQ_ruzWCdQR9X",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "Princeyboi",
+      "link": "https://drive.google.com/file/d/1Nyl2dy5We0LTG4pReXSMc9JvNSIjEREm/view?usp=sharing",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Loopelino",
+      "link": "https://youtu.be/hepi-Rn9_fk?si=f4-Y9jrrLwZDRidy",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 6
+    }
+  ]
 }

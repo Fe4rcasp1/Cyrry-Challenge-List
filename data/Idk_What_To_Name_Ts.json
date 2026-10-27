@@ -1,18 +1,21 @@
 {
-    "id": 128366070,
-    "name": "idk what to name ts",
-    "author": "p3rke79",
-    "creators": ["p3rke79"],
-    "verifier": "CyrryGD",
-    "verification": "https://youtu.be/3p7ZG5rfcCY?si=CZWNIlu3BiCzq4cL",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "Loopelino",
-            "link": "https://youtu.be/6hYkji0gaxk?si=QcSdO2uvT9v0bvLL",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 128366070,
+  "name": "idk what to name ts",
+  "author": "p3rke79",
+  "creators": [
+    "p3rke79"
+  ],
+  "verifier": "CyrryGD",
+  "verification": "https://youtu.be/3p7ZG5rfcCY?si=CZWNIlu3BiCzq4cL",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "Loopelino",
+      "link": "https://youtu.be/6hYkji0gaxk?si=QcSdO2uvT9v0bvLL",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 7
+    }
+  ]
 }

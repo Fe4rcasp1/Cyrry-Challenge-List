@@ -1,24 +1,27 @@
 {
-    "id": 132398979,
-    "name": "Mad On The Stereo",
-    "author": "CyrryGD",
-    "creators": ["CyrryGD"],
-    "verifier": "CyrryGD",
-    "verification": "https://youtu.be/12rGYcW5Vzs?si=zvgWQ_ruzWCdQR9X",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "Fe4rCasp",
-            "link": "https://medal.tv/games/geometry-dash/clips/mFshuGQP3BCQf3ejE?invite=cr-MSwzYzcsMjY5NzczMTM1",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Dextrh",
-            "link": "https://medal.tv/games/geometry-dash/clips/nozycD0hPyyorxz0c?invite=cr-MSxNdUMsMjAyMTYzNDkw",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 132398979,
+  "name": "Mad On The Stereo",
+  "author": "CyrryGD",
+  "creators": [
+    "CyrryGD"
+  ],
+  "verifier": "CyrryGD",
+  "verification": "https://youtu.be/12rGYcW5Vzs?si=zvgWQ_ruzWCdQR9X",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "Fe4rCasp",
+      "link": "https://medal.tv/games/geometry-dash/clips/mFshuGQP3BCQf3ejE?invite=cr-MSwzYzcsMjY5NzczMTM1",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Dextrh",
+      "link": "https://medal.tv/games/geometry-dash/clips/nozycD0hPyyorxz0c?invite=cr-MSxNdUMsMjAyMTYzNDkw",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 0
+    }
+  ]
 }

@@ -1,18 +1,21 @@
 {
-    "id": 147458696,
-    "name": "Shitty BallChallenge",
-    "author": "CyrryGD",
-    "creators": ["CyrryGD"],
-    "verifier": "CyrryGD",
-    "verification": "https://youtu.be/_y5gsAS9oaA?si=sCLySCF-bHuCPnah",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "Loopelino",
-            "link": "https://youtu.be/tcdErvaFfnc?si=jJNNrKtaVfkRszl6",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 147458696,
+  "name": "Shitty BallChallenge",
+  "author": "CyrryGD",
+  "creators": [
+    "CyrryGD"
+  ],
+  "verifier": "CyrryGD",
+  "verification": "https://youtu.be/_y5gsAS9oaA?si=sCLySCF-bHuCPnah",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "Loopelino",
+      "link": "https://youtu.be/tcdErvaFfnc?si=jJNNrKtaVfkRszl6",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 8
+    }
+  ]
 }

@@ -1,24 +1,27 @@
 {
-    "id": 113009963,
-    "name": "the m club",
-    "author": "ZinkZys",
-    "creators": ["ZinkZys"],
-    "verifier": "CyrryGD",
-    "verification": "https://youtu.be/J8xVX3A1TFY?si=pa-WTIpfi3_Dnunf",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-        {
-            "user": "Loopelino",
-            "link": "https://youtu.be/6hYkji0gaxk?si=QcSdO2uvT9v0bvLL",
-            "percent": 100,
-            "hz": 240
-        },
-        {
-            "user": "Dextrh",
-            "link": "https://medal.tv/games/geometry-dash/clips/no6udjkcfdFeP1wxf?invite=cr-MSxXZ08sMjAyMTYzNDkw",
-            "percent": 100,
-            "hz": 240
-        }
-    ]
+  "id": 113009963,
+  "name": "the m club",
+  "author": "ZinkZys",
+  "creators": [
+    "ZinkZys"
+  ],
+  "verifier": "CyrryGD",
+  "verification": "https://youtu.be/J8xVX3A1TFY?si=pa-WTIpfi3_Dnunf",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "Loopelino",
+      "link": "https://youtu.be/6hYkji0gaxk?si=QcSdO2uvT9v0bvLL",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "Dextrh",
+      "link": "https://medal.tv/games/geometry-dash/clips/no6udjkcfdFeP1wxf?invite=cr-MSxXZ08sMjAyMTYzNDkw",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 6
+    }
+  ]
 }

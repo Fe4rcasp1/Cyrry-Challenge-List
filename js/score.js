@@ -77,8 +77,10 @@ function getBaseScore(rank) {
  * @param {Number} minPercent Minimum percentage required
  * @returns {Number}
  */
-export function score(rank, percent, minPercent) {
-    const baseScore = getBaseScore(rank);
+export function score(rank, percent, minPercent, listType = 'normal') {
+    // Platformer has 14 ranked levels: 500 at #1 and 2 at #14.
+    // Scale to the current platformer list length rather than using the 200-rank challenge curve.
+    const baseScore = listType === 'platformer' ? Math.max(2, 500 * Math.pow(2 / 500, (Math.max(1, rank) - 1) / 13)) : getBaseScore(rank);
 
     /*
      * Apply the percentage-completion multiplier.

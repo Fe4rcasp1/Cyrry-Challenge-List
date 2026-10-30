@@ -1,0 +1,18 @@
+/* Contrast and layout fixes for CCL community controls. */
+.ccl-hub:not(.dark) .admin-btn,
+.ccl-hub:not(.dark) .hub-fav-button,
+.ccl-hub:not(.dark) .profile-back-link,
+.ccl-hub:not(.dark) .profile-settings-link,
+.ccl-hub:not(.dark) .hub-profile-link,
+.ccl-hub:not(.dark) .profile-achievement-controls button {
+ background:#e6effc;color:#14263c;border:1px solid #7897b6;
+}
+.ccl-hub:not(.dark) .admin-btn:hover,
+.ccl-hub:not(.dark) .hub-fav-button:hover {background:#c9def5;color:#0e2236}
+.ccl-hub.dark .admin-btn,.ccl-hub.dark .hub-fav-button{background:#1f4163;color:#fff;border:1px solid #7296bd}
+header:not(.dark) .header-quicklinks a{background:#e6effc!important;color:#12283c!important;border:1px solid #6e93b6!important}
+header.dark .header-quicklinks a{background:#254663!important;color:#fff!important;border:1px solid #6888ab!important}
+.ccl-logout-row{display:flex;justify-content:flex-end;margin:.75rem 0 1.25rem}
+.ccl-record-enjoyment{display:block;font-size:.76rem;margin-top:.2rem;opacity:.85}
+.ccl-hub:not(.dark) .profile-header-actions a{color:#14263c;background:#e6effc;border-radius:8px;padding:.4rem .7rem}
+.ccl-hub.dark .profile-header-actions a{color:#fff}

@@ -1,7 +1,7 @@
 import { store } from "../main.js";
 import { embed } from "../util.js";
 import { score } from "../score.js";
-import { getLevelRating } from "../ratings.js";
+import { getLevelRating, getImpossibleRating } from "../ratings.js";
 import { isFavorite, toggleFavorite } from "../favorites.js";
 import { fetchEditors, fetchList } from "../content.js";
 
@@ -77,7 +77,7 @@ export default {
                             <p class="type-label-lg">#{{ item.impossible ? item.level.impossibleRank : item.index + 1 }}</p>
                         </td>
                         <td class="level"   :class="{ 'active': selected == item.index && selectedImpossible === !!item.impossible, 'error': !item.level, 'completed-by-user': isCompletedByUser(item.level) }">
-                            <button @click="selectLevel(item)" :style="item.level ? { backgroundColor: ratingColor(item.level), color: ratingTextColor(item.level) } : {}">
+                            <button @click="selectLevel(item)" :style="item.level ? { backgroundColor: ratingColor(item.level, item.impossible, item.index), color: ratingTextColor(item.level, item.impossible, item.index) } : {}">
                                 <span class="type-label-lg">{{ item.level?.name || \`Error (\${item.err}.json)\` }}</span>
                             <small v-if="!item.impossible && item.level?.records?.length > 0 && enjoymentByPath[levelPaths[item.index]]" class="list-enjoyment-label">★ {{enjoymentByPath[levelPaths[item.index]].average}}/10 ({{enjoymentByPath[levelPaths[item.index]].ratings}})</small>
                             </button>
@@ -106,7 +106,7 @@ export default {
                     <ul class="stats">
                         <li>
                             <div class="type-title-sm">Points when completed</div>
-                            <p>{{ selectedImpossible ? "Unverified · no points" : score(selected + 1, 100, level.percentToQualify) }}</p>
+                            <p>{{ selectedImpossible ? "Unverified · no points" : score(selected + 1, 100, level.percentToQualify, platformer ? "platformer" : "normal") }}</p>
                         </li>
                         <li>
                             <div class="type-title-sm">ID</div>
@@ -375,7 +375,7 @@ export default {
         this.syncFavorite();
     },
     methods: {
-        async openUnverified() {
+        async openUnverified(scrollToBottom=true) {
             if(!this.impossibleLevels.length) {
                 this.impossibleLoading=true;this.impossibleError='';
                 try {
@@ -387,7 +387,7 @@ export default {
                 this.impossibleLoading=false;
             }
             this.showUnverified=true;
-            this.$nextTick(()=>{const el=document.querySelector('.page-list .list-container');if(el)el.scrollTop=el.scrollHeight;});
+            if(scrollToBottom)this.$nextTick(()=>{const el=document.querySelector('.page-list .list-container');if(el)el.scrollTop=el.scrollHeight;});
         },
         selectLevel(item){this.selectedImpossible=!!item.impossible;this.selected=item.index;this.levelHistory=[];this.historyLoaded=false;this.historyError='';this.syncFavorite();},
         isCompletedByUser(level) {
@@ -412,7 +412,7 @@ export default {
             }catch(e){this.historyError=e.message;}finally{this.historyLoading=false;}
         },
         resetFilters() { this.searchQuery = ""; this.sectionFilter = "all"; this.ratingFilter = "all"; this.enjoymentFilter = "all"; this.enjoymentSort = "rank"; },
-        ratingColor(level) { return ({ rate: "#808080", featured: "#e4c526", epic: "#ef922d", legendary: "#a855f7", mythic: "#08bfd4" })[getLevelRating(level, this.platformer)] || "#244f88"; },
-        ratingTextColor(level) { return ["featured", "epic", "mythic"].includes(getLevelRating(level, this.platformer)) ? "#171c27" : "#fff"; },
+        ratingColor(level, impossible=false, index=0) { const rating=impossible?getImpossibleRating(index,this.platformer):getLevelRating(level,this.platformer);return ({ rate: "#808080", featured: "#e4c526", epic: "#ef922d", legendary: "#a855f7", mythic: "#08bfd4" })[rating] || "#244f88"; },
+        ratingTextColor(level, impossible=false, index=0) { return ["featured", "epic", "mythic"].includes(impossible?getImpossibleRating(index,this.platformer):getLevelRating(level,this.platformer)) ? "#171c27" : "#fff"; },
     },
 };

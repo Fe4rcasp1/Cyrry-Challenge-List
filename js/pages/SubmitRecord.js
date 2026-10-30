@@ -1,6 +1,6 @@
 import { store } from '../main.js';
 export default {
- data:()=>({normalLevels:[],platformerLevels:[],records:[{key:1,listType:'normal',levelPath:'',levelSearch:'',videoUrl:'',enjoyment:'',percent:100}],nextKey:2,discordName:'',busy:false,error:'',notice:'',submissions:[]}),
+ data:()=>({normalLevels:[],platformerLevels:[],records:[{key:1,listType:'normal',levelPath:'',levelSearch:'',videoUrl:'',enjoyment:'',percent:100}],nextKey:2,discordName:'',busy:false,error:'',notice:'',submissions:[],proposals:[],proposal:{kind:'level',listType:'normal',levelName:'',levelId:'',creator:'',proofUrl:'',notes:''},proposalBusy:false,proposalNotice:'',proposalError:''}),
  computed:{store(){return store}},
  template:`
  <main class="ccl-hub ccl-record-submit">
@@ -25,6 +25,22 @@ export default {
    </form>
    <p v-if="error" role="alert" class="hub-auth-error">{{error}}</p><p v-if="notice" role="status">{{notice}}</p>
   </section>
+  <section v-if="store.user" class="hub-card">
+   <h2>Submit a level or verification</h2><p class="hub-muted">Suggest a new level or submit verification proof for staff review. Approval here does not automatically add a level to the list.</p>
+   <form @submit.prevent="submitProposal">
+    <label>Submission type</label><select v-model="proposal.kind"><option value="level">New level</option><option value="verification">Verification</option></select>
+    <label>List</label><select v-model="proposal.listType"><option value="normal">Classic</option><option value="platformer">Platformer</option><option value="impossible">Impossible</option><option value="impossible-platformer">Impossible platformer</option></select>
+    <label>Level name</label><input v-model.trim="proposal.levelName" maxlength="120" required placeholder="Level name" />
+    <label>Geometry Dash level ID (optional)</label><input v-model.trim="proposal.levelId" pattern="[0-9]*" maxlength="12" placeholder="Numeric ID" />
+    <label>Creator</label><input v-model.trim="proposal.creator" maxlength="64" required placeholder="Creator username" />
+    <label>Proof / verification link</label><input v-model.trim="proposal.proofUrl" type="url" required maxlength="500" placeholder="https://..." />
+    <label>Additional notes</label><textarea v-model.trim="proposal.notes" maxlength="1000" rows="3"></textarea>
+    <button class="hub-fav-button" :disabled="proposalBusy" type="submit">{{proposalBusy?'Sending…':'Submit proposal for review'}}</button>
+   </form>
+   <p v-if="proposalError" role="alert" class="hub-auth-error">{{proposalError}}</p><p v-if="proposalNotice" role="status">{{proposalNotice}}</p>
+   <h3>Your level & verification proposals</h3><p v-if="!proposals.length">No proposals yet.</p>
+   <div v-for="p in proposals" :key="p.id" class="hub-change"><strong>{{p.level_name}} · {{p.kind}}</strong><span>{{p.list_type}} · {{p.status}}</span></div>
+  </section>
   <section v-if="store.user" class="hub-card"><div class="admin-section-head"><h2>Record Submission Tracker</h2><button type="button" class="admin-btn" @click="loadSubmissions">Refresh status</button></div><p class="hub-muted">Track each submission from review to decision. Staff feedback appears here after review.</p>
    <p v-if="!submissions.length">No submissions yet.</p>
    <div v-for="s in submissions" :key="s.id" class="hub-change">
@@ -36,9 +52,11 @@ export default {
    </div>
   </section>
  </main>`,
- async mounted(){await this.loadLevels();if(store.user)await this.loadSubmissions();},
- watch:{'store.user'(user){if(user)this.loadSubmissions()}},
+ async mounted(){await this.loadLevels();if(store.user)await Promise.all([this.loadSubmissions(),this.loadProposals()]);},
+ watch:{'store.user'(user){if(user){this.loadSubmissions();this.loadProposals();}}},
  methods:{
+  async loadProposals(){try{const r=await fetch('/api/community/level-proposals',{credentials:'same-origin',cache:'no-store'});if(r.ok)this.proposals=(await r.json()).proposals||[];}catch(e){console.warn(e);}},
+  async submitProposal(){this.proposalError='';this.proposalNotice='';this.proposalBusy=true;try{const r=await fetch('/api/community/level-proposals',{method:'POST',credentials:'same-origin',headers:{'content-type':'application/json'},body:JSON.stringify(this.proposal)});const d=await r.json();if(!r.ok)throw Error(d.error||'Unable to submit');this.proposalNotice='Proposal sent to staff for review.';this.proposal={kind:'level',listType:'normal',levelName:'',levelId:'',creator:'',proofUrl:'',notes:''};await this.loadProposals();}catch(e){this.proposalError=e.message;}finally{this.proposalBusy=false;}},
   matchingLevels(record){const levels=record.listType==='normal'?this.normalLevels:this.platformerLevels;const query=(record.levelSearch||'').trim().toLowerCase();return levels.filter(level=>!query||level.replaceAll('_',' ').toLowerCase().includes(query)||level.toLowerCase().includes(query)||level===record.levelPath);},
   addRecord(){if(this.records.length<20)this.records.push({key:this.nextKey++,listType:'normal',levelPath:'',videoUrl:'',enjoyment:'',percent:100});},
   removeRecord(i){if(this.records.length>1)this.records.splice(i,1);},

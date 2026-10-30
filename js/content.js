@@ -1,5 +1,5 @@
 import { round, score } from './score.js';
-import { getLevelRating } from './ratings.js';
+import { getLevelRating, getImpossibleRating } from './ratings.js';
 
 /**
  * Path to directory containing `_list.json` and all levels
@@ -75,7 +75,7 @@ export async function fetchLeaderboard(listFile = "_list.json") {
         verified.push({
             rank: rank + 1,
             level: level.name,
-            score: score(rank + 1, 100, level.percentToQualify),
+            score: score(rank + 1, 100, level.percentToQualify, listFile === '_platformer.json' ? 'platformer' : 'normal'),
             link: level.verification,
         });
 
@@ -104,7 +104,7 @@ export async function fetchLeaderboard(listFile = "_list.json") {
                 rank: rank + 1,
                 level: level.name,
                 percent: record.percent,
-                score: score(rank + 1, record.percent, level.percentToQualify),
+                score: score(rank + 1, record.percent, level.percentToQualify, listFile === '_platformer.json' ? 'platformer' : 'normal'),
                 link: record.link,
             });
         });
@@ -130,39 +130,39 @@ export async function fetchLeaderboard(listFile = "_list.json") {
 
 /**
  * Creator leaderboard: creators earn 1–5 points per level based on its rating.
- * Uses the normal CCL level list, keeping it independent of platformer rankings.
+ * Combines normal, platformer, and impossible level creator ratings.
  */
 export async function fetchCreatorLeaderboard() {
-    const list = await fetchList();
-    if (!list) return [[], ['Failed to load the level list.']];
-    const creators = new Map();
-    const errors = [];
-    list.forEach(([level, err], rank) => {
-        if (!level) {
-            errors.push(err || `Level #${rank + 1}`);
-            return;
+    const [normal, platformer, impossible, impossiblePlatformer] = await Promise.all([
+        fetchList(), fetchList('_platformer.json'),
+        fetch('/api/impossible-levels').then(r=>{if(!r.ok)throw Error('Impossible list unavailable');return r.json();}).catch(e=>({levels:[],error:e.message})),
+        fetch('/api/impossible-levels?list=platformer').then(r=>{if(!r.ok)throw Error('Impossible platformer unavailable');return r.json();}).catch(e=>({levels:[],error:e.message}))
+    ]);
+    const creators = new Map(), errors = [];
+    const ratingPoints = {rate:1,featured:2,epic:3,legendary:4,mythic:5};
+    const sources = [
+        {items:(normal||[]).map(([level,error],rank)=>({level,error,rank})),type:'Normal',platformer:false,impossible:false},
+        {items:(platformer||[]).map(([level,error],rank)=>({level,error,rank})),type:'Platformer',platformer:true,impossible:false},
+        {items:(impossible.levels||[]).map((level,rank)=>({level,rank})),type:'Impossible',platformer:false,impossible:true},
+        {items:(impossiblePlatformer.levels||[]).map((level,rank)=>({level,rank})),type:'Impossible Platformer',platformer:true,impossible:true}
+    ];
+    if(!normal)errors.push('Normal list unavailable');
+    if(!platformer)errors.push('Platformer list unavailable');
+    if(impossible.error)errors.push(impossible.error);
+    if(impossiblePlatformer.error)errors.push(impossiblePlatformer.error);
+    for(const source of sources)for(const {level,error,rank} of source.items){
+        if(!level){errors.push(error||source.type+' #'+(rank+1));continue;}
+        const rating=source.impossible?getImpossibleRating(rank,source.platformer):getLevelRating(level,source.platformer);
+        const points=ratingPoints[rating]||0,seen=new Set();
+        for(const raw of Array.isArray(level.creators)?level.creators:[]){
+            if(typeof raw!=='string')continue;
+            const user=raw.trim(),key=user.toLowerCase();
+            if(!key||seen.has(key))continue;seen.add(key);
+            if(!creators.has(key))creators.set(key,{user,total:0,created:[]});
+            const entry=creators.get(key);
+            entry.total+=points;
+            entry.created.push({rank:rank+1,level:level.name,score:points,rating:rating||'Unrated',listType:source.type,link:level.verification||''});
         }
-        const rating = getLevelRating(level);
-        const ratingPoints = { rate: 1, featured: 2, epic: 3, legendary: 4, mythic: 5 };
-        const points = ratingPoints[rating] ?? 0;
-        const seen = new Set();
-        for (const raw of Array.isArray(level.creators) ? level.creators : []) {
-            if (typeof raw !== 'string') continue;
-            const user = raw.trim();
-            const key = user.toLocaleLowerCase();
-            if (!key || seen.has(key)) continue;
-            seen.add(key);
-            if (!creators.has(key)) creators.set(key, { user, total: 0, created: [] });
-            const entry = creators.get(key);
-            entry.total += points;
-            entry.created.push({
-                rank: rank + 1,
-                level: level.name,
-                score: points,
-                rating: rating || "Unrated",
-                link: level.verification || '',
-            });
-        }
-    });
-    return [[...creators.values()].sort((a, b) => b.total - a.total || a.user.localeCompare(b.user)), errors];
+    }
+    return [[...creators.values()].sort((a,b)=>b.total-a.total||a.user.localeCompare(b.user)),errors];
 }

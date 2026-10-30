@@ -12,7 +12,7 @@ async function api(path, method = 'GET', payload) {
 
 export default {
     data: () => ({
-        role: '', tab: 'claims', claims: [], users: [], levelFiles: [], audit: [], submissions: [], weeklyEntries: [], enjoymentRecords: [], enjoymentList:'normal', enjoymentLevel:'', enjoymentFiles:[], enjoymentUsername:'', enjoymentValue:5,
+        role: '', tab: 'claims', claims: [], levelProposals:[], users: [], levelFiles: [], audit: [], submissions: [], weeklyEntries: [], enjoymentRecords: [], enjoymentList:'normal', enjoymentLevel:'', enjoymentFiles:[], enjoymentUsername:'', enjoymentValue:5,
         listType: 'normal', levelPath: '', levelText: '', originalLevelText: '', backupStatus:null, backupLoading:false, reviewFeedback:{}, bulkSelected:[],bulkDrafts:{},bulkOriginals:{},bulkActive:'',bulkLoading:false,
         filter: '', userFilter: '', weeklyWeek: '', weeklyTitle: '', weeklyDescription: '', loading: true, busy: false, error: '', notice: ''
     }),
@@ -54,6 +54,7 @@ export default {
             Profile claims <span class="admin-tab-count">{{claims.length}}</span>
           </button>
           <button v-if="canReview" type="button" :class="{active:tab==='submissions'}" @click="switchTab('submissions')">Record reviews</button>
+          <button v-if="canReview" type="button" :class="{active:tab==='proposals'}" @click="switchTab('proposals')">Level / verification proposals</button>
           <button v-if="canEdit || canReview" type="button" :class="{active:tab==='enjoyment'}" @click="switchTab('enjoyment')">Enjoyment ratings</button>
           <button v-if="canReview" type="button" :class="{active:tab==='weekly'}" @click="switchTab('weekly')">Weekly challenges</button>
           <button v-if="canManage || role==='admin'" type="button" :class="{active:tab==='audit'}" @click="switchTab('audit')">Activity log</button>
@@ -94,6 +95,17 @@ export default {
             <a :href="s.video_url" target="_blank" rel="noopener noreferrer">Watch video evidence ↗</a>
             <label :for="'feedback-'+s.id">Staff feedback</label><textarea :id="'feedback-'+s.id" class="hub-search" v-model="reviewFeedback[s.id]" maxlength="1000" rows="2" placeholder="Optional approval notes or rejection reason"></textarea><div class="admin-actions"><button class="admin-btn admin-btn-approve" :disabled="busy" @click="reviewRecord(s,'approved')">Approve</button><button class="admin-btn admin-btn-reject" :disabled="busy" @click="reviewRecord(s,'rejected')">Reject</button></div>
           </article>
+        </section>
+        <section v-if="tab==='proposals' && canReview" class="hub-card admin-panel">
+         <div class="admin-section-head"><h2>Level & verification proposals</h2><button class="admin-btn" @click="loadLevelProposals" :disabled="busy">Refresh</button></div>
+         <p class="hub-muted">Review proof and decide whether to accept the suggestion. Approval records the decision but does not automatically change the level list; editors must make those changes separately.</p>
+         <p v-if="!levelProposals.length">No pending proposals.</p>
+         <article v-for="p in levelProposals" :key="p.id" class="admin-claim">
+          <h3>{{p.level_name}} · {{p.kind}}</h3><p>{{p.list_type}} · ID {{p.level_id||'Not provided'}} · Creator {{p.creator}}</p>
+          <p>Submitted by {{p.account_username}} on {{p.created_at}}</p><p v-if="p.notes">{{p.notes}}</p>
+          <a :href="p.proof_url" target="_blank" rel="noopener noreferrer">View proof ↗</a>
+          <div class="admin-actions"><button class="admin-btn admin-btn-approve" :disabled="busy" @click="reviewLevelProposal(p,'approved')">Approve</button><button class="admin-btn admin-btn-reject" :disabled="busy" @click="reviewLevelProposal(p,'rejected')">Reject</button></div>
+         </article>
         </section>
         <section v-if="tab==='enjoyment' && (canEdit || canReview)" class="hub-card admin-panel">
           <h2>Manage enjoyment ratings</h2><p class="hub-muted">Add or change a 0–10 enjoyment rating for any existing level record. Changes update the level and Community Enjoyment Rankings immediately after saving.</p>
@@ -244,10 +256,13 @@ export default {
             if (tab === 'levels') await this.loadFiles();
             if (tab === 'users') await this.loadUsers();
             if (tab === 'submissions') await this.loadSubmissions();
+            if (tab === 'proposals') await this.loadLevelProposals();
             if (tab === 'enjoyment') await this.loadEnjoymentFiles();
             if (tab === 'weekly') { await Promise.all([this.loadWeeklyEntries(),this.loadFiles()]); }
             if (tab === 'audit') await this.loadAudit();
         },
+        async loadLevelProposals(){await this.run(async()=>{this.levelProposals=(await api('/api/admin/level-proposals')).proposals||[];});},
+        async reviewLevelProposal(p,status){if(!confirm(status+' proposal for '+p.level_name+'?'))return;await this.run(async()=>{const r=await api('/api/admin/level-proposals/review','POST',{id:p.id,status});this.levelProposals=this.levelProposals.filter(x=>x.id!==p.id);this.notice=r.notice||'Proposal '+status+'.';});},
         async loadClaims() { await this.run(async () => { this.claims = (await api('/api/admin/claims')).claims || []; }); },
         async review(c, status) {
             if (!confirm((status === 'approved' ? 'Approve ' : 'Reject ') + c.leaderboard_username + '?')) return;

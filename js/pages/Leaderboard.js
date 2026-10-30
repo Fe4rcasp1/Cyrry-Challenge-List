@@ -36,7 +36,7 @@ export default {
                 <div class="leaderboard-metrics" v-if="leaderboardType!=='creators'">
                   <label>Rank by <select v-model="metric" @change="applyMetric">
                     <option value="points">Total points</option><option value="completed">Completions</option>
-                    <option value="verified">Verifications</option><option value="progressed">Progress records</option>
+                    <option value="verified">Verifications</option><option v-if="leaderboardType !== 'platformer'" value="progressed">Progress records</option>
                     <option value="hardest">Hardest clear</option><option value="top10">Top 10 clears</option>
                   </select></label>
                   <button v-if="isStaff && leaderboardType === 'points'" :disabled="snapshotBusy" @click="saveSnapshot">Save ranking snapshot</button>
@@ -79,7 +79,7 @@ export default {
                             <table class="table">
                                 <tr v-for="created in entry.created" :key="created.rank">
                                     <td class="rank"><p>#{{ created.rank }}</p></td>
-                                    <td class="level"><div class="creator-level-line"><a v-if="created.link" class="type-label-lg" :href="created.link" target="_blank" rel="noopener noreferrer">{{ created.level }}</a><span v-else class="type-label-lg">{{ created.level }}</span><span v-if="created.rating" class="creator-rating" :class="'rating-' + created.rating.toLowerCase()">{{ ratingLabel(created.rating) }}</span></div></td>
+                                    <td class="level"><div class="creator-level-line"><a v-if="created.link" class="type-label-lg" :href="created.link" target="_blank" rel="noopener noreferrer">{{ created.level }} <small v-if="created.listType">({{created.listType}})</small></a><span v-else class="type-label-lg">{{ created.level }}</span><span v-if="created.rating" class="creator-rating" :class="'rating-' + created.rating.toLowerCase()">{{ ratingLabel(created.rating) }}</span></div></td>
                                     <td class="score"><p>+{{ created.score }}</p></td>
                                 </tr>
                             </table>
@@ -196,6 +196,7 @@ export default {
             if (this.leaderboardType === type) return;
             this.leaderboardType = type;
             this.leaderboard = type === "creators" ? this.creatorLeaderboard : type === "platformer" ? this.platformerLeaderboard : this.pointsLeaderboard;
+            if(type==='platformer'&&this.metric==='progressed')this.metric='points';
             if(type!=="creators")this.applyMetric();
             this.err = type === "creators" ? this.creatorErrors : type === "platformer" ? this.platformerErrors : this.pointsErrors;
             this.selected = 0;

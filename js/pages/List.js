@@ -138,7 +138,7 @@ export default {
                                 <p>{{ record.percent }}%</p>
                             </td>
                             <td class="user">
-                                <a :href="record.link" target="_blank" class="type-label-lg">{{ record.user }}</a>
+                                <a :href="record.link" target="_blank" rel="noopener noreferrer" class="type-label-lg">{{ record.user }}</a><small v-if="record.enjoyment !== null && record.enjoyment !== undefined && record.enjoyment !== ''" class="ccl-record-enjoyment">★ {{record.enjoyment}}/10 enjoyment</small>
                             </td>
                             <td class="mobile">
                                 <img v-if="record.mobile" :src="\`/assets/phone-landscape\${store.dark ? '-dark' : ''}.svg\`" alt="Mobile">
@@ -329,6 +329,7 @@ export default {
         },
     },
     watch: {
+        sectionFilter(value) { if(value === "unverified")this.openUnverified(false); },
         selected() { this.syncFavorite(); }
     },
     async mounted() {

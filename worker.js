@@ -246,6 +246,19 @@ async function handle(request, env) {
    catch { return json({ error: 'A claim for that username has already been submitted.' }, 409); }
    return json({ ok:true, status:'pending' }, 201);
  }
+ if(path==='/api/community/level-proposals'&&request.method==='POST'){
+  const user=await currentUser(request,env.DB);if(!user)return json({error:'Log in to submit.'},401);
+  const d=await body(request),kind=String(d.kind||''),type=String(d.listType||''),name=String(d.levelName||'').trim(),id=String(d.levelId||'').trim(),creator=String(d.creator||'').trim(),proof=String(d.proofUrl||'').trim(),notes=String(d.notes||'').trim();
+  if(!['level','verification'].includes(kind)||!['normal','platformer','impossible','impossible-platformer'].includes(type)||name.length<1||name.length>120||creator.length<1||creator.length>64||!/^[0-9]{0,12}$/.test(id)||notes.length>1000||proof.length>500)return json({error:'Invalid proposal details.'},400);
+  try{const u=new URL(proof);if(u.protocol!=='https:'||!u.hostname.includes('.'))throw Error();}catch{return json({error:'Use a public HTTPS proof link.'},400);}
+  await env.DB.prepare('INSERT INTO ccl_level_proposals(id,user_id,kind,list_type,level_name,level_id,creator,proof_url,notes) VALUES(?,?,?,?,?,?,?,?,?)').bind(crypto.randomUUID(),user.id,kind,type,name,id,creator,proof,notes).run();
+  return json({ok:true},201);
+ }
+ if(path==='/api/community/level-proposals'&&request.method==='GET'){
+  const user=await currentUser(request,env.DB);if(!user)return json({error:'Log in first.'},401);
+  const rows=await env.DB.prepare('SELECT id,kind,list_type,level_name,level_id,creator,proof_url,notes,status,created_at,reviewed_at FROM ccl_level_proposals WHERE user_id=? ORDER BY created_at DESC LIMIT 100').bind(user.id).all();
+  return json({proposals:rows.results});
+ }
  // All staff permissions are resolved from D1 on every request, never trusted from client state.
  if (path.startsWith('/api/admin/')) {
    const user = await currentUser(request, env.DB);
@@ -273,6 +286,19 @@ async function handle(request, env) {
        if(claim)await env.DB.prepare('INSERT INTO notifications(id,user_id,kind,message,link) VALUES(?,?,?,?,?)').bind(crypto.randomUUID(),claim.user_id,'claim','Your profile claim for '+claim.leaderboard_username+' was '+data.status+'.','/#/account').run();
        return json({ok:true});
      } catch(e) { console.error(e); return json({error:'Could not review claim; it may already be owned.'},409); }
+   }
+   if(path==='/api/admin/level-proposals'&&request.method==='GET'){
+    if(!canReview)return json({error:'Not permitted.'},403);
+    const rows=await env.DB.prepare("SELECT p.*,u.username AS account_username FROM ccl_level_proposals p JOIN users u ON u.id=p.user_id WHERE p.status='pending' ORDER BY p.created_at ASC LIMIT 200").all();
+    return json({proposals:rows.results});
+   }
+   if(path==='/api/admin/level-proposals/review'&&request.method==='POST'){
+    if(!canReview)return json({error:'Not permitted.'},403);
+    const d=await body(request);if(!['approved','rejected'].includes(d.status)||typeof d.id!=='string')return json({error:'Invalid review.'},400);
+    const result=await env.DB.prepare("UPDATE ccl_level_proposals SET status=?,reviewer_id=?,reviewed_at=CURRENT_TIMESTAMP WHERE id=? AND status='pending' RETURNING user_id,level_name,kind").bind(d.status,user.id,d.id).first();
+    if(!result)return json({error:'Proposal already reviewed or missing.'},409);
+    await env.DB.prepare('INSERT INTO notifications(id,user_id,kind,message,link) VALUES(?,?,?,?,?)').bind(crypto.randomUUID(),result.user_id,'level_proposal','Your '+result.kind+' proposal for '+result.level_name+' was '+d.status+'.','/#/submit-record').run();
+    return json({ok:true,notice:'Review recorded. Accepted proposals require a staff member to manually add/update the list.'});
    }
    if (path === '/api/admin/users' && request.method === 'GET') {
      if (role !== 'owner') return json({error:'Owner role required.'},403);

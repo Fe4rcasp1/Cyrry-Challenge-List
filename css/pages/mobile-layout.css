@@ -61,3 +61,10 @@
  .page-leaderboard .board-container>.search-panel{position:sticky!important;top:0!important;z-index:100!important;flex:0 0 auto;margin:0!important;padding:.85rem .7rem 1rem!important;background:var(--color-background)!important;border-radius:0 0 .8rem .8rem;box-shadow:0 5px 14px rgba(0,0,0,.35)!important}
  .page-leaderboard .board-container>.board{position:relative;z-index:0}
 }
+
+/* Hard boundary: the results scroll INSIDE a clipped area, never behind/above search. */
+.page-leaderboard .board-container{display:flex!important;flex-direction:column!important;min-height:0;overflow:hidden!important;isolation:isolate}
+.page-leaderboard .board-container>.search-panel{position:relative!important;top:auto!important;z-index:2!important;flex:0 0 auto!important;background:var(--color-background)!important;margin:0!important}
+.page-leaderboard .board-container>.leaderboard-results-scroll{display:block;flex:1 1 auto;min-height:0;overflow-y:auto!important;overflow-x:auto!important;overscroll-behavior:contain;position:relative;z-index:0}
+.page-leaderboard .board-container>.leaderboard-results-scroll>.board{width:100%;margin:0;position:relative}
+@media(max-width:900px){.page-leaderboard .board-container{height:min(70dvh,680px)!important;max-height:none!important;overflow:hidden!important;padding-top:0!important}.page-leaderboard .board-container>.search-panel{position:relative!important;top:auto!important;box-shadow:0 3px 10px rgba(0,0,0,.2)!important}.page-leaderboard .board-container>.leaderboard-results-scroll{max-height:none!important}}

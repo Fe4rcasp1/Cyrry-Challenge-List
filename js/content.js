@@ -94,7 +94,7 @@ export async function fetchLeaderboard(listFile = "_list.json") {
                 completed.push({
                     rank: rank + 1,
                     level: level.name,
-                    score: score(rank + 1, 100, level.percentToQualify),
+                    score: score(rank + 1, 100, level.percentToQualify, listFile === '_platformer.json' ? 'platformer' : 'normal'),
                     link: record.link,
                 });
                 return;

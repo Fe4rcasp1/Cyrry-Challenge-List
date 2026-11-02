@@ -16,3 +16,7 @@ header.dark .header-quicklinks a{background:#254663!important;color:#fff!importa
 .ccl-record-enjoyment{display:block;font-size:.76rem;margin-top:.2rem;opacity:.85}
 .ccl-hub:not(.dark) .profile-header-actions a{color:#14263c;background:#e6effc;border-radius:8px;padding:.4rem .7rem}
 .ccl-hub.dark .profile-header-actions a{color:#fff}
+
+/* Give badge descriptions and Hub dashboard labels a little breathing room. */
+.ccl-hub .hub-badge small{margin-top:.35rem}
+.ccl-hub .hub-card:has(> h2:first-child) .hub-stats span{margin-top:.3rem}

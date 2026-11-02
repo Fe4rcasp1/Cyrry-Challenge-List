@@ -1,0 +1,48 @@
+/* Responsive layout repairs. Loaded last so legacy desktop styles cannot overlap mobile UI. */
+@media (max-width: 900px) {
+ html,body{width:100%;max-width:100%;min-width:0;overflow-x:hidden}
+ *,*::before,*::after{box-sizing:border-box}
+ body{height:auto;min-height:100dvh;display:block}
+ header,header.dark{position:relative;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;width:100%;height:auto;min-height:0;padding:1rem clamp(.75rem,3vw,1.25rem);gap:.8rem;overflow:visible}
+ header .logo{width:100%;min-width:0;align-self:auto;justify-self:auto;align-items:flex-start;display:flex;flex-direction:column;gap:.55rem}
+ header .logo h2{margin:0;line-height:1.2}
+ header .header-quicklinks{display:flex;gap:.5rem;flex-wrap:wrap;width:100%}
+ header .header-quicklinks a{display:inline-flex;align-items:center;min-height:36px;padding:.45rem .65rem;border-radius:.5rem;max-width:100%;font-size:.75rem}
+ header .nav{display:flex;flex-direction:row;align-items:center;justify-content:flex-start;align-content:flex-start;flex:0 0 auto;width:100%;min-width:0;max-width:100%;gap:.35rem;flex-wrap:wrap}
+ header .nav .nav__tab{display:inline-flex;align-items:center;justify-content:center;min-width:0;min-height:40px;padding:.55rem .7rem;border-radius:.65rem;white-space:normal;line-height:1.3;text-align:center}
+ header .nav .nav__tab .type-label-lg{font-size:.8rem;line-height:1.25;white-space:normal}
+ header .nav .nav__actions{display:flex;align-items:center;justify-content:flex-start;gap:.4rem;flex:0 0 100%;width:100%;margin:0;padding:.25rem 0 0;min-width:0}
+ header .nav .nav__actions .nav__icon{display:inline-flex;flex:0 0 42px;width:42px;height:42px;padding:0;align-items:center;justify-content:center}
+ main,main.dark{display:block;width:100%;max-width:100%;min-width:0;height:auto;min-height:0;overflow:visible;flex:none}
+ main>div{min-width:0;max-width:100%}
+ .ccl-hub{height:auto;min-height:0;overflow:visible;padding:1rem}
+ .ccl-hub>*{min-width:0;max-width:100%}
+ .ccl-hub .hub-card,.ccl-hub .hub-head{min-width:0;max-width:100%;overflow-wrap:anywhere}
+ .ccl-hub .hub-stats{grid-template-columns:repeat(auto-fit,minmax(min(100%,135px),1fr))}
+ .ccl-hub .hub-links,.ccl-hub .hub-badges,.ccl-hub .hub-player-grid,.ccl-hub .hub-favorites{grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr))}
+ .ccl-hub form,.ccl-hub form input,.ccl-hub form select,.ccl-hub form textarea{max-width:100%;min-width:0}
+ .ccl-hub form{width:100%}
+ .ccl-admin .admin-tabs{display:flex;justify-content:center;max-width:100%;width:100%;margin:0 auto 1rem;flex-wrap:wrap;gap:.3rem}
+ .ccl-admin .admin-tabs button{flex:0 1 auto;min-width:0;white-space:normal;text-align:center;padding:.65rem .7rem}
+ .ccl-admin .admin-section-head,.ccl-hub .admin-section-head{flex-wrap:wrap;gap:.6rem}
+ .page-list .list-container,.page-list .level-container,.page-list .meta-container{min-width:0;width:100%;max-width:100%;overflow:visible}
+ .page-list .level-container .level{max-width:100%;min-width:0}
+ .page-list .level-container .level .video{max-width:100%}
+ .page-list .level-filters{max-width:100%}
+ .page-leaderboard-container,.page-leaderboard,.page-leaderboard .board-container,.page-leaderboard .player-container{min-width:0;max-width:100%;width:100%}
+ .page-leaderboard{display:flex;flex-direction:column;height:auto;overflow:visible}
+ .page-leaderboard .leaderboard-switcher,.page-leaderboard .leaderboard-metrics{flex-wrap:wrap;max-width:100%}
+ .page-leaderboard .board-container,.page-leaderboard .player-container{overflow:visible}
+ .page-roulette,.page-roulette .sidebar,.page-roulette .levels-container{max-width:100%;min-width:0}
+}
+@media (max-width:480px){
+ header .nav .nav__tab{padding:.48rem .55rem;min-height:38px}
+ header .nav .nav__tab .type-label-lg{font-size:.73rem}
+ .ccl-hub{padding:.75rem}
+ .ccl-hub .hub-card{padding:1rem}
+ .ccl-admin .admin-tabs button{font-size:.75rem;padding:.55rem .6rem}
+ .ccl-hub .hub-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .ccl-hub .hub-stats div{padding:.8rem;min-width:0}
+ .ccl-hub .hub-stats strong{font-size:1.2rem}
+ .page-list .list-container,.page-list .level-container,.page-list .meta-container{padding:.75rem}
+}

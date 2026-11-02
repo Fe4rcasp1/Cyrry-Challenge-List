@@ -67,8 +67,8 @@ export default {
                 </div>
                 <p v-if="list.length && !filteredLevels.length" class="search-empty">No levels match these filters.</p>
                 <table class="list" v-if="list">
-                    <tr class="section-header">
-                        <td colspan="2" class="type-label-lg">{{ platformer ? "Platformer List" : "Main List" }}</td>
+                    <tr v-if="sectionFilter !== 'unverified' && filteredLevels.length" class="section-header">
+                        <td colspan="2" class="type-label-lg">{{ sectionFilter === 'extended' ? 'Extended List' : sectionFilter === 'main' ? 'Main List' : platformer ? 'Platformer List' : 'Main List' }}</td>
                     </tr>
                     <template v-for="item in filteredLevels" :key="item.impossible ? 'unverified-' + item.index : item.index">
                         <tr v-if="item.impossible && (!filteredLevels.some(x => x.impossible && x.index < item.index))" class="section-header"><td colspan="2" class="type-label-lg">Unverified</td></tr>

@@ -1,7 +1,7 @@
 import { store } from '../main.js';
 export default {
- data:()=>({normalLevels:[],platformerLevels:[],records:[{key:1,listType:'normal',levelPath:'',levelSearch:'',videoUrl:'',enjoyment:'',percent:100}],nextKey:2,discordName:'',busy:false,error:'',notice:'',submissions:[],proposals:[],proposal:{kind:'level',listType:'normal',levelName:'',levelId:'',creator:'',proofUrl:'',notes:''},proposalBusy:false,proposalNotice:'',proposalError:''}),
- computed:{store(){return store}},
+ data:()=>({normalLevels:[],platformerLevels:[],records:[{key:1,listType:'normal',levelPath:'',selectedLevels:[],levelSearch:'',videoUrl:'',enjoyment:'',percent:100}],nextKey:2,discordName:'',busy:false,error:'',notice:'',submissions:[],proposals:[],proposal:{kind:'level',listType:'normal',levelName:'',levelId:'',creator:'',proofUrl:'',notes:''},proposalBusy:false,proposalNotice:'',proposalError:''}),
+ computed:{store(){return store},totalSelectedLevels(){return this.records.reduce((n,r)=>n+r.selectedLevels.length,0)}},
  template:`
  <main class="ccl-hub ccl-record-submit">
   <section class="hub-head"><h1>Submit a level record</h1><p>Send your completion for staff review. Accepted records appear on the CCL list.</p></section>
@@ -10,18 +10,25 @@ export default {
    <p v-else-if="!store.profileUsername">An <router-link to="/account">approved player profile claim</router-link> is required before submitting.</p>
    <form v-else @submit.prevent="submit">
     <label for="record-discord">Discord username (shared by all records)</label><input id="record-discord" v-model.trim="discordName" required maxlength="64" placeholder="Your Discord username" />
-    <p class="hub-muted">Submitting as {{store.profileUsername}}. Add up to 20 records in one batch.</p>
+    <p class="hub-muted">Submitting as {{store.profileUsername}}. Select up to 20 levels in one batch; share the same proof and completion details across selected levels.</p>
     <div v-for="(record,i) in records" :key="record.key" class="ccl-batch-record">
      <div class="admin-section-head"><h3>Record {{i+1}}</h3><button v-if="records.length>1" type="button" class="admin-btn" :disabled="busy" @click="removeRecord(i)">Remove</button></div>
-     <label :for="'record-list-'+record.key">List</label><select :id="'record-list-'+record.key" v-model="record.listType" @change="record.levelPath='';record.levelSearch=''"><option value="normal">Normal CCL</option><option value="platformer">Platformer CCL</option></select>
+     <label :for="'record-list-'+record.key">List</label><select :id="'record-list-'+record.key" v-model="record.listType" @change="record.levelPath='';record.selectedLevels=[];record.levelSearch=''"><option value="normal">Normal CCL</option><option value="platformer">Platformer CCL</option></select>
      <label :for="'record-search-'+record.key">Search levels</label><input :id="'record-search-'+record.key" v-model="record.levelSearch" type="search" autocomplete="off" placeholder="Type a level name…" />
-     <label :for="'record-level-'+record.key">Level</label><select :id="'record-level-'+record.key" v-model="record.levelPath" required><option value="">Select a level</option><option v-for="level in matchingLevels(record)" :key="level" :value="level">{{level.replaceAll('_',' ')}}</option></select>
-     <p v-if="record.levelSearch && !matchingLevels(record).length" class="hub-muted">No matching levels found.</p>
+     <label :for="'record-level-'+record.key">Levels (select multiple)</label>
+     <div class="ccl-multi-level-picker" :id="'record-level-'+record.key" role="group" aria-label="Select levels for this record">
+      <label v-for="level in matchingLevels(record)" :key="level" class="ccl-multi-level-option">
+       <input type="checkbox" :checked="record.selectedLevels.includes(level)" :disabled="busy || (!record.selectedLevels.includes(level) && totalSelectedLevels>=20)" @change="toggleLevel(record,level,$event.target.checked)" />
+       <span>{{level.replaceAll('_',' ')}}</span>
+      </label>
+      <p v-if="record.levelSearch && !matchingLevels(record).length" class="hub-muted">No matching levels found.</p>
+     </div>
+     <p class="hub-muted">{{record.selectedLevels.length}} level{{record.selectedLevels.length===1?'':'s'}} selected · {{totalSelectedLevels}}/20 total. Video, enjoyment, and percentage apply to every selected level in this group.</p>
      <label :for="'record-video-'+record.key">Video proof</label><input :id="'record-video-'+record.key" v-model.trim="record.videoUrl" type="url" required maxlength="500" placeholder="https://youtube.com/..." />
      <label :for="'record-enjoyment-'+record.key">Enjoyment (0–10)</label><input :id="'record-enjoyment-'+record.key" v-model.number="record.enjoyment" type="number" min="0" max="10" step="1" required />
      <label :for="'record-percent-'+record.key">Completion percentage</label><input :id="'record-percent-'+record.key" v-model.number="record.percent" type="number" min="1" max="100" required />
     </div>
-    <div class="admin-actions"><button type="button" class="admin-btn" :disabled="busy||records.length>=20" @click="addRecord">+ Add another record</button><button type="submit" class="hub-fav-button" :disabled="busy">{{busy?'Submitting…':'Submit '+records.length+' record'+(records.length===1?'':'s')+' for review'}}</button></div>
+    <div class="admin-actions"><button type="button" class="admin-btn" :disabled="busy||records.length>=20||totalSelectedLevels>=20" @click="addRecord">+ Add another record</button><button type="submit" class="hub-fav-button" :disabled="busy">{{busy?'Submitting…':'Submit '+totalSelectedLevels+' record'+(totalSelectedLevels===1?'':'s')+' for review'}}</button></div>
    </form>
    <p v-if="error" role="alert" class="hub-auth-error">{{error}}</p><p v-if="notice" role="status">{{notice}}</p>
   </section>
@@ -57,21 +64,25 @@ export default {
  methods:{
   async loadProposals(){try{const r=await fetch('/api/community/level-proposals',{credentials:'same-origin',cache:'no-store'});if(r.ok)this.proposals=(await r.json()).proposals||[];}catch(e){console.warn(e);}},
   async submitProposal(){this.proposalError='';this.proposalNotice='';this.proposalBusy=true;try{const r=await fetch('/api/community/level-proposals',{method:'POST',credentials:'same-origin',headers:{'content-type':'application/json'},body:JSON.stringify(this.proposal)});const d=await r.json();if(!r.ok)throw Error(d.error||'Unable to submit');this.proposalNotice='Proposal sent to staff for review.';this.proposal={kind:'level',listType:'normal',levelName:'',levelId:'',creator:'',proofUrl:'',notes:''};await this.loadProposals();}catch(e){this.proposalError=e.message;}finally{this.proposalBusy=false;}},
+  toggleLevel(record,level,checked){if(checked){if(this.totalSelectedLevels>=20||record.selectedLevels.includes(level))return;record.selectedLevels.push(level);}else record.selectedLevels=record.selectedLevels.filter(x=>x!==level);},
   matchingLevels(record){const levels=record.listType==='normal'?this.normalLevels:this.platformerLevels;const query=(record.levelSearch||'').trim().toLowerCase();return levels.filter(level=>!query||level.replaceAll('_',' ').toLowerCase().includes(query)||level.toLowerCase().includes(query)||level===record.levelPath);},
-  addRecord(){if(this.records.length<20)this.records.push({key:this.nextKey++,listType:'normal',levelPath:'',videoUrl:'',enjoyment:'',percent:100});},
+  addRecord(){if(this.records.length<20)this.records.push({key:this.nextKey++,listType:'normal',levelPath:'',selectedLevels:[],levelSearch:'',videoUrl:'',enjoyment:'',percent:100});},
   removeRecord(i){if(this.records.length>1)this.records.splice(i,1);},
   async loadLevels(){try{const responses=await Promise.all(['/data/_list.json','/data/_platformer.json'].map(x=>fetch(x)));if(responses.some(r=>!r.ok))throw Error('Unable to load level lists');[this.normalLevels,this.platformerLevels]=await Promise.all(responses.map(r=>r.json()));}catch(e){this.error=e.message;}},
   async loadSubmissions(){try{const r=await fetch('/api/community/submissions',{credentials:'same-origin',cache:'no-store'});if(r.ok)this.submissions=(await r.json()).submissions||[];}catch(e){console.warn(e);}},
   async submit(){
    this.error='';this.notice='';
-   if(new Set(this.records.map(r=>r.listType+':'+r.levelPath)).size!==this.records.length){this.error='Each level can only appear once in a batch.';return;}
+   const selected=this.records.flatMap(r=>r.selectedLevels.map(levelPath=>({...r,levelPath})));
+   if(!selected.length){this.error='Select at least one level.';return;}
+   if(selected.length>20){this.error='Maximum 20 levels per submission.';return;}
+   if(new Set(selected.map(r=>r.listType+':'+r.levelPath)).size!==selected.length){this.error='Each level can only appear once in a batch.';return;}
    this.busy=true;
    try{
-    const payload=this.records.map(r=>({listType:r.listType,levelPath:r.levelPath,videoUrl:r.videoUrl,enjoyment:Number(r.enjoyment),percent:Number(r.percent),discordName:this.discordName,username:store.profileUsername}));
+    const payload=selected.map(r=>({listType:r.listType,levelPath:r.levelPath,videoUrl:r.videoUrl,enjoyment:Number(r.enjoyment),percent:Number(r.percent),discordName:this.discordName,username:store.profileUsername}));
     const response=await fetch('/api/community/submissions/bulk',{method:'POST',credentials:'same-origin',headers:{'content-type':'application/json'},body:JSON.stringify({records:payload})});
     const data=await response.json();if(!response.ok)throw Error(data.error||'Submission failed');
     this.notice=data.submitted+' record'+(data.submitted===1?'':'s')+' submitted for review!';
-    this.records=[{key:this.nextKey++,listType:'normal',levelPath:'',videoUrl:'',enjoyment:'',percent:100}];
+    this.records=[{key:this.nextKey++,listType:'normal',levelPath:'',selectedLevels:[],levelSearch:'',videoUrl:'',enjoyment:'',percent:100}];
     await this.loadSubmissions();
    }catch(e){this.error=e.message;}finally{this.busy=false;}
   }

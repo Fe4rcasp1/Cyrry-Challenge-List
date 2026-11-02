@@ -12,11 +12,13 @@ async function api(path, method = 'GET', payload) {
 
 export default {
     data: () => ({
-        role: '', tab: 'claims', claims: [], levelProposals:[], users: [], levelFiles: [], audit: [], submissions: [], weeklyEntries: [], enjoymentRecords: [], enjoymentList:'normal', enjoymentLevel:'', enjoymentFiles:[], enjoymentUsername:'', enjoymentValue:5,
+        role: '', tab: 'claims', badgeUsername:'',badgeId:'first',badgeOverrides:[], claims: [], levelProposals:[], users: [], levelFiles: [], audit: [], submissions: [], weeklyEntries: [], enjoymentRecords: [], enjoymentList:'normal', enjoymentLevel:'', enjoymentFiles:[], enjoymentUsername:'', enjoymentValue:5,
         listType: 'normal', levelPath: '', levelText: '', originalLevelText: '', backupStatus:null, backupLoading:false, reviewFeedback:{}, bulkSelected:[],bulkDrafts:{},bulkOriginals:{},bulkActive:'',bulkLoading:false,
         filter: '', userFilter: '', weeklyWeek: '', weeklyTitle: '', weeklyDescription: '', loading: true, busy: false, error: '', notice: ''
     }),
     computed: {
+        badgeChoices(){return [['first','First Clear'],['five','Getting Started'],['ten','Challenge Veteran'],['twentyfive','Dedicated Dasher'],['fifty','Challenge Legend'],['hundred','Centurion'],['verify','Verifier'],['verify5','Trusted Verifier'],['verify10','Verification Machine'],['top50','Top 50 Conqueror'],['top25','Top 25 Conqueror'],['top10','Top 10 Conqueror'],['top1clear','Summit Slayer'],['progress','Making Progress'],['progress5','Never Give Up'],['points100','Point Collector'],['points500','Point Hunter'],['points1000','Point Master'],['rank100','On the Board'],['rank50','Rising Star'],['rank10','Elite Player'],['rank1','Number One'],['creator','Level Creator'],['creator5','Prolific Creator'],['creator10','Master Builder'],['featured','Featured Creator'],['epic','Epic Creator'],['legendary','Legendary Creator'],['mythic','Mythic Creator'],['creatorpoints','Creative Genius']].map(([id,name])=>({id,name}));},
+        badgeOverrideLabel(){const x=this.badgeOverrides.find(b=>b.badge_id===this.badgeId);return !x?'Automatic':x.earned?'Manually granted':'Manually revoked';},
         canReview() { return ['owner', 'admin', 'moderator'].includes(this.role); },
         canEdit() { return ['owner', 'admin', 'editor'].includes(this.role); },
         canManage() { return this.role === 'owner'; },
@@ -56,6 +58,7 @@ export default {
           <button v-if="canReview" type="button" :class="{active:tab==='submissions'}" @click="switchTab('submissions')">Record reviews</button>
           <button v-if="canReview" type="button" :class="{active:tab==='proposals'}" @click="switchTab('proposals')">Level / verification proposals</button>
           <button v-if="canEdit || canReview" type="button" :class="{active:tab==='enjoyment'}" @click="switchTab('enjoyment')">Enjoyment ratings</button>
+          <button v-if="role==='owner'||role==='admin'" type="button" :class="{active:tab==='badges'}" @click="switchTab('badges')">Profile achievements</button>
           <button v-if="canReview" type="button" :class="{active:tab==='weekly'}" @click="switchTab('weekly')">Weekly challenges</button>
           <button v-if="canManage || role==='admin'" type="button" :class="{active:tab==='audit'}" @click="switchTab('audit')">Activity log</button>
           <button v-if="canEdit" type="button" :class="{active:tab==='levels'}" @click="switchTab('levels')">Level editor</button>
@@ -121,6 +124,20 @@ export default {
               </form>
             </template>
           </div>
+        </section>
+        <section v-if="tab==='badges' && (role==='owner'||role==='admin')" class="hub-card admin-panel">
+          <h2>Manage profile achievements</h2>
+          <p class="hub-muted">Grant or revoke a badge by leaderboard username. Reset restores the automatically calculated result; changes do not modify leaderboard points.</p>
+          <label>Player username</label><input class="hub-search" v-model.trim="badgeUsername" maxlength="32" placeholder="Exact leaderboard username" />
+          <button class="admin-btn" type="button" :disabled="busy||!badgeUsername" @click="loadBadgeOverrides">Load player overrides</button>
+          <label>Achievement</label><select class="hub-search" v-model="badgeId"><option v-for="b in badgeChoices" :key="b.id" :value="b.id">{{b.name}}</option></select>
+          <p class="hub-muted">Current override: {{badgeOverrideLabel}}</p>
+          <div class="admin-actions">
+           <button class="admin-btn" :disabled="busy||!badgeUsername" @click="changeBadge('grant')">Grant</button>
+           <button class="admin-btn" :disabled="busy||!badgeUsername" @click="changeBadge('revoke')">Revoke</button>
+           <button class="admin-btn" :disabled="busy||!badgeUsername" @click="changeBadge('reset')">Reset to automatic</button>
+          </div>
+          <div v-for="b in badgeOverrides" :key="b.badge_id" class="hub-change"><strong>{{badgeChoices.find(x=>x.id===b.badge_id)?.name||b.badge_id}}</strong><span>{{b.earned?'Granted':'Revoked'}}</span></div>
         </section>
         <section v-if="tab==='weekly' && canReview" class="hub-card admin-panel">
           <h2>Weekly challenge entries</h2><p v-if="!weeklyEntries.length" class="admin-empty">No pending entries.</p>
@@ -252,6 +269,7 @@ export default {
             if (tab === this.tab) return;
             if (this.hasUnsavedChanges && !confirm('Discard unsaved level changes?')) return;
             this.tab = tab;
+            if (tab === 'badges' && this.badgeUsername) await this.loadBadgeOverrides();
             if (tab === 'claims') await this.loadClaims();
             if (tab === 'levels') await this.loadFiles();
             if (tab === 'users') await this.loadUsers();
@@ -261,6 +279,8 @@ export default {
             if (tab === 'weekly') { await Promise.all([this.loadWeeklyEntries(),this.loadFiles()]); }
             if (tab === 'audit') await this.loadAudit();
         },
+        async loadBadgeOverrides(){await this.run(async()=>{this.badgeOverrides=(await api('/api/admin/profile-badges?username='+encodeURIComponent(this.badgeUsername))).overrides||[];});},
+        async changeBadge(action){if(!confirm(action+' '+this.badgeId+' for '+this.badgeUsername+'?'))return;await this.run(async()=>{await api('/api/admin/profile-badges','POST',{username:this.badgeUsername,badgeId:this.badgeId,action});this.badgeOverrides=(await api('/api/admin/profile-badges?username='+encodeURIComponent(this.badgeUsername))).overrides||[];this.notice='Achievement updated.';});},
         async loadLevelProposals(){await this.run(async()=>{this.levelProposals=(await api('/api/admin/level-proposals')).proposals||[];});},
         async reviewLevelProposal(p,status){if(!confirm(status+' proposal for '+p.level_name+'?'))return;await this.run(async()=>{const r=await api('/api/admin/level-proposals/review','POST',{id:p.id,status});this.levelProposals=this.levelProposals.filter(x=>x.id!==p.id);this.notice=r.notice||'Proposal '+status+'.';});},
         async loadClaims() { await this.run(async () => { this.claims = (await api('/api/admin/claims')).claims || []; }); },

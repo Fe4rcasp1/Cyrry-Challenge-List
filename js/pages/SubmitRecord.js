@@ -38,7 +38,7 @@ export default {
     <label>Submission type</label><select v-model="proposal.kind"><option value="level">New level</option><option value="verification">Verification</option></select>
     <label>List</label><select v-model="proposal.listType"><option value="normal">Classic</option><option value="platformer">Platformer</option><option value="impossible">Impossible</option><option value="impossible-platformer">Impossible platformer</option></select>
     <label>Level name</label><input v-model.trim="proposal.levelName" maxlength="120" required placeholder="Level name" />
-    <label>Geometry Dash level ID (optional)</label><input v-model.trim="proposal.levelId" pattern="[0-9]*" maxlength="12" placeholder="Numeric ID" />
+    <label>Geometry Dash level ID</label><input v-model.trim="proposal.levelId" pattern="[0-9]*" maxlength="12" placeholder="Level ID" />
     <label>Creator</label><input v-model.trim="proposal.creator" maxlength="64" required placeholder="Creator username" />
     <label>Proof / verification link</label><input v-model.trim="proposal.proofUrl" type="url" required maxlength="500" placeholder="https://..." />
     <label>Additional notes</label><textarea v-model.trim="proposal.notes" maxlength="1000" rows="3"></textarea>

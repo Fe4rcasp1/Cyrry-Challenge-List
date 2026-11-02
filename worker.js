@@ -269,6 +269,22 @@ async function handle(request, env) {
    const canEdit = ['owner','admin','editor'].includes(role);
    if (path === '/api/admin/me' && request.method === 'GET') return json({ role });
    if (!role) return json({ error:'Staff access required.' }, 403);
+   if(path==='/api/admin/profile-badges'&&request.method==='GET'){
+     if(!['owner','admin'].includes(role))return json({error:'Admin permission required.'},403);
+     const username=String(url.searchParams.get('username')||'').trim();
+     if(!/^[A-Za-z0-9_-]{1,32}$/.test(username))return json({error:'Enter a valid player username.'},400);
+     const rows=await env.DB.prepare('SELECT badge_id,earned,updated_at FROM profile_badge_overrides WHERE leaderboard_username=? COLLATE NOCASE ORDER BY badge_id').bind(username).all();
+     return json({overrides:rows.results});
+   }
+   if(path==='/api/admin/profile-badges'&&request.method==='POST'){
+     if(!['owner','admin'].includes(role))return json({error:'Admin permission required.'},403);
+     const d=await body(request),username=String(d.username||'').trim(),badgeId=String(d.badgeId||'');
+     const valid=['first','five','ten','twentyfive','fifty','hundred','verify','verify5','verify10','top50','top25','top10','top1clear','progress','progress5','points100','points500','points1000','rank100','rank50','rank10','rank1','creator','creator5','creator10','featured','epic','legendary','mythic','creatorpoints'];
+     if(!/^[A-Za-z0-9_-]{1,32}$/.test(username)||!valid.includes(badgeId)||!['grant','revoke','reset'].includes(d.action))return json({error:'Invalid badge update.'},400);
+     if(d.action==='reset')await env.DB.prepare('DELETE FROM profile_badge_overrides WHERE leaderboard_username=? COLLATE NOCASE AND badge_id=?').bind(username,badgeId).run();
+     else await env.DB.prepare('INSERT INTO profile_badge_overrides(leaderboard_username,badge_id,earned,updated_by,updated_at) VALUES(?,?,?,?,CURRENT_TIMESTAMP) ON CONFLICT(leaderboard_username,badge_id) DO UPDATE SET earned=excluded.earned,updated_by=excluded.updated_by,updated_at=CURRENT_TIMESTAMP').bind(username,badgeId,d.action==='grant'?1:0,user.id).run();
+     return json({ok:true});
+   }
    if (path === '/api/admin/claims' && request.method === 'GET') {
      if (!canReview) return json({error:'Not permitted.'},403);
      const rows = await env.DB.prepare("SELECT claims.id,claims.leaderboard_username,claims.evidence,claims.created_at,users.username AS account_username,users.email FROM claims JOIN users ON users.id=claims.user_id WHERE claims.status='pending' ORDER BY claims.created_at ASC LIMIT 200").all();
@@ -537,6 +553,12 @@ async function handle(request, env) {
      return json({ok:results.every(x=>x.synced),total:results.length,synced:results.filter(x=>x.synced).length,failed:results.filter(x=>!x.synced)});
    }
    return json({error:'Admin endpoint not found.'},404);
+ }
+ if(path==='/api/profiles/badges'&&request.method==='GET'){
+   const username=String(url.searchParams.get('username')||'').trim();
+   if(!/^[A-Za-z0-9_-]{1,32}$/.test(username))return json({overrides:[]});
+   const rows=await env.DB.prepare('SELECT badge_id,earned FROM profile_badge_overrides WHERE leaderboard_username=? COLLATE NOCASE').bind(username).all();
+   return json({overrides:rows.results},200,{'cache-control':'no-store'});
  }
  // Public profile staff badges: only approved claims link leaderboard names to accounts.
  if (path === '/api/profiles/roles' && request.method === 'GET') {

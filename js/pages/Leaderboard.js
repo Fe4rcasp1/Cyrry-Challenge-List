@@ -37,7 +37,7 @@ export default {
                   <label>Rank by <select v-model="metric" @change="applyMetric">
                     <option value="points">Total points</option><option value="completed">Completions</option>
                     <option value="verified">Verifications</option><option v-if="leaderboardType !== 'platformer'" value="progressed">Progress records</option>
-                    <option value="hardest">Hardest clear</option><option value="top10">Top 10 clears</option>
+                    <option value="hardest">Hardest clear</option><option value="top10">{{leaderboardType === "platformer" ? "Top 5 clears" : "Top 25 clears"}}</option>
                   </select></label>
                   <button v-if="isStaff && leaderboardType === 'points'" :disabled="snapshotBusy" @click="saveSnapshot">Save ranking snapshot</button>
                 </div><p v-if="snapshotMessage" class="search-count">{{snapshotMessage}}</p>
@@ -165,7 +165,7 @@ export default {
             if(this.metric==='completed')return entry.completed.length;
             if(this.metric==='verified')return entry.verified.length;
             if(this.metric==='progressed')return entry.progressed.length;
-            if(this.metric==='top10')return clears.filter(x=>x.rank<=10).length;
+            if(this.metric==='top10')return clears.filter(x=>x.rank<=(this.leaderboardType==='platformer'?5:25)).length;
             if(this.metric==='hardest')return clears.length?'#'+Math.min(...clears.map(x=>x.rank)):'—';
             return entry.total;
         },
@@ -175,7 +175,7 @@ export default {
                 if(this.metric==='verified')return e.verified.length;
                 if(this.metric==='progressed')return e.progressed.length;
                 const clears=[...e.completed,...e.verified];
-                if(this.metric==='top10')return clears.filter(x=>x.rank<=10).length;
+                if(this.metric==='top10')return clears.filter(x=>x.rank<=(this.leaderboardType==='platformer'?5:25)).length;
                 if(this.metric==='hardest')return clears.length?-Math.min(...clears.map(x=>x.rank)):-Infinity;
                 return e.total;
             };

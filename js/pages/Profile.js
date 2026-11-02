@@ -3,7 +3,7 @@ import { getLevelRating } from '../ratings.js';
 import { store } from '../main.js';
 const badge = (id, title, desc, earned) => ({ id, title, desc, earned });
 export default {
-    data: () => ({ loading: true, player: null, platformerPlayer:null, platformerRank:null, creator: null, rank: null, staffRole: null, clan: null, achievementFilter: 'all', customProfile: null, history: [], advancedStats:null, recentRecords:[], error: '' }),
+    data: () => ({ loading: true, player: null, platformerPlayer:null, platformerRank:null, creator: null, rank: null, staffRole: null, clan: null, achievementFilter: 'all', badgeOverrides: {}, customProfile: null, history: [], advancedStats:null, recentRecords:[], error: '' }),
     template: `
       <main class="ccl-hub">
         <section class="hub-head profile-custom-head" :style="customProfile ? {borderColor:customProfile.accent} : {}">
@@ -50,7 +50,7 @@ export default {
               <div v-for="(h,i) in history" :key="i" class="hub-change"><strong>{{h.captured_at}}</strong><span>#{{h.rank}} · {{h.points}} points</span></div>
             </div>
           </section>
-          <section class="hub-card"><div class="admin-section-head"><h2>Achievements & Badges</h2><span class="admin-subtle-pill">{{earnedCount}} / {{badges.length}} unlocked</span></div><div class="profile-achievement-progress"><div :style="{width:achievementPercent + '%'}"></div></div><div class="profile-achievement-controls"><button type="button" :class="{active:achievementFilter==='all'}" @click="achievementFilter='all'">All</button><button type="button" :class="{active:achievementFilter==='earned'}" @click="achievementFilter='earned'">Unlocked</button><button type="button" :class="{active:achievementFilter==='locked'}" @click="achievementFilter='locked'">Locked</button></div><div class="hub-badges"><div v-for="b in filteredBadges" :key="b.id" class="hub-badge" :class="{ locked: !b.earned }"><strong>{{ b.earned ? '🏆' : '🔒' }} {{ b.title }}</strong><small>{{ b.desc }}</small></div></div><p class="hub-muted">Badges are calculated from current public list data; they are not permanent awards.</p></section>
+          <section class="hub-card"><div class="admin-section-head"><h2>Achievements & Badges</h2><span class="admin-subtle-pill">{{earnedCount}} / {{badges.length}} unlocked</span></div><div class="profile-achievement-progress"><div :style="{width:achievementPercent + '%'}"></div></div><div class="profile-achievement-controls"><button type="button" :class="{active:achievementFilter==='all'}" @click="achievementFilter='all'">All</button><button type="button" :class="{active:achievementFilter==='earned'}" @click="achievementFilter='earned'">Unlocked</button><button type="button" :class="{active:achievementFilter==='locked'}" @click="achievementFilter='locked'">Locked</button></div><div class="hub-badges"><div v-for="b in filteredBadges" :key="b.id" class="hub-badge" :class="{ locked: !b.earned }"><strong>{{ b.earned ? '🏆' : '🔒' }} {{ b.title }}</strong><small>{{ b.desc }}</small></div></div><p class="hub-muted">Badges are calculated from public list data unless an administrator manually changes them.</p></section>
           <section v-if="player" class="hub-card"><h2>Completed levels</h2><p v-if="!player.completed.length">No completed records yet.</p><div v-for="item in player.completed" :key="'c'+item.rank" class="hub-change"><strong>#{{ item.rank }} {{ item.level }}</strong><span>+{{ item.score }} points</span></div><h2>Verified levels</h2><div v-for="item in player.verified" :key="'v'+item.rank" class="hub-change"><strong>#{{ item.rank }} {{ item.level }}</strong><span>+{{ item.score }} points</span></div><h2>Progress records</h2><div v-for="item in player.progressed" :key="'p'+item.rank" class="hub-change"><strong>#{{ item.rank }} {{ item.level }}</strong><span>{{ item.percent }}% · +{{ item.score }} points</span></div></section>
           <section v-if="creator" class="hub-card"><h2>Created levels</h2><div v-for="item in creator.created" :key="item.rank" class="hub-change"><strong>#{{ item.rank }} {{ item.level }}</strong><span class="creator-rating" :class="'rating-' + item.rating.toLowerCase()">{{ item.rating }} · +{{ item.score }}</span></div></section>
         </template>
@@ -84,7 +84,7 @@ export default {
             const hasClear = max => clears.some(x => x.rank <= max);
             const hasRating = rating => created.some(x => String(x.rating).toLowerCase() === rating);
             const points = this.player?.total || 0, creatorPoints = this.creator?.total || 0;
-            return [
+            const calculated = [
                 badge('first','First Clear','Complete your first level',c >= 1),
                 badge('five','Getting Started','Complete 5 levels',c >= 5),
                 badge('ten','Challenge Veteran','Complete 10 levels',c >= 10),
@@ -116,6 +116,7 @@ export default {
                 badge('mythic','Mythic Creator','Create a Mythic level',hasRating('mythic')),
                 badge('creatorpoints','Creative Genius','Earn 25 creator points',creatorPoints >= 25)
             ];
+            return calculated.map(b=>Object.prototype.hasOwnProperty.call(this.badgeOverrides,b.id)?{...b,earned:!!this.badgeOverrides[b.id]}:b);
         }
     },
     async mounted() {
@@ -130,12 +131,14 @@ export default {
             this.creator = creators.find(x => x.user.toLowerCase() === username) || null;
             if (!this.player && !this.creator && !this.platformerPlayer) this.error = 'No public CCL player or creator records found for this username.';
             try {
-                const [profileResponse,historyResponse,statsResponse,clanResponse]=await Promise.all([
+                const [profileResponse,historyResponse,statsResponse,clanResponse,badgeResponse]=await Promise.all([
                     fetch('/api/community/profile?username='+encodeURIComponent(this.displayName),{cache:'no-store'}),
                     fetch('/api/community/history?username='+encodeURIComponent(this.displayName),{cache:'no-store'}),
                     fetch('/api/community/player-stats?username='+encodeURIComponent(this.displayName),{cache:'no-store'}),
-                    fetch('/api/teams/profile?username='+encodeURIComponent(this.displayName),{cache:'no-store'})
+                    fetch('/api/teams/profile?username='+encodeURIComponent(this.displayName),{cache:'no-store'}),
+                    fetch('/api/profiles/badges?username='+encodeURIComponent(this.displayName),{cache:'no-store'})
                 ]);
+                if(badgeResponse.ok)this.badgeOverrides=Object.fromEntries(((await badgeResponse.json()).overrides||[]).map(x=>[x.badge_id,Number(x.earned)]));
                 if(profileResponse.ok)this.customProfile=(await profileResponse.json()).profile;
                 if(clanResponse.ok)this.clan=(await clanResponse.json()).clan;
                 if(historyResponse.ok)this.history=(await historyResponse.json()).history||[];

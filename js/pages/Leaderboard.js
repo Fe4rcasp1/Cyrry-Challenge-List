@@ -53,6 +53,7 @@ export default {
                         <p class="search-count">{{ filteredPlayers.length }} of {{ leaderboard.length }} {{ leaderboardType === "creators" ? "creators" : "players" }}</p>
                     </div>
                     <p v-if="leaderboard.length && !filteredPlayers.length" class="search-empty">No usernames found.</p>
+                    <div class="leaderboard-results-scroll">
                     <table class="board">
                         <tr v-for="player in filteredPlayers" :key="player.index">
                             <td class="rank">
@@ -68,6 +69,7 @@ export default {
                             </td>
                         </tr>
                     </table>
+                    </div>
                 </div>
                 <div class="player-container">
                     <div class="player" v-if="entry">

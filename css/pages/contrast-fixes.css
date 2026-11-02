@@ -20,3 +20,6 @@ header.dark .header-quicklinks a{background:#254663!important;color:#fff!importa
 /* Give badge descriptions and Hub dashboard labels a little breathing room. */
 .ccl-hub .hub-badge small{margin-top:.35rem}
 .ccl-hub .hub-card:has(> h2:first-child) .hub-stats span{margin-top:.3rem}
+
+/* Center the admin section tabs as a group. */
+.ccl-admin .admin-tabs{margin:0 auto 1rem;justify-content:center}

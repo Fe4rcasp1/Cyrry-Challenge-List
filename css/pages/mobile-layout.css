@@ -46,3 +46,11 @@
  .ccl-hub .hub-stats strong{font-size:1.2rem}
  .page-list .list-container,.page-list .level-container,.page-list .meta-container{padding:.75rem}
 }
+
+/* Keep leaderboard player names beneath the search field when scrolling. */
+@media (max-width:900px){
+ .page-leaderboard .board-container .search-panel{position:sticky;top:0;z-index:30;background:var(--color-background);isolation:isolate;box-shadow:0 5px 12px rgba(0,0,0,.12)}
+ .page-leaderboard .board-container .search-panel::before{content:"";position:absolute;inset:0;background:var(--color-background);border-radius:inherit;z-index:-1}
+ .page-leaderboard .board-container .search-panel .list-search{position:relative;z-index:1}
+ .page-leaderboard .board-container .board,.page-leaderboard .board-container .table{position:relative;z-index:0}
+}

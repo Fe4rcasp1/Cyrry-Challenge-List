@@ -1,3 +1,4 @@
+import { fetchLeaderboard, fetchCreatorLeaderboard } from '../content.js';
 async function api(path, method = 'GET', payload) {
     const response = await fetch(path, {
         method, credentials: 'same-origin',
@@ -12,7 +13,7 @@ async function api(path, method = 'GET', payload) {
 
 export default {
     data: () => ({
-        role: '', tab: 'claims', badgeUsername:'',badgeId:'first',badgeOverrides:[], claims: [], levelProposals:[], users: [], levelFiles: [], audit: [], submissions: [], weeklyEntries: [], enjoymentRecords: [], enjoymentList:'normal', enjoymentLevel:'', enjoymentFiles:[], enjoymentUsername:'', enjoymentValue:5,
+        role: '', tab: 'claims', badgeUsername:'',badgeId:'first',badgeOverrides:[],badgePlayers:[], claims: [], levelProposals:[], users: [], levelFiles: [], audit: [], submissions: [], weeklyEntries: [], enjoymentRecords: [], enjoymentList:'normal', enjoymentLevel:'', enjoymentFiles:[], enjoymentUsername:'', enjoymentValue:5,
         listType: 'normal', levelPath: '', levelText: '', originalLevelText: '', backupStatus:null, backupLoading:false, reviewFeedback:{}, bulkSelected:[],bulkDrafts:{},bulkOriginals:{},bulkActive:'',bulkLoading:false,
         filter: '', userFilter: '', weeklyWeek: '', weeklyTitle: '', weeklyDescription: '', loading: true, busy: false, error: '', notice: ''
     }),
@@ -128,7 +129,7 @@ export default {
         <section v-if="tab==='badges' && (role==='owner'||role==='admin')" class="hub-card admin-panel">
           <h2>Manage profile achievements</h2>
           <p class="hub-muted">Grant or revoke a badge by leaderboard username. Reset restores the automatically calculated result; changes do not modify leaderboard points.</p>
-          <label>Player username</label><input class="hub-search" v-model.trim="badgeUsername" maxlength="32" placeholder="Exact leaderboard username" />
+          <label for="badge-player-select">Player username</label><select id="badge-player-select" class="hub-search" v-model="badgeUsername" @change="loadBadgeOverrides"><option value="">Select a player</option><option v-for="name in badgePlayers" :key="name" :value="name">{{name}}</option></select>
           <button class="admin-btn" type="button" :disabled="busy||!badgeUsername" @click="loadBadgeOverrides">Load player overrides</button>
           <label>Achievement</label><select class="hub-search" v-model="badgeId"><option v-for="b in badgeChoices" :key="b.id" :value="b.id">{{b.name}}</option></select>
           <p class="hub-muted">Current override: {{badgeOverrideLabel}}</p>
@@ -269,7 +270,7 @@ export default {
             if (tab === this.tab) return;
             if (this.hasUnsavedChanges && !confirm('Discard unsaved level changes?')) return;
             this.tab = tab;
-            if (tab === 'badges' && this.badgeUsername) await this.loadBadgeOverrides();
+            if (tab === 'badges') await this.loadBadgePlayers();
             if (tab === 'claims') await this.loadClaims();
             if (tab === 'levels') await this.loadFiles();
             if (tab === 'users') await this.loadUsers();
@@ -279,7 +280,8 @@ export default {
             if (tab === 'weekly') { await Promise.all([this.loadWeeklyEntries(),this.loadFiles()]); }
             if (tab === 'audit') await this.loadAudit();
         },
-        async loadBadgeOverrides(){await this.run(async()=>{this.badgeOverrides=(await api('/api/admin/profile-badges?username='+encodeURIComponent(this.badgeUsername))).overrides||[];});},
+        async loadBadgePlayers(){await this.run(async()=>{const [[classic],[platformer],[creators]]=await Promise.all([fetchLeaderboard(),fetchLeaderboard('_platformer.json'),fetchCreatorLeaderboard()]);this.badgePlayers=[...new Map([...classic,...platformer,...creators].map(p=>[p.user.toLowerCase(),p.user])).values()].sort((a,b)=>a.localeCompare(b));});if(this.badgeUsername)await this.loadBadgeOverrides();},
+        async loadBadgeOverrides(){if(!this.badgeUsername){this.badgeOverrides=[];return;}await this.run(async()=>{this.badgeOverrides=(await api('/api/admin/profile-badges?username='+encodeURIComponent(this.badgeUsername))).overrides||[];});},
         async changeBadge(action){if(!confirm(action+' '+this.badgeId+' for '+this.badgeUsername+'?'))return;await this.run(async()=>{await api('/api/admin/profile-badges','POST',{username:this.badgeUsername,badgeId:this.badgeId,action});this.badgeOverrides=(await api('/api/admin/profile-badges?username='+encodeURIComponent(this.badgeUsername))).overrides||[];this.notice='Achievement updated.';});},
         async loadLevelProposals(){await this.run(async()=>{this.levelProposals=(await api('/api/admin/level-proposals')).proposals||[];});},
         async reviewLevelProposal(p,status){if(!confirm(status+' proposal for '+p.level_name+'?'))return;await this.run(async()=>{const r=await api('/api/admin/level-proposals/review','POST',{id:p.id,status});this.levelProposals=this.levelProposals.filter(x=>x.id!==p.id);this.notice=r.notice||'Proposal '+status+'.';});},

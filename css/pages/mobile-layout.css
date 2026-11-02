@@ -54,3 +54,10 @@
  .page-leaderboard .board-container .search-panel .list-search{position:relative;z-index:1}
  .page-leaderboard .board-container .board,.page-leaderboard .board-container .table{position:relative;z-index:0}
 }
+
+/* Leaderboard: scroll names inside their own pane, under the search bar. */
+@media (max-width:900px){
+ .page-leaderboard .board-container{display:flex;flex-direction:column;overflow-y:auto!important;overflow-x:hidden!important;max-height:min(72dvh,700px);position:relative;isolation:isolate;padding-top:0!important;overscroll-behavior:contain}
+ .page-leaderboard .board-container>.search-panel{position:sticky!important;top:0!important;z-index:100!important;flex:0 0 auto;margin:0!important;padding:.85rem .7rem 1rem!important;background:var(--color-background)!important;border-radius:0 0 .8rem .8rem;box-shadow:0 5px 14px rgba(0,0,0,.35)!important}
+ .page-leaderboard .board-container>.board{position:relative;z-index:0}
+}

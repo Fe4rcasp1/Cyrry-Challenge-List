@@ -303,7 +303,12 @@ async function handle(request, env) {
        return json({ok:true});
      } catch(e) { console.error(e); return json({error:'Could not review claim; it may already be owned.'},409); }
    }
-   if(path==='/api/admin/level-proposals'&&request.method==='GET'){
+   if(path==='/api/admin/level-proposals/approved'&&request.method==='GET'){
+     if(!canReview&&!canEdit)return json({error:'Not permitted.'},403);
+     const rows=await env.DB.prepare("SELECT p.*,u.username AS account_username FROM ccl_level_proposals p JOIN users u ON u.id=p.user_id WHERE p.status='approved' ORDER BY p.reviewed_at DESC LIMIT 500").all();
+     return json({proposals:rows.results});
+    }
+    if(path==='/api/admin/level-proposals'&&request.method==='GET'){
     if(!canReview)return json({error:'Not permitted.'},403);
     const rows=await env.DB.prepare("SELECT p.*,u.username AS account_username FROM ccl_level_proposals p JOIN users u ON u.id=p.user_id WHERE p.status='pending' ORDER BY p.created_at ASC LIMIT 200").all();
     return json({proposals:rows.results});

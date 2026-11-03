@@ -485,6 +485,45 @@ async function handle(request, env) {
      try{await logLevelChange(env,user.id,listType,levelPath,'enjoyment_edit',null,level,backup);}catch(e){console.error('History write failed',e);}
      return json({ok:true,githubBackup:backup});
    }
+   // Moderator level publishing: create the level file, then insert it into the ranked list on GitHub.
+   // Static assets update when the GitHub-connected Worker redeploys.
+   if(path==='/api/admin/levels/create'&&request.method==='POST'){
+     if(!['owner','admin','moderator','editor'].includes(role))return json({error:'Staff permission required.'},403);
+     if(!env.GITHUB_TOKEN)return json({error:'GITHUB_TOKEN must be configured in Worker secrets to publish levels.'},503);
+     const d=await body(request),type=String(d.listType||''),name=String(d.name||'').trim(),author=String(d.author||'').trim(),verifier=String(d.verifier||'').trim(),verification=String(d.verification||'').trim();
+     const id=Number(d.id),rank=Number(d.rank),qualify=Number(d.percentToQualify);
+     const creators=String(d.creators||'').split(',').map(x=>x.trim()).filter(Boolean);
+     if(!['normal','platformer'].includes(type)||!name||name.length>120||!author||author.length>64||verifier.length>64||creators.length>30||creators.some(x=>x.length>64)||!Number.isSafeInteger(id)||id<=0||!Number.isInteger(rank)||!Number.isInteger(qualify)||qualify<0||qualify>100)return json({error:'Invalid level details.'},400);
+     if(verification){try{const u=new URL(verification);if(u.protocol!=='https:'||!u.hostname.includes('.'))throw Error();}catch{return json({error:'Verification must be an HTTPS link.'},400);}}
+     const levelPath=name.replace(/[^A-Za-z0-9_ -]/g,'').trim().replace(/[ -]+/g,'_').replace(/_+/g,'_').slice(0,120);
+     if(!/^[A-Za-z0-9_]{1,120}$/.test(levelPath))return json({error:'Name cannot create a valid file path.'},400);
+     const listFile=type==='platformer'?'_platformer.json':'_list.json';
+     const base='https://api.github.com/repos/Fe4rcasp1/Cyrry-Challenge-List/contents/data/';
+     const headers={'Authorization':'Bearer '+env.GITHUB_TOKEN,'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28','User-Agent':'CCL-Staff-Publisher','Content-Type':'application/json'};
+     const getFile=async filename=>fetch(base+encodeURIComponent(filename),{headers});
+     const listResponse=await getFile(listFile);
+     if(!listResponse.ok)return json({error:'Cannot read ranked list from GitHub (HTTP '+listResponse.status+').'},502);
+     const listInfo=await listResponse.json();
+     const raw=atob(listInfo.content.replace(/\\s/g,''));
+     const list=JSON.parse(new TextDecoder().decode(Uint8Array.from(raw,c=>c.charCodeAt(0))));
+     if(!Array.isArray(list)||rank<1||rank>list.length+1)return json({error:'Rank must be between 1 and '+(list.length+1)+'.'},400);
+     if(list.some(x=>x.toLowerCase()===levelPath.toLowerCase()))return json({error:'A level with this name is already listed.'},409);
+     const existing=await getFile(levelPath+'.json');
+     if(existing.status!==404)return json({error:existing.ok?'A level file with this name already exists.':'Could not verify level filename on GitHub.'},409);
+     const level={id,name,author,creators:creators.length?creators:[author],verifier,verification,percentToQualify:String(qualify),enjoyment:'N/A',records:[]};
+     const commit=async(filename,data,sha,message)=>{
+       const payload={message,content:githubBase64(JSON.stringify(data,null,2)+'\\n')};
+       if(sha)payload.sha=sha;
+       return fetch(base+encodeURIComponent(filename),{method:'PUT',headers,body:JSON.stringify(payload)});
+     };
+     const created=await commit(levelPath+'.json',level,null,'Add '+name+' level data');
+     if(!created.ok)return json({error:'GitHub rejected the new level file (HTTP '+created.status+').'},502);
+     list.splice(rank-1,0,levelPath);
+     const updated=await commit(listFile,list,listInfo.sha,'Rank '+name+' at #'+rank+' on '+type+' list');
+     if(!updated.ok)return json({error:'Level file created but ranked list update failed (HTTP '+updated.status+'). Retry after checking GitHub; the level is not yet listed.'},502);
+     try{await env.DB.prepare('INSERT INTO admin_audit(id,actor_id,action,target) VALUES(?,?,?,?)').bind(crypto.randomUUID(),user.id,'level_created',type+':'+levelPath+':#'+rank).run();}catch(e){console.warn('Level creation audit unavailable',e);}
+     return json({ok:true,path:levelPath,rank,notice:'Published to GitHub. The level appears after the next successful Worker deployment.'});
+   }
    if (path === '/api/admin/levels' && request.method === 'POST') {
      if (!canEdit) return json({error:'Level editing not permitted.'},403);
      const data=await body(request), listType=String(data.listType||''), levelPath=String(data.path||'');

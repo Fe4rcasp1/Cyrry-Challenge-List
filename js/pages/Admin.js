@@ -13,7 +13,7 @@ async function api(path, method = 'GET', payload) {
 
 export default {
     data: () => ({
-        role: '', tab: 'claims', badgeUsername:'',badgeId:'first',badgeOverrides:[],badgePlayers:[], claims: [], levelProposals:[], users: [], levelFiles: [], audit: [], submissions: [], weeklyEntries: [], enjoymentRecords: [], enjoymentList:'normal', enjoymentLevel:'', enjoymentFiles:[], enjoymentUsername:'', enjoymentValue:5,
+        role: '', tab: 'claims', badgeUsername:'',badgeId:'first',badgeOverrides:[],badgePlayers:[],newLevelMaxRank:0,newLevel:{listType:'normal',name:'',id:'',author:'',creators:'',verifier:'',verification:'',percentToQualify:100,rank:1},claims: [], levelProposals:[], users: [], levelFiles: [], audit: [], submissions: [], weeklyEntries: [], enjoymentRecords: [], enjoymentList:'normal', enjoymentLevel:'', enjoymentFiles:[], enjoymentUsername:'', enjoymentValue:5,
         listType: 'normal', levelPath: '', levelText: '', originalLevelText: '', backupStatus:null, backupLoading:false, reviewFeedback:{}, bulkSelected:[],bulkDrafts:{},bulkOriginals:{},bulkActive:'',bulkLoading:false,
         filter: '', userFilter: '', weeklyWeek: '', weeklyTitle: '', weeklyDescription: '', loading: true, busy: false, error: '', notice: ''
     }),
@@ -57,6 +57,7 @@ export default {
             Profile claims <span class="admin-tab-count">{{claims.length}}</span>
           </button>
           <button v-if="canReview" type="button" :class="{active:tab==='submissions'}" @click="switchTab('submissions')">Record reviews</button>
+          <button v-if="canReview||canEdit" type="button" :class="{active:tab==='add-level'}" @click="switchTab('add-level')">Add new level</button>
           <button v-if="canReview" type="button" :class="{active:tab==='proposals'}" @click="switchTab('proposals')">Level / verification proposals</button>
           <button v-if="canEdit || canReview" type="button" :class="{active:tab==='enjoyment'}" @click="switchTab('enjoyment')">Enjoyment ratings</button>
           <button v-if="role==='owner'||role==='admin'" type="button" :class="{active:tab==='badges'}" @click="switchTab('badges')">Profile achievements</button>
@@ -99,6 +100,23 @@ export default {
             <a :href="s.video_url" target="_blank" rel="noopener noreferrer">Watch video evidence ↗</a>
             <label :for="'feedback-'+s.id">Staff feedback</label><textarea :id="'feedback-'+s.id" class="hub-search" v-model="reviewFeedback[s.id]" maxlength="1000" rows="2" placeholder="Optional approval notes or rejection reason"></textarea><div class="admin-actions"><button class="admin-btn admin-btn-approve" :disabled="busy" @click="reviewRecord(s,'approved')">Approve</button><button class="admin-btn admin-btn-reject" :disabled="busy" @click="reviewRecord(s,'rejected')">Reject</button></div>
           </article>
+        </section>
+        <section v-if="tab==='add-level' && (canReview||canEdit)" class="hub-card admin-panel">
+          <h2>Add a level to the list</h2>
+          <p class="hub-muted">Fill in the details, choose its rank, and publish to GitHub. The list updates after the next successful deployment; existing levels shift down automatically.</p>
+          <form class="admin-editor" @submit.prevent="createLevel">
+            <label for="new-level-type">List</label><select id="new-level-type" v-model="newLevel.listType" @change="loadNewLevelCount"><option value="normal">Classic</option><option value="platformer">Platformer</option></select>
+            <label for="new-level-name">Level name</label><input id="new-level-name" v-model.trim="newLevel.name" maxlength="120" required placeholder="Level name" />
+            <label for="new-level-id">Geometry Dash level ID</label><input id="new-level-id" v-model="newLevel.id" type="number" min="1" step="1" required />
+            <label for="new-level-author">Creator / author</label><input id="new-level-author" v-model.trim="newLevel.author" maxlength="64" required />
+            <label for="new-level-creators">Additional creators (comma-separated, optional)</label><input id="new-level-creators" v-model="newLevel.creators" placeholder="Creator1, Creator2" />
+            <label for="new-level-verifier">Verifier</label><input id="new-level-verifier" v-model.trim="newLevel.verifier" maxlength="64" />
+            <label for="new-level-proof">Verification video URL</label><input id="new-level-proof" v-model.trim="newLevel.verification" type="url" placeholder="https://..." />
+            <label for="new-level-qualify">Minimum percentage to qualify</label><input id="new-level-qualify" v-model.number="newLevel.percentToQualify" type="number" min="0" max="100" required />
+            <label for="new-level-rank">Insert at rank (1 = hardest)</label><input id="new-level-rank" v-model.number="newLevel.rank" type="number" min="1" :max="newLevelMaxRank||undefined" required />
+            <p class="hub-muted" v-if="newLevelMaxRank">Valid positions: 1–{{newLevelMaxRank}}</p>
+            <button class="admin-btn admin-btn-primary" type="submit" :disabled="busy">Publish new level</button>
+          </form>
         </section>
         <section v-if="tab==='proposals' && canReview" class="hub-card admin-panel">
          <div class="admin-section-head"><h2>Level & verification proposals</h2><button class="admin-btn" @click="loadLevelProposals" :disabled="busy">Refresh</button></div>
@@ -271,6 +289,7 @@ export default {
             if (this.hasUnsavedChanges && !confirm('Discard unsaved level changes?')) return;
             this.tab = tab;
             if (tab === 'badges') await this.loadBadgePlayers();
+            if (tab === 'add-level') await this.loadNewLevelCount();
             if (tab === 'claims') await this.loadClaims();
             if (tab === 'levels') await this.loadFiles();
             if (tab === 'users') await this.loadUsers();
@@ -280,6 +299,8 @@ export default {
             if (tab === 'weekly') { await Promise.all([this.loadWeeklyEntries(),this.loadFiles()]); }
             if (tab === 'audit') await this.loadAudit();
         },
+        async loadNewLevelCount(){try{const f=this.newLevel.listType==='platformer'?'_platformer.json':'_list.json';const r=await fetch('/data/'+f,{cache:'no-store'});if(r.ok)this.newLevelMaxRank=(await r.json()).length+1;}catch(e){console.warn('Rank count unavailable',e);}},
+        async createLevel(){if(!confirm('Publish '+this.newLevel.name+' at #'+this.newLevel.rank+'?'))return;await this.run(async()=>{const result=await api('/api/admin/levels/create','POST',this.newLevel);this.notice=result.notice||'Level published.';this.newLevel={listType:this.newLevel.listType,name:'',id:'',author:'',creators:'',verifier:'',verification:'',percentToQualify:100,rank:1};await this.loadNewLevelCount();});},
         async loadBadgePlayers(){await this.run(async()=>{const [[classic],[platformer],[creators]]=await Promise.all([fetchLeaderboard(),fetchLeaderboard('_platformer.json'),fetchCreatorLeaderboard()]);this.badgePlayers=[...new Map([...classic,...platformer,...creators].map(p=>[p.user.toLowerCase(),p.user])).values()].sort((a,b)=>a.localeCompare(b));});if(this.badgeUsername)await this.loadBadgeOverrides();},
         async loadBadgeOverrides(){if(!this.badgeUsername){this.badgeOverrides=[];return;}await this.run(async()=>{this.badgeOverrides=(await api('/api/admin/profile-badges?username='+encodeURIComponent(this.badgeUsername))).overrides||[];});},
         async changeBadge(action){if(!confirm(action+' '+this.badgeId+' for '+this.badgeUsername+'?'))return;await this.run(async()=>{await api('/api/admin/profile-badges','POST',{username:this.badgeUsername,badgeId:this.badgeId,action});this.badgeOverrides=(await api('/api/admin/profile-badges?username='+encodeURIComponent(this.badgeUsername))).overrides||[];this.notice='Achievement updated.';});},

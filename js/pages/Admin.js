@@ -13,7 +13,7 @@ async function api(path, method = 'GET', payload) {
 
 export default {
     data: () => ({
-        role: '', tab: 'claims', badgeUsername:'',badgeId:'first',badgeOverrides:[],badgePlayers:[],newLevelMaxRank:0,newLevel:{listType:'normal',name:'',id:'',author:'',creators:'',verifier:'',verification:'',percentToQualify:100,rank:1},claims: [], levelProposals:[], users: [], levelFiles: [], audit: [], submissions: [], weeklyEntries: [], enjoymentRecords: [], enjoymentList:'normal', enjoymentLevel:'', enjoymentFiles:[], enjoymentUsername:'', enjoymentValue:5,
+        role: '', tab: 'claims', badgeUsername:'',badgeId:'first',badgeOverrides:[],badgePlayers:[],newLevelMaxRank:0,newLevel:{listType:'normal',rating:'rate',name:'',id:'',author:'',creators:'',verifier:'',verification:'',percentToQualify:100,rank:1},claims: [], levelProposals:[], users: [], levelFiles: [], audit: [], submissions: [], weeklyEntries: [], enjoymentRecords: [], enjoymentList:'normal', enjoymentLevel:'', enjoymentFiles:[], enjoymentUsername:'', enjoymentValue:5,
         listType: 'normal', levelPath: '', levelText: '', originalLevelText: '', backupStatus:null, backupLoading:false, reviewFeedback:{}, bulkSelected:[],bulkDrafts:{},bulkOriginals:{},bulkActive:'',bulkLoading:false,
         filter: '', userFilter: '', weeklyWeek: '', weeklyTitle: '', weeklyDescription: '', loading: true, busy: false, error: '', notice: ''
     }),
@@ -106,6 +106,7 @@ export default {
           <p class="hub-muted">Fill in the details, choose its rank, and publish to GitHub. The list updates after the next successful deployment; existing levels shift down automatically.</p>
           <form class="admin-editor" @submit.prevent="createLevel">
             <label for="new-level-type">List</label><select id="new-level-type" v-model="newLevel.listType" @change="loadNewLevelCount"><option value="normal">Classic</option><option value="platformer">Platformer</option></select>
+            <label for="new-level-rating">Level rating</label><select id="new-level-rating" v-model="newLevel.rating" required><option value="rate">Rate</option><option value="featured">Featured</option><option value="epic">Epic</option><option value="legendary">Legendary</option><option value="mythic">Mythic</option></select>
             <label for="new-level-name">Level name</label><input id="new-level-name" v-model.trim="newLevel.name" maxlength="120" required placeholder="Level name" />
             <label for="new-level-id">Geometry Dash level ID</label><input id="new-level-id" v-model="newLevel.id" type="number" min="1" step="1" required />
             <label for="new-level-author">Creator / author</label><input id="new-level-author" v-model.trim="newLevel.author" maxlength="64" required />
@@ -300,7 +301,7 @@ export default {
             if (tab === 'audit') await this.loadAudit();
         },
         async loadNewLevelCount(){try{const f=this.newLevel.listType==='platformer'?'_platformer.json':'_list.json';const r=await fetch('/data/'+f,{cache:'no-store'});if(r.ok)this.newLevelMaxRank=(await r.json()).length+1;}catch(e){console.warn('Rank count unavailable',e);}},
-        async createLevel(){if(!confirm('Publish '+this.newLevel.name+' at #'+this.newLevel.rank+'?'))return;await this.run(async()=>{const result=await api('/api/admin/levels/create','POST',this.newLevel);this.notice=result.notice||'Level published.';this.newLevel={listType:this.newLevel.listType,name:'',id:'',author:'',creators:'',verifier:'',verification:'',percentToQualify:100,rank:1};await this.loadNewLevelCount();});},
+        async createLevel(){if(!confirm('Publish '+this.newLevel.name+' at #'+this.newLevel.rank+'?'))return;await this.run(async()=>{const result=await api('/api/admin/levels/create','POST',this.newLevel);this.notice=result.notice||'Level published.';this.newLevel={listType:this.newLevel.listType,rating:'rate',name:'',id:'',author:'',creators:'',verifier:'',verification:'',percentToQualify:100,rank:1};await this.loadNewLevelCount();});},
         async loadBadgePlayers(){await this.run(async()=>{const [[classic],[platformer],[creators]]=await Promise.all([fetchLeaderboard(),fetchLeaderboard('_platformer.json'),fetchCreatorLeaderboard()]);this.badgePlayers=[...new Map([...classic,...platformer,...creators].map(p=>[p.user.toLowerCase(),p.user])).values()].sort((a,b)=>a.localeCompare(b));});if(this.badgeUsername)await this.loadBadgeOverrides();},
         async loadBadgeOverrides(){if(!this.badgeUsername){this.badgeOverrides=[];return;}await this.run(async()=>{this.badgeOverrides=(await api('/api/admin/profile-badges?username='+encodeURIComponent(this.badgeUsername))).overrides||[];});},
         async changeBadge(action){if(!confirm(action+' '+this.badgeId+' for '+this.badgeUsername+'?'))return;await this.run(async()=>{await api('/api/admin/profile-badges','POST',{username:this.badgeUsername,badgeId:this.badgeId,action});this.badgeOverrides=(await api('/api/admin/profile-badges?username='+encodeURIComponent(this.badgeUsername))).overrides||[];this.notice='Achievement updated.';});},

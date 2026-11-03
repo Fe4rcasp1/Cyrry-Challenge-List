@@ -10,5 +10,11 @@
   "rating": "featured",
   "percentToQualify": "100",
   "enjoyment": "N/A",
-  "records": []
+  "records": [
+    {
+      "user": "Maulr",
+      "percent": 100,
+      "link": "https://www.youtube.com/watch?v=6qTKDvLAzHc"
+    }
+  ]
 }

@@ -504,7 +504,7 @@ async function handle(request, env) {
      const listResponse=await getFile(listFile);
      if(!listResponse.ok)return json({error:'Cannot read ranked list from GitHub (HTTP '+listResponse.status+').'},502);
      const listInfo=await listResponse.json();
-     const raw=atob(listInfo.content.replace(/\\s/g,''));
+     const raw=atob(listInfo.content.replace(/\s/g,''));
      const list=JSON.parse(new TextDecoder().decode(Uint8Array.from(raw,c=>c.charCodeAt(0))));
      if(!Array.isArray(list)||rank<1||rank>list.length+1)return json({error:'Rank must be between 1 and '+(list.length+1)+'.'},400);
      if(list.some(x=>x.toLowerCase()===levelPath.toLowerCase()))return json({error:'A level with this name is already listed.'},409);
@@ -512,7 +512,7 @@ async function handle(request, env) {
      if(existing.status!==404)return json({error:existing.ok?'A level file with this name already exists.':'Could not verify level filename on GitHub.'},409);
      const level={id,name,author,creators:creators.length?creators:[author],verifier,verification,percentToQualify:String(qualify),enjoyment:'N/A',records:[]};
      const commit=async(filename,data,sha,message)=>{
-       const payload={message,content:githubBase64(JSON.stringify(data,null,2)+'\\n')};
+       const payload={message,content:githubBase64(JSON.stringify(data,null,2)+'\n')};
        if(sha)payload.sha=sha;
        return fetch(base+encodeURIComponent(filename),{method:'PUT',headers,body:JSON.stringify(payload)});
      };

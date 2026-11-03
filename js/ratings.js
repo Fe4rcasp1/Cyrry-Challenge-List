@@ -8,6 +8,7 @@ const platformerRatings = makeMap(platformer);
 const names = { r: "rate", f: "featured", e: "epic", l: "legendary", m: "mythic" };
 export function getLevelRating(level, isPlatformer = false) {
     if (!level) return null;
+    if (['rate','featured','epic','legendary','mythic'].includes(String(level.rating || '').toLowerCase())) return String(level.rating).toLowerCase();
     const code = (isPlatformer ? platformerRatings : ratings).get(String(level.id));
     return names[code] || null;
 }

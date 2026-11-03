@@ -13,7 +13,7 @@ async function api(path, method = 'GET', payload) {
 
 export default {
     data: () => ({
-        role: '', tab: 'claims', badgeUsername:'',badgeId:'first',badgeOverrides:[],badgePlayers:[],newLevelMaxRank:0,newLevel:{listType:'normal',rating:'rate',name:'',id:'',author:'',creators:'',verifier:'',verification:'',percentToQualify:100,rank:1},claims: [], levelProposals:[], users: [], levelFiles: [], audit: [], submissions: [], weeklyEntries: [], enjoymentRecords: [], enjoymentList:'normal', enjoymentLevel:'', enjoymentFiles:[], enjoymentUsername:'', enjoymentValue:5,
+        role: '', tab: 'claims', badgeUsername:'',badgeId:'first',badgeOverrides:[],badgePlayers:[],newLevelMaxRank:0,newLevel:{listType:'normal',rating:'rate',name:'',id:'',author:'',creators:'',verifier:'',verification:'',percentToQualify:100,rank:1},claims: [], levelProposals:[],approvedProposals:[], users: [], levelFiles: [], audit: [], submissions: [], weeklyEntries: [], enjoymentRecords: [], enjoymentList:'normal', enjoymentLevel:'', enjoymentFiles:[], enjoymentUsername:'', enjoymentValue:5,
         listType: 'normal', levelPath: '', levelText: '', originalLevelText: '', backupStatus:null, backupLoading:false, reviewFeedback:{}, bulkSelected:[],bulkDrafts:{},bulkOriginals:{},bulkActive:'',bulkLoading:false,
         filter: '', userFilter: '', weeklyWeek: '', weeklyTitle: '', weeklyDescription: '', loading: true, busy: false, error: '', notice: ''
     }),
@@ -295,7 +295,7 @@ export default {
             if (tab === 'levels') await this.loadFiles();
             if (tab === 'users') await this.loadUsers();
             if (tab === 'submissions') await this.loadSubmissions();
-            if (tab === 'proposals') await this.loadLevelProposals();
+            if (tab === 'proposals') { await this.loadLevelProposals(); await this.loadApprovedProposals(); }
             if (tab === 'enjoyment') await this.loadEnjoymentFiles();
             if (tab === 'weekly') { await Promise.all([this.loadWeeklyEntries(),this.loadFiles()]); }
             if (tab === 'audit') await this.loadAudit();
@@ -305,8 +305,10 @@ export default {
         async loadBadgePlayers(){await this.run(async()=>{const [[classic],[platformer],[creators]]=await Promise.all([fetchLeaderboard(),fetchLeaderboard('_platformer.json'),fetchCreatorLeaderboard()]);this.badgePlayers=[...new Map([...classic,...platformer,...creators].map(p=>[p.user.toLowerCase(),p.user])).values()].sort((a,b)=>a.localeCompare(b));});if(this.badgeUsername)await this.loadBadgeOverrides();},
         async loadBadgeOverrides(){if(!this.badgeUsername){this.badgeOverrides=[];return;}await this.run(async()=>{this.badgeOverrides=(await api('/api/admin/profile-badges?username='+encodeURIComponent(this.badgeUsername))).overrides||[];});},
         async changeBadge(action){if(!confirm(action+' '+this.badgeId+' for '+this.badgeUsername+'?'))return;await this.run(async()=>{await api('/api/admin/profile-badges','POST',{username:this.badgeUsername,badgeId:this.badgeId,action});this.badgeOverrides=(await api('/api/admin/profile-badges?username='+encodeURIComponent(this.badgeUsername))).overrides||[];this.notice='Achievement updated.';});},
+        async loadApprovedProposals(){await this.run(async()=>{this.approvedProposals=(await api('/api/admin/level-proposals/approved')).proposals||[];});},
+        async prefillApprovedLevel(p){this.newLevel={listType:p.list_type,rating:'rate',name:p.level_name,id:p.level_id||'',author:p.creator,creators:p.creator,verifier:'',verification:p.proof_url,percentToQualify:100,rank:1};await this.switchTab('add-level');this.notice='Details copied from approved proposal. Review the rating, verifier, percentage, and rank before publishing.';},
         async loadLevelProposals(){await this.run(async()=>{this.levelProposals=(await api('/api/admin/level-proposals')).proposals||[];});},
-        async reviewLevelProposal(p,status){if(!confirm(status+' proposal for '+p.level_name+'?'))return;await this.run(async()=>{const r=await api('/api/admin/level-proposals/review','POST',{id:p.id,status});this.levelProposals=this.levelProposals.filter(x=>x.id!==p.id);this.notice=r.notice||'Proposal '+status+'.';});},
+        async reviewLevelProposal(p,status){if(!confirm(status+' proposal for '+p.level_name+'?'))return;await this.run(async()=>{const r=await api('/api/admin/level-proposals/review','POST',{id:p.id,status});this.levelProposals=this.levelProposals.filter(x=>x.id!==p.id);if(status==='approved')await this.loadApprovedProposals();this.notice=r.notice||'Proposal '+status+'.';});},
         async loadClaims() { await this.run(async () => { this.claims = (await api('/api/admin/claims')).claims || []; }); },
         async review(c, status) {
             if (!confirm((status === 'approved' ? 'Approve ' : 'Reject ') + c.leaderboard_username + '?')) return;

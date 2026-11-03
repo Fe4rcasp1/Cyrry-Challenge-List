@@ -131,7 +131,7 @@ export default {
           <p>Submitted by {{p.account_username}} on {{p.created_at}} · Approved {{p.reviewed_at}}</p>
           <p v-if="p.notes">Notes: {{p.notes}}</p>
           <a :href="p.proof_url" target="_blank" rel="noopener noreferrer">View submitted proof ↗</a>
-          <div class="admin-actions"><button v-if="(p.list_type==='normal'||p.list_type==='platformer')"  class="admin-btn admin-btn-primary" type="button" @click="prefillApprovedLevel(p)">{{p.kind==='verification'?'Use verification in Level Editor':'Use details in Add New Level'}}</button></div>
+          <div class="admin-actions"><button v-if="(p.list_type==='normal'||p.list_type==='platformer')"  class="admin-btn admin-btn-primary" type="button" @click="prefillApprovedLevel(p)">Use details in Add New Level</button></div>
          </article>
          <h3>Pending proposals</h3>
          <p v-if="!levelProposals.length">No pending proposals.</p>
@@ -319,30 +319,21 @@ export default {
         async changeBadge(action){if(!confirm(action+' '+this.badgeId+' for '+this.badgeUsername+'?'))return;await this.run(async()=>{await api('/api/admin/profile-badges','POST',{username:this.badgeUsername,badgeId:this.badgeId,action});this.badgeOverrides=(await api('/api/admin/profile-badges?username='+encodeURIComponent(this.badgeUsername))).overrides||[];this.notice='Achievement updated.';});},
         async loadApprovedProposals(){await this.run(async()=>{this.approvedProposals=(await api('/api/admin/level-proposals/approved')).proposals||[];});},
         async prefillApprovedLevel(p){
-          if(p.kind==='verification'){
-            if(!this.canEdit){this.error='Only staff with level editing permission can apply verification changes.';return;}
-            if(this.hasUnsavedChanges&&!confirm('Discard unsaved level edits?'))return;
-            await this.switchTab('levels');
-            await this.run(async()=>{
-              this.listType=p.list_type;await this.loadFiles();
-              const target=this.levelFiles.find(x=>x.toLowerCase()===p.level_name.trim().replace(/[^A-Za-z0-9_ -]/g,'').replace(/[ -]+/g,'_').toLowerCase())||this.levelFiles.find(x=>x.replaceAll('_',' ').toLowerCase()===p.level_name.toLowerCase());
-              if(!target)throw Error('Could not match this verification to an existing level. Use the Level Editor to find the level manually.');
-              this.levelPath=target;
-              const overrides=await api('/api/levels/overrides?list='+this.listType);
-              let level=overrides.levels[target];
-              if(!level){const response=await fetch('/data/'+encodeURIComponent(target)+'.json');if(!response.ok)throw Error('Level file unavailable.');level=await response.json();}
-              if(p.level_id&&String(level.id)!==String(p.level_id))throw Error('Level ID does not match the approved proposal; no changes made.');
-              this.originalLevelText=JSON.stringify(level,null,2);
-              level.verifier=p.account_username||level.verifier;
-              level.verification=p.proof_url;
-              this.levelText=JSON.stringify(level,null,2);
-              this.notice='Verification details loaded. Check the verifier username and proof, then click Save Changes in the Level Editor.';
-            });
-            return;
-          }
-          this.newLevel={listType:p.list_type,rating:'rate',name:p.level_name,id:p.level_id||'',author:p.creator,creators:p.creator,verifier:'',verification:p.proof_url,percentToQualify:100,rank:1};
+          if(!['normal','platformer'].includes(p.list_type)){this.error='This list type is not supported by Add New Level.';return;}
+          this.newLevel={
+            listType:p.list_type,
+            rating:'rate',
+            name:p.level_name||'',
+            id:p.level_id||'',
+            author:p.creator||'',
+            creators:p.creator||'',
+            verifier:p.kind==='verification'?(p.account_username||''):'',
+            verification:p.proof_url||'',
+            percentToQualify:100,
+            rank:1
+          };
           await this.switchTab('add-level');
-          this.notice='Approved level details loaded. Set the rating, verifier, qualifying percentage, and rank, then publish.';
+          this.notice='Approved '+p.kind+' details copied to Add New Level. Review the verifier, rating, percentage, and rank before publishing.';
         },
         async loadLevelProposals(){await this.run(async()=>{this.levelProposals=(await api('/api/admin/level-proposals')).proposals||[];});},
         async reviewLevelProposal(p,status){if(!confirm(status+' proposal for '+p.level_name+'?'))return;await this.run(async()=>{const r=await api('/api/admin/level-proposals/review','POST',{id:p.id,status});this.levelProposals=this.levelProposals.filter(x=>x.id!==p.id);if(status==='approved')this.approvedProposals=(await api('/api/admin/level-proposals/approved')).proposals||[];this.notice=r.notice||'Proposal '+status+'.';});},

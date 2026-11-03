@@ -491,9 +491,9 @@ async function handle(request, env) {
      if(!['owner','admin','moderator','editor'].includes(role))return json({error:'Staff permission required.'},403);
      if(!env.GITHUB_TOKEN)return json({error:'GITHUB_TOKEN must be configured in Worker secrets to publish levels.'},503);
      const d=await body(request),type=String(d.listType||''),name=String(d.name||'').trim(),author=String(d.author||'').trim(),verifier=String(d.verifier||'').trim(),verification=String(d.verification||'').trim();
-     const id=Number(d.id),rank=Number(d.rank),qualify=Number(d.percentToQualify);
+     const id=Number(d.id),rank=Number(d.rank),qualify=Number(d.percentToQualify),rating=String(d.rating||'').toLowerCase();
      const creators=String(d.creators||'').split(',').map(x=>x.trim()).filter(Boolean);
-     if(!['normal','platformer'].includes(type)||!name||name.length>120||!author||author.length>64||verifier.length>64||creators.length>30||creators.some(x=>x.length>64)||!Number.isSafeInteger(id)||id<=0||!Number.isInteger(rank)||!Number.isInteger(qualify)||qualify<0||qualify>100)return json({error:'Invalid level details.'},400);
+     if(!['rate','featured','epic','legendary','mythic'].includes(rating)||!['normal','platformer'].includes(type)||!name||name.length>120||!author||author.length>64||verifier.length>64||creators.length>30||creators.some(x=>x.length>64)||!Number.isSafeInteger(id)||id<=0||!Number.isInteger(rank)||!Number.isInteger(qualify)||qualify<0||qualify>100)return json({error:'Invalid level details.'},400);
      if(verification){try{const u=new URL(verification);if(u.protocol!=='https:'||!u.hostname.includes('.'))throw Error();}catch{return json({error:'Verification must be an HTTPS link.'},400);}}
      const levelPath=name.replace(/[^A-Za-z0-9_ -]/g,'').trim().replace(/[ -]+/g,'_').replace(/_+/g,'_').slice(0,120);
      if(!/^[A-Za-z0-9_]{1,120}$/.test(levelPath))return json({error:'Name cannot create a valid file path.'},400);
@@ -510,7 +510,7 @@ async function handle(request, env) {
      if(list.some(x=>x.toLowerCase()===levelPath.toLowerCase()))return json({error:'A level with this name is already listed.'},409);
      const existing=await getFile(levelPath+'.json');
      if(existing.status!==404)return json({error:existing.ok?'A level file with this name already exists.':'Could not verify level filename on GitHub.'},409);
-     const level={id,name,author,creators:creators.length?creators:[author],verifier,verification,percentToQualify:String(qualify),enjoyment:'N/A',records:[]};
+     const level={id,name,author,creators:creators.length?creators:[author],verifier,verification,rating,percentToQualify:String(qualify),enjoyment:'N/A',records:[]};
      const commit=async(filename,data,sha,message)=>{
        const payload={message,content:githubBase64(JSON.stringify(data,null,2)+'\n')};
        if(sha)payload.sha=sha;

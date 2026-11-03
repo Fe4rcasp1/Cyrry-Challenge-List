@@ -1,12 +1,20 @@
 {
-    "id": 136143921,
-    "name": "aetittynus",
-    "author": "p3rke79",
-    "creators": ["p3rke79"],
-    "verifier": "Geomaster846",
-    "verification": "https://youtu.be/baly4_lN4wI?si=QEvzOQ2KOT3Hmasw",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": [
-    ]
+  "id": 136143921,
+  "name": "aetittynus",
+  "author": "p3rke79",
+  "creators": [
+    "p3rke79"
+  ],
+  "verifier": "Geomaster846",
+  "verification": "https://youtu.be/baly4_lN4wI?si=QEvzOQ2KOT3Hmasw",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "Dextrh",
+      "percent": 100,
+      "link": "https://youtu.be/CohUtqtun1Q",
+      "enjoyment": 4
+    }
+  ]
 }

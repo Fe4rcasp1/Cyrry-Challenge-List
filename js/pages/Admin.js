@@ -122,6 +122,18 @@ export default {
         <section v-if="tab==='proposals' && canReview" class="hub-card admin-panel">
          <div class="admin-section-head"><h2>Level & verification proposals</h2><button class="admin-btn" @click="loadLevelProposals" :disabled="busy">Refresh</button></div>
          <p class="hub-muted">Review proof and decide whether to accept the suggestion. Approval records the decision but does not automatically change the level list; editors must make those changes separately.</p>
+         <div class="admin-section-head"><h3>Approved proposals — saved for later</h3><button type="button" class="admin-btn" :disabled="busy" @click="loadApprovedProposals">Refresh saved</button></div>
+         <p class="hub-muted">Approved submissions remain stored here, even after they leave the pending queue.</p>
+         <p v-if="!approvedProposals.length">No approved proposals saved yet.</p>
+         <article v-for="p in approvedProposals" :key="p.id" class="admin-claim">
+          <h3>{{p.level_name}} · {{p.kind}}</h3>
+          <p>{{p.list_type}} · ID {{p.level_id||'Not provided'}} · Creator {{p.creator}}</p>
+          <p>Submitted by {{p.account_username}} on {{p.created_at}} · Approved {{p.reviewed_at}}</p>
+          <p v-if="p.notes">Notes: {{p.notes}}</p>
+          <a :href="p.proof_url" target="_blank" rel="noopener noreferrer">View submitted proof ↗</a>
+          <div class="admin-actions"><button v-if="p.kind==='level' && (p.list_type==='normal'||p.list_type==='platformer')" class="admin-btn admin-btn-primary" type="button" @click="prefillApprovedLevel(p)">Use details in Add New Level</button></div>
+         </article>
+         <h3>Pending proposals</h3>
          <p v-if="!levelProposals.length">No pending proposals.</p>
          <article v-for="p in levelProposals" :key="p.id" class="admin-claim">
           <h3>{{p.level_name}} · {{p.kind}}</h3><p>{{p.list_type}} · ID {{p.level_id||'Not provided'}} · Creator {{p.creator}}</p>
@@ -308,7 +320,7 @@ export default {
         async loadApprovedProposals(){await this.run(async()=>{this.approvedProposals=(await api('/api/admin/level-proposals/approved')).proposals||[];});},
         async prefillApprovedLevel(p){this.newLevel={listType:p.list_type,rating:'rate',name:p.level_name,id:p.level_id||'',author:p.creator,creators:p.creator,verifier:'',verification:p.proof_url,percentToQualify:100,rank:1};await this.switchTab('add-level');this.notice='Details copied from approved proposal. Review the rating, verifier, percentage, and rank before publishing.';},
         async loadLevelProposals(){await this.run(async()=>{this.levelProposals=(await api('/api/admin/level-proposals')).proposals||[];});},
-        async reviewLevelProposal(p,status){if(!confirm(status+' proposal for '+p.level_name+'?'))return;await this.run(async()=>{const r=await api('/api/admin/level-proposals/review','POST',{id:p.id,status});this.levelProposals=this.levelProposals.filter(x=>x.id!==p.id);if(status==='approved')await this.loadApprovedProposals();this.notice=r.notice||'Proposal '+status+'.';});},
+        async reviewLevelProposal(p,status){if(!confirm(status+' proposal for '+p.level_name+'?'))return;await this.run(async()=>{const r=await api('/api/admin/level-proposals/review','POST',{id:p.id,status});this.levelProposals=this.levelProposals.filter(x=>x.id!==p.id);if(status==='approved')this.approvedProposals=(await api('/api/admin/level-proposals/approved')).proposals||[];this.notice=r.notice||'Proposal '+status+'.';});},
         async loadClaims() { await this.run(async () => { this.claims = (await api('/api/admin/claims')).claims || []; }); },
         async review(c, status) {
             if (!confirm((status === 'approved' ? 'Approve ' : 'Reject ') + c.leaderboard_username + '?')) return;

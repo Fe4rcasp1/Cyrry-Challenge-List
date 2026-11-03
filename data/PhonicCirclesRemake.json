@@ -10,5 +10,12 @@
   "rating": "featured",
   "percentToQualify": "100",
   "enjoyment": "N/A",
-  "records": []
+  "records": [
+    {
+      "user": "NotHereGD",
+      "percent": 100,
+      "link": "https://medal.tv/games/geometry-dash/clips/nR28mGhNSlvUWdRoq?invite=cr-MSwyc1ksOTcxNzg4NTIw",
+      "enjoyment": 7
+    }
+  ]
 }

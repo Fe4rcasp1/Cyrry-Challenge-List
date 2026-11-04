@@ -1,11 +1,20 @@
 {
-    "id": 132412135,
-    "name": "wave carried",
-    "author": "p3rke79",
-    "creators": ["p3rke79"],
-    "verifier": "katanata",
-    "verification": "https://youtu.be/19x1MdurGPk?si=At_-TFGocjoDaJUK",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": []
+  "id": 132412135,
+  "name": "wave carried",
+  "author": "p3rke79",
+  "creators": [
+    "p3rke79"
+  ],
+  "verifier": "katanata",
+  "verification": "https://youtu.be/19x1MdurGPk?si=At_-TFGocjoDaJUK",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "NoName1610",
+      "percent": 100,
+      "link": "https://youtu.be/fBedti-HMbg",
+      "enjoyment": 5
+    }
+  ]
 }

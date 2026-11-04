@@ -1,11 +1,20 @@
 {
-    "id": 128496333,
-    "name": "primus ero",
-    "author": "soopidk",
-    "creators": ["soopidk"],
-    "verifier": "soopidk",
-    "verification": "https://youtu.be/AEZvVtheZxI?si=Wgefag7X8ZhCeSLo",
-    "percentToQualify": "74",
-    "enjoyment": "N/A",
-    "records": []
+  "id": 128496333,
+  "name": "primus ero",
+  "author": "soopidk",
+  "creators": [
+    "soopidk"
+  ],
+  "verifier": "soopidk",
+  "verification": "https://youtu.be/AEZvVtheZxI?si=Wgefag7X8ZhCeSLo",
+  "percentToQualify": "74",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "CyrryGD",
+      "percent": 84,
+      "link": "https://youtu.be/5Cx7X8HXF-Y?si=qBt1AFYzyK5rHdm2",
+      "enjoyment": 7
+    }
+  ]
 }

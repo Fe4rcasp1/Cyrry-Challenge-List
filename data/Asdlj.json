@@ -41,6 +41,12 @@
       "percent": 100,
       "hz": 240,
       "enjoyment": 7
+    },
+    {
+      "user": "Masketified",
+      "percent": 100,
+      "link": "https://cyrry-challenge-list.ccllcc.workers.dev/#/submit-record",
+      "enjoyment": 1
     }
   ]
 }

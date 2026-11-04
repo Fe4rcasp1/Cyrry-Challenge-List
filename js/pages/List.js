@@ -411,7 +411,7 @@ export default {
             }catch(e){this.historyError=e.message;}finally{this.historyLoading=false;}
         },
         resetFilters() { this.searchQuery = ""; this.sectionFilter = "all"; this.ratingFilter = "all"; this.enjoymentFilter = "all"; this.enjoymentSort = "rank"; },
-        ratingColor(level, impossible=false, index=0) { const rating=impossible?getImpossibleRating(index,this.platformer):getLevelRating(level,this.platformer);return ({ rate: "#808080", featured: "#e4c526", epic: "#ef922d", legendary: "#a855f7", mythic: "#08bfd4" })[rating] || "#244f88"; },
-        ratingTextColor(level, impossible=false, index=0) { return ["featured", "epic", "mythic"].includes(impossible?getImpossibleRating(index,this.platformer):getLevelRating(level,this.platformer)) ? "#171c27" : "#fff"; },
+        ratingColor(level, impossible=false, index=0) { const rating=impossible?getImpossibleRating(index,this.platformer,level):getLevelRating(level,this.platformer);return ({ rate: "#808080", featured: "#e4c526", epic: "#ef922d", legendary: "#a855f7", mythic: "#08bfd4" })[rating] || "#244f88"; },
+        ratingTextColor(level, impossible=false, index=0) { return ["featured", "epic", "mythic"].includes(impossible?getImpossibleRating(index,this.platformer,level):getLevelRating(level,this.platformer)) ? "#171c27" : "#fff"; },
     },
 };

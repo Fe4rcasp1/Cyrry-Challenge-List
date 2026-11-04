@@ -152,7 +152,7 @@ export async function fetchCreatorLeaderboard() {
     if(impossiblePlatformer.error)errors.push(impossiblePlatformer.error);
     for(const source of sources)for(const {level,error,rank} of source.items){
         if(!level){errors.push(error||source.type+' #'+(rank+1));continue;}
-        const rating=source.impossible?getImpossibleRating(rank,source.platformer):getLevelRating(level,source.platformer);
+        const rating=source.impossible?getImpossibleRating(rank,source.platformer,level):getLevelRating(level,source.platformer);
         const points=ratingPoints[rating]||0,seen=new Set();
         for(const raw of Array.isArray(level.creators)?level.creators:[]){
             if(typeof raw!=='string')continue;

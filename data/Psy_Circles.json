@@ -1,11 +1,20 @@
 {
-    "id": 145935306,
-    "name": "psy circles",
-    "author": "OtherWorldDrago",
-    "creators": ["OtherWorldDrago"],
-    "verifier": "OtherWorldDrago",
-    "verification": "https://youtu.be/iUKlPzOJ8GM?si=zfCqr3uPzEAzyo6g",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": []
+  "id": 145935306,
+  "name": "psy circles",
+  "author": "OtherWorldDrago",
+  "creators": [
+    "OtherWorldDrago"
+  ],
+  "verifier": "OtherWorldDrago",
+  "verification": "https://youtu.be/iUKlPzOJ8GM?si=zfCqr3uPzEAzyo6g",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "NoName1610",
+      "percent": 100,
+      "link": "https://youtu.be/60OOapvQMEk",
+      "enjoyment": 1
+    }
+  ]
 }

@@ -10,5 +10,12 @@
   "rating": "featured",
   "percentToQualify": "100",
   "enjoyment": "N/A",
-  "records": []
+  "records": [
+    {
+      "user": "Dextrh",
+      "percent": 100,
+      "link": "https://youtu.be/wGO-OZ0LQ6s",
+      "enjoyment": 5
+    }
+  ]
 }

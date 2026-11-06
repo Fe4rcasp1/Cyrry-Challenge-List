@@ -25,7 +25,7 @@ export default {
      </div>
      <p class="hub-muted">{{record.selectedLevels.length}} level{{record.selectedLevels.length===1?'':'s'}} selected · {{totalSelectedLevels}}/20 total. Video, enjoyment, and percentage apply to every selected level in this group.</p>
      <label :for="'record-video-'+record.key">Video proof</label><input :id="'record-video-'+record.key" v-model.trim="record.videoUrl" type="url" required maxlength="500" placeholder="https://youtube.com/..." />
-     <label :for="'record-enjoyment-'+record.key">Enjoyment (0–10)</label><input :id="'record-enjoyment-'+record.key" v-model.number="record.enjoyment" type="number" min="0" max="10" step="1" required />
+     <label :for="'record-enjoyment-'+record.key">Enjoyment (0–10, optional)</label><input :id="'record-enjoyment-'+record.key" v-model.number="record.enjoyment" type="number" min="0" max="10" step="1" />
      <label :for="'record-percent-'+record.key">Completion percentage</label><input :id="'record-percent-'+record.key" v-model.number="record.percent" type="number" min="1" max="100" required />
     </div>
     <div class="admin-actions"><button type="button" class="admin-btn" :disabled="busy||records.length>=20||totalSelectedLevels>=20" @click="addRecord">+ Add another record</button><button type="submit" class="hub-fav-button" :disabled="busy">{{busy?'Submitting…':'Submit '+totalSelectedLevels+' record'+(totalSelectedLevels===1?'':'s')+' for review'}}</button></div>
@@ -78,7 +78,7 @@ export default {
    if(new Set(selected.map(r=>r.listType+':'+r.levelPath)).size!==selected.length){this.error='Each level can only appear once in a batch.';return;}
    this.busy=true;
    try{
-    const payload=selected.map(r=>({listType:r.listType,levelPath:r.levelPath,videoUrl:r.videoUrl,enjoyment:Number(r.enjoyment),percent:Number(r.percent),discordName:this.discordName,username:store.profileUsername}));
+    const payload=selected.map(r=>({listType:r.listType,levelPath:r.levelPath,videoUrl:r.videoUrl,enjoyment:r.enjoyment === "" || r.enjoyment == null ? null : Number(r.enjoyment),percent:Number(r.percent),discordName:this.discordName,username:store.profileUsername}));
     const response=await fetch('/api/community/submissions/bulk',{method:'POST',credentials:'same-origin',headers:{'content-type':'application/json'},body:JSON.stringify({records:payload})});
     const data=await response.json();if(!response.ok)throw Error(data.error||'Submission failed');
     this.notice=data.submitted+' record'+(data.submitted===1?'':'s')+' submitted for review!';

@@ -465,7 +465,7 @@ async function handle(request, env) {
    }
    if (path === '/api/admin/enjoyment' && request.method === 'POST') {
      if(!canEdit&&!canReview)return json({error:'Not permitted.'},403);
-     const data=await body(request),listType=String(data.listType||''),levelPath=String(data.levelPath||''),username=String(data.username||'').trim(),enjoyment=Number(data.enjoyment);
+     const data=await body(request),listType=String(data.listType||''),levelPath=String(data.levelPath||''),username=String(data.username||'').trim(),enjoyment=(data.enjoyment == null || data.enjoyment === '' ? null : Number(data.enjoyment));
      if(!['normal','platformer'].includes(listType)||!/^[A-Za-z0-9_-]{1,120}$/.test(levelPath)||!username||username.length>64||!Number.isInteger(enjoyment)||enjoyment<0||enjoyment>10)return json({error:'Select an existing record and a whole-number enjoyment rating (0–10).'},400);
      const listResponse=await env.ASSETS.fetch(new Request(new URL('/data/'+(listType==='normal'?'_list.json':'_platformer.json'),request.url)));
      if(!listResponse.ok||!(await listResponse.json()).includes(levelPath))return json({error:'Level not on this list.'},404);
@@ -658,13 +658,13 @@ async function handle(request, env) {
   if(!Array.isArray(records)||records.length<1||records.length>20)return json({error:'Submit 1–20 records.'},400);
   const seen=new Set(),validated=[],lists={};
   for(let i=0;i<records.length;i++){
-   const x=records[i]||{},type=String(x.listType||''),level=String(x.levelPath||''),video=String(x.videoUrl||'').trim(),percent=Number(x.percent),enjoyment=Number(x.enjoyment),discord=String(x.discordName||'').trim(),username=String(x.username||'').trim();
+   const x=records[i]||{},type=String(x.listType||''),level=String(x.levelPath||''),video=String(x.videoUrl||'').trim(),percent=Number(x.percent),enjoyment=(x.enjoyment == null || x.enjoyment === '' ? null : Number(x.enjoyment)),discord=String(x.discordName||'').trim(),username=String(x.username||'').trim();
    const label='Record '+(i+1)+': ';
    if(!['normal','platformer'].includes(type)||!/^[A-Za-z0-9_-]{1,120}$/.test(level))return json({error:label+'Invalid list or level.'},400);
    if(seen.has(type+':'+level))return json({error:label+'Duplicate level.'},400);seen.add(type+':'+level);
    if(!Number.isInteger(percent)||percent<1||percent>100)return json({error:label+'Percentage must be 1–100.'},400);
    if(!safeUrl(video)||video.length>500)return json({error:label+'Valid HTTPS proof link required.'},400);
-   if(!Number.isInteger(enjoyment)||enjoyment<0||enjoyment>10)return json({error:label+'Enjoyment must be 0–10.'},400);
+   if(enjoyment!==null&&(!Number.isInteger(enjoyment)||enjoyment<0||enjoyment>10))return json({error:label+'Enjoyment must be N/A or 0–10.'},400);
    if(username.toLowerCase()!==claim.leaderboard_username.toLowerCase())return json({error:label+'Username does not match your profile.'},400);
    if(discord.length<2||discord.length>64||[...discord].some(c=>c.charCodeAt(0)<32||c.charCodeAt(0)===127))return json({error:label+'Invalid Discord username.'},400);
    if(!lists[type]){const response=await env.ASSETS.fetch(new Request(new URL('/data/'+(type==='normal'?'_list.json':'_platformer.json'),request.url)));if(!response.ok)return json({error:'List unavailable.'},503);lists[type]=new Set(await response.json());}
@@ -687,7 +687,7 @@ if(!['normal','platformer'].includes(type))return json({error:'Select a valid li
    if(note.length>500)return json({error:'Submission note is too long.'},400);
    if(username.toLowerCase()!==claim.leaderboard_username.toLowerCase())return json({error:'CCL username must match your approved profile: '+claim.leaderboard_username},400);
    if(discord.length<2||discord.length>64||[...discord].some(char=>char.charCodeAt(0)<32||char.charCodeAt(0)===127))return json({error:'Discord username must be between 2 and 64 characters and contain no control characters.'},400);
-   if(!Number.isInteger(enjoyment)||enjoyment<0||enjoyment>10)return json({error:'Enjoyment must be a whole number between 0 and 10.'},400);
+   if(enjoyment!==null&&(!Number.isInteger(enjoyment)||enjoyment<0||enjoyment>10))return json({error:'Enjoyment must be N/A or a whole number between 0 and 10.'},400);
    const listResponse=await env.ASSETS.fetch(new Request(new URL('/data/'+(type==='normal'?'_list.json':'_platformer.json'),request.url)));
    if(!listResponse.ok||!(await listResponse.json()).includes(level))return json({error:'Level not found on selected list.'},404);
    const existing=await env.DB.prepare("SELECT id FROM record_submissions WHERE user_id=? AND list_type=? AND level_path=? AND status='pending'").bind(user.id,type,level).first();

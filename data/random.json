@@ -10,5 +10,12 @@
   "rating": "featured",
   "percentToQualify": "100",
   "enjoyment": "N/A",
-  "records": []
+  "records": [
+    {
+      "user": "Void852",
+      "percent": 100,
+      "link": "https://medal.tv/games/geometry-dash/clips/nSTwEJvcRaQmnJ0e6?invite=cr-MSxKQzksNTgyMjMyNjcz",
+      "enjoyment": 8
+    }
+  ]
 }

@@ -6,12 +6,18 @@
     "NxXD",
     "Moab934"
   ],
-  "verifier": "MrKingFloppa",
-  "verification": "https://youtu.be/h0CPiFw--vk",
+  "verifier": "NxXD",
+  "verification": "https://youtu.be/WbIcZR3XkLo?si=nyPtUSus1DqkOsaI",
   "rating": "legendary",
   "percentToQualify": "100",
   "enjoyment": "N/A",
   "records": [
+    {
+      "user": "MrKingFloppa",
+      "percent": 100,
+      "link": "https://youtu.be/h0CPiFw--vk",
+      "enjoyment": 7
+    },
     {
       "user": "NotHereGD",
       "percent": 100,

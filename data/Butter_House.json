@@ -1,12 +1,24 @@
 {
-    "id": 148596590,
-    "name": "Butter House",
-    "author": "MrKingFloppa",
-    "creators": ["MrKingFloppa","NotHereGD","skeetles","Moab934","OtherWorldDrago"],
-    "verifier": "CyrryGD",
-    "verification": "https://youtu.be/o7hN_EpV-TY?si=67cyen0zarQ_gs84",
-    "percentToQualify": "37",
-    "enjoyment": "N/A",
-    "records": [
-    ]
+  "id": 148596590,
+  "name": "Butter House",
+  "author": "MrKingFloppa",
+  "creators": [
+    "MrKingFloppa",
+    "NotHereGD",
+    "skeetles",
+    "Moab934",
+    "OtherWorldDrago"
+  ],
+  "verifier": "CyrryGD",
+  "verification": "https://youtu.be/o7hN_EpV-TY?si=67cyen0zarQ_gs84",
+  "percentToQualify": "37",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "Dewbbz",
+      "link": "ytlink",
+      "percent": 57,
+      "hz": 240
+    }
+  ]
 }

@@ -10,5 +10,11 @@
   "rating": "rate",
   "percentToQualify": "100",
   "enjoyment": "N/A",
-  "records": []
+  "records": [
+    {
+      "user": "Ilovebugs",
+      "percent": 100,
+      "link": "ytlink"
+    }
+  ]
 }

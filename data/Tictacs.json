@@ -80,6 +80,12 @@
       "percent": 100,
       "link": "ytlink",
       "enjoyment": 5
+    },
+    {
+      "user": "1440nova",
+      "percent": 100,
+      "link": "https://youtu.be/e1DL9KgG0Qw?si=Wy8n0iUg_eQmW_wn",
+      "enjoyment": 0
     }
   ]
 }

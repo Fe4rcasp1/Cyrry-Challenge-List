@@ -10,5 +10,12 @@
   "rating": "featured",
   "percentToQualify": "100",
   "enjoyment": "N/A",
-  "records": []
+  "records": [
+    {
+      "user": "jellifest",
+      "percent": 100,
+      "link": "https://www.youtube.com/watch?v=dtlyEvJP7m4",
+      "enjoyment": 7
+    }
+  ]
 }

@@ -8,5 +8,11 @@
   "verifier": "chickadeeinc",
   "verification": "",
   "percentToQualify": "100",
-  "records": []
+  "records": [
+    {
+      "user": "aaaaaameowmeow",
+      "percent": 100,
+      "link": "https://medal.tv/games/geometry-dash/clips/nYoWX4Oh7V97QVG1y?invite=cr-MSxvNXQsNDIwMTI1ODQ2"
+    }
+  ]
 }

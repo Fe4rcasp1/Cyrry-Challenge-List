@@ -1,18 +1,20 @@
 {
-    "id": 128009529,
-    "name": "SoopixnDemon",
-    "author": "p3rke79",
-    "creators": ["p3rke79"],
-    "verifier": "CyrryGD",
-    "verification": "https://youtu.be/AtSOWkhRRUU?si=1cvN4tPXSUOucHW7",
-    "percentToQualify": "72",
-    "enjoyment": "N/A",
-    "records": [
-{
-            "user": "chickadeeinc",
-            "link": "https://youtu.be/FONIi70rtLw?si=TzBqLo3f903LnL63",
-            "percent": 82,
-            "hz": 240
-        }
-    ]
+  "id": 128009529,
+  "name": "SoopixnDemon",
+  "author": "p3rke79",
+  "creators": [
+    "p3rke79"
+  ],
+  "verifier": "CyrryGD",
+  "verification": "https://youtu.be/AtSOWkhRRUU?si=1cvN4tPXSUOucHW7",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "chickadeeinc",
+      "link": "https://youtu.be/FONIi70rtLw?si=TzBqLo3f903LnL63",
+      "percent": 82,
+      "hz": 240
+    }
+  ]
 }

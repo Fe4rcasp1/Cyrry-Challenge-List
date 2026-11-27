@@ -10,5 +10,12 @@
   "rating": "legendary",
   "percentToQualify": "100",
   "enjoyment": "N/A",
-  "records": []
+  "records": [
+    {
+      "user": "Maulr",
+      "link": "https://youtu.be/cA32dmoMQUE?si=YCFIfj1M4p5T3KOa",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

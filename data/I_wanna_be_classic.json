@@ -10,5 +10,24 @@
   "rating": "featured",
   "percentToQualify": "100",
   "enjoyment": "N/A",
-  "records": []
+  "records": [
+    {
+      "user": "Maulr",
+      "link": "https://youtu.be/JRPGTkU-6oI?si=0jIn7aC1eS56wjLe",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/uFZG45oQ0U4?si=Ryagy0uhfTL8mxxO",
+      "percent": 100,
+      "hz": 240
+    },
+    {
+      "user": "jamxz11",
+      "link": "ytlink",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

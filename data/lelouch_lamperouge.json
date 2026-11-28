@@ -10,5 +10,12 @@
   "rating": "epic",
   "percentToQualify": "100",
   "enjoyment": "N/A",
-  "records": []
+  "records": [
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/slxSNgDddO8?si=ODqXtAI-bZV_P7oZ",
+      "percent": 100,
+      "hz": 240
+    }
+  ]
 }

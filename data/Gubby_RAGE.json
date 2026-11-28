@@ -1,11 +1,21 @@
 {
-    "id": 141020584,
-    "name": "gubby RAGE",
-    "author": "Korbir",
-    "creators": ["Korbir"],
-    "verifier": "Korbir",
-    "verification": "https://youtu.be/On2pifbWaXA?si=EmeNYci42F26_yax",
-    "percentToQualify": "100",
-    "enjoyment": "N/A",
-    "records": []
+  "id": 141020584,
+  "name": "gubby RAGE",
+  "author": "Korbir",
+  "creators": [
+    "Korbir"
+  ],
+  "verifier": "Korbir",
+  "verification": "https://youtu.be/On2pifbWaXA?si=EmeNYci42F26_yax",
+  "percentToQualify": "100",
+  "enjoyment": "N/A",
+  "records": [
+    {
+      "user": "CyrryGD",
+      "link": "https://youtu.be/slxSNgDddO8?si=8yR5juP9LfGWggdu",
+      "percent": 100,
+      "hz": 240,
+      "enjoyment": 7
+    }
+  ]
 }
